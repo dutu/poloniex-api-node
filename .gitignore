@@ -1,0 +1,9 @@
+# Node and related ecosystem
+# ==========================
+npm-debug.log
+node_modules/
+.idea/
+
+# Private data
+# ==========================
+

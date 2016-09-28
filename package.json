@@ -1,0 +1,35 @@
+{
+  "name": "poloniex-api-node",
+  "version": "1.0.0",
+  "description": "node.js wrapper for Poloniex exchange API",
+  "main": "index.js",
+  "engines": {
+    "node": ">= 4.6.x"
+  },
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dutu/poloniex-api-node.git"
+  },
+  "keywords": [
+    "api",
+    "bitcoin",
+    "poloniex",
+    "exchange",
+    "btc",
+    "eth"
+  ],
+  "author": "Adrian Clinciu <adrian.clinciu@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dutu/poloniex-api-node/issues"
+  },
+  "homepage": "https://github.com/dutu/poloniex-api-node",
+  "dependencies": {
+    "nonce": "1.x.x",
+    "request": "2.x.x"
+  },
+  "devDependencies": {
+  }
+}
