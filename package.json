@@ -28,7 +28,8 @@
   "homepage": "https://github.com/dutu/poloniex-api-node",
   "dependencies": {
     "nonce": "1.x.x",
-    "request": "2.x.x"
+    "request": "2.x.x",
+    "debug": "2.x.x"
   },
   "devDependencies": {
   }

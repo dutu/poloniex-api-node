@@ -1,11 +1,13 @@
+
 module.exports = (function() {
     'use strict';
 
-    const crypto = require('crypto');
+    const debug = require("debug")("poloniex");
     const request = require('request');
     const nonce = require('nonce')();
 
-    const version         = '0.1.0';
+
+    const version         = '1.0.0';
     const PUBLIC_API_URL  = 'https://poloniex.com/public';
     const PRIVATE_API_URL = 'https://poloniex.com/tradingApi';
     const USER_AGENT      = `poloniex-node-api ${version}`;
@@ -135,25 +137,54 @@ module.exports = (function() {
             if (typeof depth === 'function'){
                 callback = depth;
                 parameters = {
-                    currencyPair: currencyPair,
+                    currencyPair,
                 };
             } else {
                 parameters = {
-                    currencyPair: currencyPair,
-                    depth: depth,
+                    currencyPair,
+                    depth,
                 };
             }
             return this._public('returnOrderBook', parameters, callback);
         },
 
         returnTradeHistory: function(currencyPair, start, end, callback){
+            if (typeof start === 'function') {
+                let parameters = {
+                    currencyPair,
+                };
+                let callback  = start;
+                return this._private('returnTradeHistory', parameters, callback);
+            }
+            if (typeof end === 'function') {
+                let parameters = {
+                    currencyPair,
+                    start,
+                };
+                let callback = end;
+                return this._private('returnTradeHistory', parameters, callback);
+            }
             let parameters = {
-                currencyPair: currencyPair,
+                currencyPair,
+                start,
+                end,
             };
-
-            if (start) parameters.start = start;
-            if (end) parameters.end = end;
             return this._public('returnTradeHistory', parameters, callback);
+        },
+
+        returnChartData: function(currencyPair, period, start, end, callback){
+            let parameters = {
+                currencyPair,
+                period,
+                start,
+                end,
+            };
+            return this._public('returnChartData', parameters, callback);
+        },
+
+        returnCurrencies: function(callback){
+            let parameters = {};
+            return this._public('returnCurrencies', parameters, callback);
         },
 
         returnLoanOrders: function(currency, limit, callback){
@@ -161,15 +192,14 @@ module.exports = (function() {
             if (typeof limit === 'function'){
                 callback = limit;
                 parameters = {
-                    currency: currency
+                    currency,
                 };
             } else {
                 parameters = {
-                    currency: currency,
-                    limit: limit
+                    currency,
+                    limit,
                 };
             }
-
             return this._public('returnLoanOrders', parameters, callback);
         },
 
@@ -187,61 +217,99 @@ module.exports = (function() {
                 return this._private('returnCompleteBalances', callback);
             } else {
                 parameters = {
-                    account: account,
+                    account,
                 };
-
                 return this._private('returnCompleteBalances', parameters, callback);
             }
         },
 
+        returnDepositAddresses: function(callback){
+            let parameters = {};
+            return this._private('returnDepositAddresses', parameters, callback);
+        },
+
+        generateNewAddress: function(currency, callback){
+            let parameters = {
+                currency,
+            };
+            return this._private('generateNewAddress', parameters, callback);
+        },
+
+        returnDepositsWithdrawals: function(start, end, callback){
+            let parameters = {
+                start,
+                end,
+            };
+            return this._private('returnDepositsWithdrawals', parameters, callback);
+        },
+
         returnOpenOrders: function(currencyPair, callback){
             let parameters = {
-                currencyPair: currencyPair,
+                currencyPair,
             };
-
             return this._private('returnOpenOrders', parameters, callback);
         },
 
-        returnMyTradeHistory: function(currencyPair, callback){
+        returnMyTradeHistory: function(currencyPair, start, end, callback){
+            if (typeof start === 'function') {
+                let parameters = {
+                    currencyPair,
+                };
+                let callback  = start;
+                return this._private('returnTradeHistory', parameters, callback);
+            }
+            if (typeof end === 'function') {
+                let parameters = {
+                    currencyPair,
+                    start,
+                };
+                let callback = end;
+                return this._private('returnTradeHistory', parameters, callback);
+            }
             let parameters = {
-                currencyPair: currencyPair,
+                currencyPair,
+                start,
+                end,
             };
-
             return this._private('returnTradeHistory', parameters, callback);
+        },
+
+        returnOrderTrades: function(orderNumber, callback){
+            let parameters = {
+                orderNumber,
+            };
+            return this._private('returnOrderTrades', parameters, callback);
         },
 
         buy: function(currencyPair, rate, amount, callback){
             let parameters = {
-                currencyPair: currencyPair,
-                rate: rate,
-                amount: amount
+                currencyPair,
+                rate,
+                amount,
             };
-
             return this._private('buy', parameters, callback);
         },
 
         sell: function(currencyPair, rate, amount, callback){
             let parameters = {
-                currencyPair: currencyPair,
-                rate: rate,
-                amount: amount,
+                currencyPair,
+                rate,
+                amount,
             };
-
             return this._private('sell', parameters, callback);
         },
 
         cancelOrder: function(orderNumber, callback){
             let parameters = {
-                orderNumber: orderNumber,
+                orderNumber,
             };
-
             return this._private('cancelOrder', parameters, callback);
         },
 
         moveOrder: function(orderNumber, rate, amount, callback){
             let parameters = {
-                orderNumber: orderNumber,
-                rate: rate,
+                orderNumber,
+                rate,
             };
 
             if (typeof amount === 'function'){
@@ -249,17 +317,21 @@ module.exports = (function() {
             } else {
                 parameters.amount = amount;
             }
-
             return this._private('moveOrder', parameters, callback);
         },
+
         withdraw: function(currency, amount, address, callback){
             let parameters = {
-                currency: currency,
-                amount: amount,
-                address: address,
+                currency,
+                amount,
+                address,
             };
-
             return this._private('withdraw', parameters, callback);
+        },
+
+        returnFeeInfo: function(callback){
+            let parameters = {};
+            return this._private('returnFeeInfo', parameters, callback);
         },
 
         returnAvailableAccountBalances: function(account, callback){
@@ -269,9 +341,8 @@ module.exports = (function() {
                 return this._private('returnAvailableAccountBalances', callback);
             } else {
                 parameters = {
-                    account: account
+                    account,
                 };
-
                 return this._private('returnAvailableAccountBalances', parameters, callback);
             }
         },
@@ -280,23 +351,77 @@ module.exports = (function() {
             return this._private('returnTradableBalances', callback);
         },
 
+        transferBalance: function(currency, amount, fromAccount, toAccount, callback){
+            let parameters = {
+                currency,
+                amount,
+                fromAccount,
+                toAccount,
+            };
+            return this._private('transferBalance', parameters, callback);
+        },
+
+        returnMarginAccountSummary: function(callback){
+            return this._private('returnMarginAccountSummary', callback);
+        },
+
+        marginBuy: function(currencyPair, rate, amount, lendingRate, callback){
+            let parameters = {
+                currencyPair,
+                rate,
+                amount,
+            };
+            if (typeof lendingRate === 'function'){
+                callback = lendingRate;
+            } else {
+                parameters.lendingRate = lendingRate;
+            }
+            return this._private('marginBuy', parameters, callback);
+        },
+
+        marginSell: function(currencyPair, rate, amount, lendingRate, callback){
+            let parameters = {
+                currencyPair,
+                rate,
+                amount,
+            };
+            if (typeof lendingRate === 'function'){
+                callback = lendingRate;
+            } else {
+                parameters.lendingRate = lendingRate;
+            }
+            return this._private('marginSell', parameters, callback);
+        },
+
+        getMarginPosition: function(currencyPair, callback){
+            let parameters = {
+                currencyPair,
+            };
+            return this._private('getMarginPosition', parameters, callback);
+        },
+
+        closeMarginPosition: function(currencyPair, callback){
+            let parameters = {
+                currencyPair,
+            };
+            return this._private('closeMarginPosition', parameters, callback);
+        },
+
         createLoanOffer: function(currency, amount, duration, autoRenew, lendingRate, callback){
             let parameters = {
-                currency: currency,
-                amount: amount,
-                duration: duration,
-                autoRenew: autoRenew,
-                lendingRate: lendingRate,
+                currency,
+                amount,
+                duration,
+                autoRenew,
+                lendingRate,
             };
-
             return this._private('createLoanOffer', parameters, callback);
         },
 
         cancelLoanOffer: function(orderNumber, callback){
             let parameters = {
-                orderNumber: orderNumber,
+                orderNumber,
             };
-
             return this._private('cancelLoanOffer', parameters, callback);
         },
 
@@ -310,12 +435,11 @@ module.exports = (function() {
 
         toggleAutoRenew: function(orderNumber, callback){
             let parameters = {
-                orderNumber: orderNumber,
+                orderNumber,
             };
 
             return this._private('toggleAutoRenew', parameters, callback);
         },
-
     };
     return Poloniex;
 })();

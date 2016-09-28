@@ -1,7 +1,7 @@
 # poloniex-api-node ChangeLog
 
 All notable changes to this module are documented in this file.
-cryptox module adheres to [Semantic Versioning](http://semver.org/).
+poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.0] - not published
 
