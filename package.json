@@ -2,7 +2,7 @@
   "name": "poloniex-api-node",
   "version": "1.0.0",
   "description": "node.js wrapper for Poloniex exchange API",
-  "main": "index.js",
+  "main": "./lib/poloniex.js",
   "engines": {
     "node": ">= 4.6.x"
   },
@@ -16,7 +16,6 @@
     "api",
     "bitcoin",
     "poloniex",
-    "exchange",
     "btc",
     "eth"
   ],
