@@ -433,6 +433,19 @@ module.exports = (function() {
             return this._private('returnActiveLoans', callback);
         },
 
+        returnLendingHistory: function(start, end, limit, callback){
+            let parameters = {
+                start,
+                end,
+            };
+            if (typeof limit === 'function'){
+                callback = limit;
+            } else {
+                parameters.limit = limit;
+            }
+            return this._private('returnLendingHistory', parameters, callback);
+        },
+
         toggleAutoRenew: function(orderNumber, callback){
             let parameters = {
                 orderNumber,

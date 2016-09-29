@@ -5,6 +5,8 @@ poloniex-api-node
 
 **poloniex-api-node** is a node.js wrapper for REST API for Poloniex exchange.
 
+See full documentation at [https://poloniex.com/support/api/](https://poloniex.com/support/api/)
+
 
 # Install
 
