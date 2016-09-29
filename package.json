@@ -1,11 +1,8 @@
 {
   "name": "poloniex-api-node",
   "version": "1.0.0",
-  "description": "node.js wrapper for Poloniex exchange API",
+  "description": "simple node.js wrapper for Poloniex REST API",
   "main": "./lib/poloniex.js",
-  "engines": {
-    "node": ">= 4.6.x"
-  },
   "scripts": {
   },
   "repository": {

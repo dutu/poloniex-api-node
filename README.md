@@ -3,10 +3,7 @@ poloniex-api-node
 ![Dependencies Status](https://david-dm.org/dutu/poloniex-api-node.svg)
 
 
-**poloniex-api-node** is a simple node.js wrapper for the Poloniex REST API
-
-See full documentation at [https://poloniex.com/support/api/](https://poloniex.com/support/api/)
-
+**poloniex-api-node** is a simple node.js wrapper for Poloniex REST API.
 
 # Install
 
@@ -35,7 +32,7 @@ poloniex.returnLoanOrders('BTC', null, function (err, ticket) {
 
 # Methods
 
-For details about the API endpoints see [https://poloniex.com/support/api/](https://poloniex.com/support/api/)
+For details about the API endpoints see full documentation at [https://poloniex.com/support/api/](https://poloniex.com/support/api/)
 
 **Note:** For calling a method with optional parameters, the parameters, when not wanted, need to be passed as `null`  
 
