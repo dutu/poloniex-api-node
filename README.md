@@ -11,7 +11,7 @@ poloniex-api-node
 
 # Usage
 
-### Poloniex([keyId, keySecret])
+### Poloniex([key, secret])
 
 To access the private Poloniex API methods you must supply your key id and key secret as the first two arguments. If you are only accessing the public API endpoints you can leave these two arguments out.
 

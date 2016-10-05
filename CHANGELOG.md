@@ -11,7 +11,7 @@ poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/) fo
 
 
 
-## [1.0.0] - not published
+## [1.0.0] - 2016-10-05
 
 First release based on [https://github.com/premasagar/poloniex.js](https://github.com/premasagar/poloniex.js "https://github.com/premasagar/poloniex.js")
 
