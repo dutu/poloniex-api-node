@@ -21,7 +21,7 @@ Example:
 const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex('your_key', 'your_secret');
 	
-poloniex.returnLoanOrders('BTC', null, function (err, ticket) {
+poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
     if (!err)
 	    console.log(ticker);
 });
@@ -52,7 +52,7 @@ The arguments passed to the callback function for each method are:
 Example:
 
 ```js
-poloniex.returnTicker(function(err, ticket) {});
+poloniex.returnTicker(function(err, ticker) {});
 ```
 
 
