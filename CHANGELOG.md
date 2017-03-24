@@ -9,6 +9,8 @@ poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/) fo
 3. PATCH version increments when backwards-compatible bug fixes are made  
 
 
+## [1.0.1] - 2017-03-24
+- Fix: Return correct error message (based on recent Poloniex change of returning detailed error code)
 
 
 ## [1.0.0] - 2016-10-05
