@@ -1,9 +1,11 @@
 {
   "name": "poloniex-api-node",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "simple node.js wrapper for Poloniex REST API",
   "main": "./lib/poloniex.js",
   "scripts": {
+    "build": "babel src -d lib",
+    "test": "mocha --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
@@ -28,5 +30,9 @@
     "debug": "2.x.x"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.4.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   }
 }
