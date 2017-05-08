@@ -9,6 +9,11 @@ poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/) fo
 3. PATCH version increments when backwards-compatible bug fixes are made  
 
 
+## [1.1.0] - 2017-05-08
+- Fix: Error handling when Poloniex returns empty response
+- Changed: HTTP default request timeout from 3 seconds to 10 seconds
+- Add: Optional socket timeout parameter to constructor
+
 ## [1.0.2] - 2017-04-03
 - Fix: Return correct error message description for certain error codes (based on Poloniex API response)
 

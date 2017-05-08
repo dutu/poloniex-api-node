@@ -8,6 +8,11 @@ describe('Unit Test', function () {
       let poloniex = new Poloniex();
       expect(poloniex).to.be.an.instanceOf(Poloniex);
     });
+    it('should create a new instance with parameter options', function () {
+      let poloniex = new Poloniex({ socketTimeout: 15000 });
+      expect(poloniex).to.be.an.instanceOf(Poloniex);
+      expect(poloniex.options.socketTimeout).to.equal(15000);
+    });
   });
 });
 
@@ -101,4 +106,14 @@ describe("Integration Test", function () {
       });
     });
   });
+  describe('Options tests', function () {
+    it('should return error socketTimeout = 1', function (done) {
+      let poloniex = new Poloniex({ socketTimeout: 1 });
+      poloniex.returnTicker((error, response) => {
+        expect(error).to.be.an.instanceOf(Error);
+        done();
+      });
+    });
+  });
+
 });

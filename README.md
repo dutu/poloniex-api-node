@@ -11,19 +11,38 @@ poloniex-api-node
 
 # Usage
 
-### Poloniex([key, secret])
+### Poloniex([key, secret,][options])
 
-To access the private Poloniex API methods you must supply your key id and key secret as the first two arguments. If you are only accessing the public API endpoints you can leave these two arguments out.
+To access the private Poloniex API methods you must supply your API key id and key secret as the first two arguments. If you are only accessing the public API endpoints you can leave these two arguments out.
 
-Example:
+Default options:
+```js
+{
+  socketTimeout: 10000
+}
+
+```
+
+
+Example 1:
 
 ```js
 const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex('your_key', 'your_secret');
 	
 poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
-    if (!err)
-	    console.log(ticker);
+    if (!err) console.log(ticker);
+});
+```
+
+Example 2 (set socketTimeout to 15 seconds):
+
+```js
+const Poloniex = require('poloniex-api-node');
+let poloniex = new Poloniex('your_key', 'your_secret', { socketTimeout: 15000 });
+	
+poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
+    if (!err) console.log(ticker);
 });
 ```
 
