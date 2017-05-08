@@ -1,13 +1,11 @@
-# poloniex-api-node ChangeLog
+# poloniex-api-node Changelog
 
 All notable changes to this module are documented in this file.
 
-poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/) for versioning: MAJOR.MINOR.PATCH.
+poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
-1. MAJOR version increments when non-backwards compatible API changes are introduced  
-2. MINOR version increments when functionality in a backwards-compatible manner are introduced  
-3. PATCH version increments when backwards-compatible bug fixes are made  
-
+## [1.1.1] - 2017-05-08
+- Fix: Error handling for certain Poloniex error responses
 
 ## [1.1.0] - 2017-05-08
 - Fix: Error handling when Poloniex returns empty response
