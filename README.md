@@ -119,7 +119,7 @@ The arguments passed to the callback function for each method are:
 ## Public API Methods
 
 
-### returnTicker(callback)
+### returnTicker([callback])
 
 Examples:
 
@@ -141,17 +141,17 @@ poloniex.returnTicker().then((ticker) => {
 
 ```
 
-### return24Volume(callback)
+### return24Volume([callback])
 
-### returnOrderBook(currencyPair, depth, callback)
+### returnOrderBook(currencyPair, depth [, callback])
 
-### returnTradeHistory(currencyPair, start, end, callback)
+### returnTradeHistory(currencyPair, start, end [, callback])
 
-### returnChartData(currencyPair, period, start, end, callback)
+### returnChartData(currencyPair, period, start, end [, callback])
 
-### returnCurrencies(callback)
+### returnCurrencies([callback])
 
-### returnLoanOrders(currency, limit, callback)
+### returnLoanOrders(currency, limit [, callback])
 
 Examples:
 
@@ -173,7 +173,7 @@ poloniex.returnLoanOrders('BTC', null).then((loanOrders) => {
 
 ## Trading API Methods
 
-### returnBalances(callback)
+### returnBalances([callback])
 
 ```js
 poloniex.returnBalances(function (err, balances) {
@@ -193,59 +193,59 @@ poloniex.returnBalances().then((balances) => {
 ```
 
 
-### returnCompleteBalances(account, callback)
+### returnCompleteBalances(account [, callback])
 
-### returnDepositAddresses(callback)
+### returnDepositAddresses([callback])
 
-### generateNewAddress(currency, callback)
+### generateNewAddress(currency [, callback])
 
-### returnDepositsWithdrawals(start, end, callback)
+### returnDepositsWithdrawals(start, end [, callback])
 
-### returnOpenOrders(currencyPair, callback)
+### returnOpenOrders(currencyPair [, callback])
 
-### returnMyTradeHistory(currencyPair, start, end, callback)
+### returnMyTradeHistory(currencyPair, start, end [, callback])
 
-### returnOrderTrades(orderNumber, callback)
+### returnOrderTrades(orderNumber [, callback])
 
-### buy(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly, callback)
+### buy(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
 
-### sell(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly, callback)
+### sell(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
 
-### cancelOrder(orderNumber, callback)
+### cancelOrder(orderNumber [, callback])
 
-### moveOrder(orderNumber, rate, amount, immediateOrCancel, postOnly, callback)
+### moveOrder(orderNumber, rate, amount, immediateOrCancel, postOnly [, callback])
 
-### withdraw(currency, amount, address, callback)
+### withdraw(currency, amount, address [, callback])
 
-### returnFeeInfo(callback)
+### returnFeeInfo([callback])
 
-### returnAvailableAccountBalances(account, callback)
+### returnAvailableAccountBalances(account [, callback])
 
-### returnTradableBalances(callback)
+### returnTradableBalances([callback])
 
-### transferBalance(currency, amount, fromAccount, toAccount, callback)
+### transferBalance(currency, amount, fromAccount, toAccount [, callback])
 
-### returnMarginAccountSummary(callback)
+### returnMarginAccountSummary([callback])
 
-### marginBuy(currencyPair, rate, amount, lendingRate, callback)
+### marginBuy(currencyPair, rate, amount, lendingRate [, callback])
 
-### marginSell(currencyPair, rate, amount, lendingRate, callback)
+### marginSell(currencyPair, rate, amount, lendingRate [, callback])
 
-### getMarginPosition(currencyPair, callback)
+### getMarginPosition(currencyPair [, callback])
 
-### closeMarginPosition(currencyPair, callback)
+### closeMarginPosition(currencyPair [, callback])
 
-### createLoanOffer(currency, amount, duration, autoRenew, lendingRate, callback)
+### createLoanOffer(currency, amount, duration, autoRenew, lendingRate [, callback])
 
-### cancelLoanOffer(orderNumber, callback)
+### cancelLoanOffer(orderNumber [, callback])
 
-### returnOpenLoanOffers(callback)
+### returnOpenLoanOffers([callback])
 
-### returnActiveLoans(callback)
+### returnActiveLoans([callback])
 
-### returnLendingHistory(start, end, limit, callback)
+### returnLendingHistory(start, end, limit [, callback])
 
-### toggleAutoRenew(orderNumber, callback)
+### toggleAutoRenew(orderNumber [, callback])
 
 
 # ChangeLog
