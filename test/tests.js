@@ -116,84 +116,150 @@ describe("Integration Test", function () {
     });
   });
   describe('Promise tests', function() {
-    it('returnTicker should return a promise if callback function is not present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnTicker()).to.be.an.instanceof(Promise);
-      done();
+    describe('returnTicker', function() {
+      it('should return a promise if callback function is not present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnTicker()).to.be.an.instanceof(Promise);
+        done();
+      });
+      it('should not return a promise if callback function is present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnTicker((error, response) => { })).to.not.be.an.instanceof(Promise);
+        done();
+      });
+      it('should return data', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnTicker().then((response) => {
+          
+          expect(response).to.be.an('object');
+          done();
+        }).catch(done);
+      });
     });
-    it('return24Volume should return a promise if callback function is not present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.return24Volume()).to.be.an.instanceof(Promise);
-      done();
+    describe('return24Volume', function() {
+      it('should return a promise if callback function is not present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.return24Volume()).to.be.an.instanceof(Promise);
+        done();
+      });
+      it('return24Volume should not return a promise if callback function is not present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.return24Volume((error, response) => { })).to.not.be.an.instanceof(Promise);
+        done();
+      });
+      it('should return data', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.return24Volume().then((response) => {
+          expect(response).to.be.an('object');
+          done();
+        }).catch(done);
+      });
     });
-    it('returnOrderBook should return a promise if callback function is not present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnOrderBook('BTC_XMR')).to.be.an.instanceof(Promise);
-      done();
+    describe('returnOrderBook', function() {
+      it('should return a promise if callback function is not present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnOrderBook('BTC_XMR')).to.be.an.instanceof(Promise);
+        done();
+      });
+      it('should not return a promise if callback function is present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnOrderBook('BTC_XMR', null, (error, response) => { })).to.not.be.an.instanceof(Promise);
+        done();
+      });
+      it('should return data', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnOrderBook('BTC_XMR', null).then((response) => {
+          expect(response).to.be.an('object');
+          done();
+        }).catch(done);
+      });
     });
-    it('returnTradeHistory should return a promise if callback function is not present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnTradeHistory('BTC_XMR', null, null)).to.be.an.instanceof(Promise);
-      done();
+    describe('returnTradeHistory', function() {
+      it('should return a promise if callback function is not present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnTradeHistory('BTC_XMR', null, null)).to.be.an.instanceof(Promise);
+        done();
+      });
+      it('should not return a promise if callback function is present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnTradeHistory('BTC_XMR', null, null, (error, response) => { })).to.not.be.an.instanceof(Promise);
+        done();
+      });
+      it('should return data', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnTradeHistory('BTC_XMR', null, null).then((response) => {
+          expect(response).to.be.an('array');
+          done();
+        }).catch(done);
+      });
     });
-    it('returnChartData should return a promise if callback function is not present.', function(done) {
-      let poloniex = new Poloniex();
-      let end = Date.now();
-      let start = end - 1000 * 60 * 60;
-      let period = 300;
+    describe('returnChartData', function() {
+      it('should return a promise if callback function is not present.', function(done) {
+        let poloniex = new Poloniex();
+        let end = Date.now();
+        let start = end - 1000 * 60 * 60;
+        let period = 300;
 
-      expect(poloniex.returnChartData('BTC_XMR', period, start, end)).to.be.an.instanceof(Promise);
-      done();
-    });
-    it('returnCurrencies should return a promise if callback function is not present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnCurrencies()).to.be.an.instanceof(Promise);
-      done();
-    });
-    it('returnLoanOrders should return a promise if callback function is not present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnCurrencies()).to.be.an.instanceof(Promise);
-      done();
-    });
-    
-    it('returnTicker should not return a promise if callback function is present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnTicker((error, response) => { })).to.not.be.an.instanceof(Promise);
-      done();
-    });
-    it('return24Volume should not return a promise if callback function is not present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.return24Volume((error, response) => { })).to.not.be.an.instanceof(Promise);
-      done();
-    });
-    it('returnOrderBook should not return a promise if callback function is present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnOrderBook('BTC_XMR', null, (error, response) => { })).to.not.be.an.instanceof(Promise);
-      done();
-    });
-    it('returnTradeHistory should not return a promise if callback function is present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnTradeHistory('BTC_XMR', null, null, (error, response) => { })).to.not.be.an.instanceof(Promise);
-      done();
-    });
-    it('returnChartData should not return a promise if callback function is present.', function(done) {
-      let poloniex = new Poloniex();
-      let end = Date.now();
-      let start = end - 1000 * 60 * 60;
-      let period = 300;
+        expect(poloniex.returnChartData('BTC_XMR', period, start, end)).to.be.an.instanceof(Promise);
+        done();
+      });
+      it('should not return a promise if callback function is present.', function(done) {
+        let poloniex = new Poloniex();
+        let end = Date.now();
+        let start = end - 1000 * 60 * 60;
+        let period = 300;
 
-      expect(poloniex.returnChartData('BTC_XMR', period, start, end, (error, response) => { })).to.not.be.an.instanceof(Promise);
-      done();
+        expect(poloniex.returnChartData('BTC_XMR', period, start, end, (error, response) => { })).to.not.be.an.instanceof(Promise);
+        done();
+      });
+      it('should return data', function (done) {
+        let poloniex = new Poloniex();
+        let end = Date.now() / 1000;
+        let start = end - 1000 * 60 * 60 / 1000;
+        let period = 300;
+        poloniex.returnChartData('BTC_XMR', period, start, end).then((response) => {
+          expect(response).to.be.an('array');
+          done();
+        }).catch(done);
+      });
     });
-    it('returnCurrencies should not return a promise if callback function is present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnCurrencies((error, response) => { })).to.not.be.an.instanceof(Promise);
-      done();
+    describe('returnCurrencies', function() {
+      it('should return a promise if callback function is not present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnCurrencies()).to.be.an.instanceof(Promise);
+        done();
+      });
+      it('should not return a promise if callback function is present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnCurrencies((error, response) => { })).to.not.be.an.instanceof(Promise);
+        done();
+      });
+      it('should return data', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnCurrencies().then((response) => {
+          expect(response).to.be.an('object');
+          done();
+        }).catch(done);
+      });
     });
-    it('returnLoanOrders should not return a promise if callback function is present.', function(done) {
-      let poloniex = new Poloniex();
-      expect(poloniex.returnCurrencies((error, response) => { })).to.not.be.an.instanceof(Promise);
-      done();
+    describe('returnLoanOrders', function() {
+      it('should return a promise if callback function is not present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnCurrencies()).to.be.an.instanceof(Promise);
+        done();
+      });
+      it('should not return a promise if callback function is present.', function(done) {
+        let poloniex = new Poloniex();
+        expect(poloniex.returnCurrencies((error, response) => { })).to.not.be.an.instanceof(Promise);
+        done();
+      });
+      it('should return data', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnLoanOrders('BTC', null).then((response) => {
+          expect(response).to.be.an('object');
+          done();
+        }).catch(done);
+      });
     });
     it('should not resolve the promise. Forcing error socketTimeout = 1', function (done) {
       let poloniex = new Poloniex({ socketTimeout: 1 });
@@ -202,20 +268,21 @@ describe("Integration Test", function () {
         done();
       });
     });
-    it('should require API key and secret', function (done) {
-      let poloniex = new Poloniex();
-      poloniex.returnBalances().catch((error) => {
-        expect(error).to.be.an.instanceOf(Error);
-        done();
+    describe('Trading API Methods', function () {
+      it('should require API key and secret', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnBalances().catch((error) => {
+          expect(error).to.be.an.instanceOf(Error);
+          done();
+        });
       });
-    });
-    it('should return error when invalid API key/secret pair', function (done) {
-      let poloniex = new Poloniex('invalid key', 'invalid secret');
-      poloniex.returnBalances().catch((error) => {
-        expect(error).to.be.an.instanceOf(Error);
-        done();
+      it('should return error when invalid API key/secret pair', function (done) {
+        let poloniex = new Poloniex('invalid key', 'invalid secret');
+        poloniex.returnBalances().catch((error) => {
+          expect(error).to.be.an.instanceOf(Error);
+          done();
+        });
       });
     });
   });
-
 });
