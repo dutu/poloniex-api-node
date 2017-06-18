@@ -13,7 +13,7 @@ Both Callback and Promise are supported.
 
 # Usage
 
-    When calling the methods, Callback is always the last parameter. When callback parameter is not present the method will return a Promise.
+> When calling the methods, Callback is always the last parameter. When callback parameter is not present the method will return a Promise.
 
 
 Example 1 (using Callback):
