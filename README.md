@@ -5,37 +5,61 @@ poloniex-api-node
 
 **poloniex-api-node** is a simple node.js wrapper for Poloniex REST API.
 
+Both Callback and Promise are supported. 
+
 # Install
 
-    npm install poloniex-api-node
+    npm install --save poloniex-api-node
 
 # Usage
 
-### Poloniex([key, secret,][options])
-
-To access the private Poloniex API methods you must supply your API key id and key secret as the first two arguments. If you are only accessing the public API endpoints you can leave these two arguments out.
-
-Default options:
-```js
-{
-  socketTimeout: 10000
-}
-
-```
+    When calling the methods, Callback is always the last parameter. When callback parameter is not present the method will return a Promise.
 
 
-Example 1:
+Example 1 (using Callback):
 
 ```js
 const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex('your_key', 'your_secret');
+let poloniex = new Poloniex();
 	
-poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
-    if (!err) console.log(ticker);
+poloniex.returnTicker((err, ticker) => {
+  if (err) {
+    console.log(err.message);
+  } else {
+    console.log(ticker);
+  }
 });
 ```
 
-Example 2 (set socketTimeout to 15 seconds):
+Example 2 (using Callback):
+
+```js
+const Poloniex = require('poloniex-api-node');
+let poloniex = new Poloniex();
+	
+poloniex.returnTicker(function (err, ticker) {
+  if (err) {
+    console.log(err.message);
+  } else {
+    console.log(ticker);
+  }
+});
+```
+
+Example 3 (using Promise):
+
+```js
+const Poloniex = require('poloniex-api-node');
+let poloniex = new Poloniex();
+	
+poloniex.returnTicker().then((ticker) => {
+  console.log(ticker);
+}).catch((err) => {
+  console.log(err.message);
+});
+```
+
+Example 4 (set socketTimeout to 15 seconds):
 
 ```js
 const Poloniex = require('poloniex-api-node');
@@ -46,14 +70,43 @@ poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
 });
 ```
 
+See additional examples in [examples folder](https://github.com/dutu/poloniex-api-node/tree/master/examples)
 
+# Constructor
 
+### new Poloniex([key, secret,][options])
+
+To access the private Poloniex API methods you must supply your API key id and key secret as the first two arguments. If you are only accessing the public API endpoints you can leave these two arguments out.
+
+Default options:
+```js
+{
+  socketTimeout: 60000
+}
+
+```
+
+Examples:
+
+```js
+let poloniex;
+poloniex = new Poloniex();
+poloniex = new Poloniex({ socketTimeout: 10000 });
+poloniex = new Poloniex('myKey', 'mySecret');
+poloniex = new Poloniex('myKey', 'mySecret', { socketTimeout: 130000 });
+```
 
 # Methods
 
 For details about the API endpoints see full documentation at [https://poloniex.com/support/api/](https://poloniex.com/support/api/)
 
 **Note:** For calling a method with optional parameters, the parameters, when not wanted, need to be passed as `null`  
+
+## Callback and Promise support
+
+Both Callback and Promise are supported.
+
+Callback is always the last parameter. When callback parameter is not present the method will return a Promise.
 
 
 ### Callbacks
@@ -68,12 +121,25 @@ The arguments passed to the callback function for each method are:
 
 ### returnTicker(callback)
 
-Example:
+Examples:
 
 ```js
-poloniex.returnTicker(function(err, ticker) {});
-```
+poloniex.returnTicker((err, ticker) => {
+  if (err) {
+    console.log(err.message);
+  } else {
+    console.log(ticker);
+  }
+});
 
+
+poloniex.returnTicker().then((ticker) => {
+  console.log(ticker);
+}).catch((err) => {
+  console.log(err.message);
+});
+
+```
 
 ### return24Volume(callback)
 
@@ -87,10 +153,45 @@ poloniex.returnTicker(function(err, ticker) {});
 
 ### returnLoanOrders(currency, limit, callback)
 
+Examples:
+
+```js
+poloniex.returnLoanOrders('BTC', null, (err, loanOrders) => {
+  if (err) {
+    console.log(err.message);
+  } else {
+    console.log(loanOrders);
+  }
+});
+
+poloniex.returnLoanOrders('BTC', null).then((loanOrders) => {
+  console.log(loanOrders);
+}).catch((err) => {
+  console.log(err.message);
+});
+```
 
 ## Trading API Methods
 
 ### returnBalances(callback)
+
+```js
+poloniex.returnBalances(function (err, balances) {
+  if (err) {
+    console.log(err.message);
+  } else {
+    console.log(balances);
+  }
+});
+
+poloniex.returnBalances().then((balances) => {
+  console.log(balances);
+}).catch((err) => {
+  console.log(err.message);
+});
+
+```
+
 
 ### returnCompleteBalances(account, callback)
 
