@@ -96,7 +96,7 @@ poloniex = new Poloniex('myKey', 'mySecret');
 poloniex = new Poloniex('myKey', 'mySecret', { socketTimeout: 130000 });
 ```
 
-####Available options
+#### Available options
 
 * `socketTimeout` - the number of milliseconds to wait for the server to send the response before aborting the request 
 * `keepAlive` - keep open and reuse the underlying TCP connection
