@@ -81,9 +81,9 @@ To access the private Poloniex API methods you must supply your API key id and k
 Default options:
 ```js
 {
-  socketTimeout: 60000
+  socketTimeout: 60000,
+  keepAlive: true
 }
-
 ```
 
 Examples:
@@ -95,6 +95,12 @@ poloniex = new Poloniex({ socketTimeout: 10000 });
 poloniex = new Poloniex('myKey', 'mySecret');
 poloniex = new Poloniex('myKey', 'mySecret', { socketTimeout: 130000 });
 ```
+
+####Available options
+
+* `socketTimeout` - the number of milliseconds to wait for the server to send the response before aborting the request 
+* `keepAlive` - keep open and reuse the underlying TCP connection
+ 
 
 # Methods
 

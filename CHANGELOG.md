@@ -4,9 +4,12 @@ All notable changes to this module are documented in this file.
 
 poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.0] - 2017-07-02
+- Added: Optional `keepAlive` parameter to constructor 
+
 ## [1.2.0] - 2017-06-18
 - Added: Promise support
-- Changeed: default socketTimeout changed from 10 seconds to 60 seconds 
+- Changed: default socketTimeout changed from 10 seconds to 60 seconds 
 
 ## [1.1.1] - 2017-05-08
 - Fixed: Error handling for certain Poloniex error responses
