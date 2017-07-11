@@ -1,19 +1,29 @@
-# poloniex-api-node ChangeLog
+# poloniex-api-node Changelog
 
 All notable changes to this module are documented in this file.
 
-poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/) for versioning: MAJOR.MINOR.PATCH.
+poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
-1. MAJOR version increments when non-backwards compatible API changes are introduced  
-2. MINOR version increments when functionality in a backwards-compatible manner are introduced  
-3. PATCH version increments when backwards-compatible bug fixes are made  
+## [1.3.0] - 2017-07-02
+- Added: Optional `keepAlive` parameter to constructor 
 
+## [1.2.0] - 2017-06-18
+- Added: Promise support
+- Changed: default socketTimeout changed from 10 seconds to 60 seconds 
+
+## [1.1.1] - 2017-05-08
+- Fixed: Error handling for certain Poloniex error responses
+
+## [1.1.0] - 2017-05-08
+- Fixed: Error handling when Poloniex returns empty response
+- Changed: HTTP default request timeout from 3 seconds to 10 seconds
+- Added: Optional socket timeout parameter to constructor
 
 ## [1.0.2] - 2017-04-03
-- Fix: Return correct error message description for certain error codes (based on Poloniex API response)
+- Fixed: Return correct error message description for certain error codes (based on Poloniex API response)
 
 ## [1.0.1] - 2017-03-24
-- Fix: Return correct error message (based on recent Poloniex change of returning detailed error code)
+- Fixed: Return correct error message (based on recent Poloniex change of returning detailed error code)
 
 
 ## [1.0.0] - 2016-10-05
