@@ -171,16 +171,31 @@ describe("Integration Test", function () {
 				});
 			});
 		});
-		describe('returnLoanOrders', function () {
-			it('should return data', function (done) {
-				let poloniex = new Poloniex();
-				poloniex.returnLoanOrders('BTC', null, (error, response) => {
-					expect(error).not.to.be.an.instanceOf(Error);
-					expect(response).to.be.an('object');
-					done();
-				});
-			});
-		});
+    describe('returnLoanOrders', function () {
+      it('should return data', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnLoanOrders('BTC', null, (error, response) => {
+          expect(error).not.to.be.an.instanceOf(Error);
+          expect(response).to.be.an('object');
+          done();
+        });
+      });
+    });
+    describe('returnCompleteBalances', function () {
+      it('should return data', function (done) {
+      	if (!process.env.APIKEY || !process.env.APISECRET) {
+      		done();
+      		return;
+				}
+
+        let poloniex = new Poloniex(process.env.APIKEY, process.env.APISECRET);
+        poloniex.returnCompleteBalances('all', (error, response) => {
+          expect(error).not.to.be.an.instanceOf(Error);
+          expect(response).to.be.an('object');
+          done();
+        });
+      });
+    });
 		describe('Trading API Methods', function () {
 			it('should require API key and secret', function (done) {
 				let poloniex = new Poloniex();
@@ -206,6 +221,32 @@ describe("Integration Test", function () {
 				});
 			});
 		});
+    describe('Missing parameter tests', function () {
+      it('should throw error when missing parameter for public API method', function (done) {
+        if (!process.env.APIKEY || !process.env.APISECRET) {
+          done();
+          return;
+        }
+
+        let poloniex = new Poloniex(process.env.APIKEY, process.env.APISECRET);
+        expect(function () {
+          poloniex.returnOrderBook((error, response) => {});
+        }).to.throw('Invalid parameters');
+        done();
+      });
+      it('should throw error when missing parameter for trading API method', function (done) {
+        if (!process.env.APIKEY || !process.env.APISECRET) {
+          done();
+          return;
+        }
+
+        let poloniex = new Poloniex(process.env.APIKEY, process.env.APISECRET);
+        expect(function () {
+          poloniex.returnCompleteBalances((error, response) => {});
+				}).to.throw('Invalid parameters');
+        done();
+      });
+    });
   });
   describe('Promise tests', function () {
     describe('returnTicker', function () {

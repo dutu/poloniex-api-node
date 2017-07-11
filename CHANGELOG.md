@@ -4,6 +4,9 @@ All notable changes to this module are documented in this file.
 
 poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.1] - 2017-07-11
+- Fixed: throw error when invalid parameters (#2)  
+
 ## [1.3.0] - 2017-07-02
 - Added: Optional `keepAlive` parameter to constructor 
 
