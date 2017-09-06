@@ -24,9 +24,11 @@
   },
   "homepage": "https://github.com/dutu/poloniex-api-node",
   "dependencies": {
+    "autobahn": "^17.5.2",
     "debug": "^2.6.8",
     "nonce": "^1.0.4",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "ws": "^3.1.0"
   },
   "devDependencies": {
     "chai": "^4.0.2",
