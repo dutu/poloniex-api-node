@@ -4,7 +4,7 @@
   "description": "Simple node.js wrapper for Poloniex REST API. Supports Callback and Promise",
   "main": "./lib/poloniex.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --timeout 5000"
   },
   "repository": {
     "type": "git",
