@@ -147,6 +147,14 @@ describe("Integration Test", function () {
 					done();
 				});
 			});
+      it('should return data with limit', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnTradeHistory('BTC_XMR', null, null, 10, (error, response) => {
+          expect(error).not.to.be.an.instanceOf(Error);
+          expect(response.length).to.equal(10);
+          done();
+        });
+      });
 		});
 		describe('returnChartData', function () {
 			it('should return data', function (done) {
