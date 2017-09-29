@@ -53,12 +53,12 @@ describe('Unit Test', function () {
 	describe('returnTradeHistory', function () {
 		it('should return a promise if callback function is not present.', function (done) {
 			let poloniex = new Poloniex();
-			expect(poloniex.returnTradeHistory('BTC_XMR', null, null)).to.be.an.instanceof(Promise);
+			expect(poloniex.returnTradeHistory('BTC_XMR', null, null, null)).to.be.an.instanceof(Promise);
 			done();
 		});
 		it('should not return a promise if callback function is present.', function (done) {
 			let poloniex = new Poloniex();
-			expect(poloniex.returnTradeHistory('BTC_XMR', null, null, (error, response) => { })).to.not.be.an.instanceof(Promise);
+			expect(poloniex.returnTradeHistory('BTC_XMR', null, null, null, (error, response) => { })).to.not.be.an.instanceof(Promise);
 			done();
 		});
 	});
@@ -141,12 +141,20 @@ describe("Integration Test", function () {
 		describe('returnTradeHistory', function () {
 			it('should return data', function (done) {
 				let poloniex = new Poloniex();
-				poloniex.returnTradeHistory('BTC_XMR', null, null, (error, response) => {
+				poloniex.returnTradeHistory('BTC_XMR', null, null, null, (error, response) => {
 					expect(error).not.to.be.an.instanceOf(Error);
 					expect(response).to.be.an('array');
 					done();
 				});
 			});
+      it('should return data with limit', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnTradeHistory('BTC_XMR', null, null, 10, (error, response) => {
+          expect(error).not.to.be.an.instanceOf(Error);
+          expect(response.length).to.equal(10);
+          done();
+        });
+      });
 		});
 		describe('returnChartData', function () {
 			it('should return data', function (done) {

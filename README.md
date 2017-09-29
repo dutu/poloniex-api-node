@@ -151,7 +151,7 @@ poloniex.returnTicker().then((ticker) => {
 
 ### returnOrderBook(currencyPair, depth [, callback])
 
-### returnTradeHistory(currencyPair, start, end [, callback])
+### returnTradeHistory(currencyPair, start, end, limit [, callback])
 
 ### returnChartData(currencyPair, period, start, end [, callback])
 
@@ -209,7 +209,7 @@ poloniex.returnBalances().then((balances) => {
 
 ### returnOpenOrders(currencyPair [, callback])
 
-### returnMyTradeHistory(currencyPair, start, end [, callback])
+### returnMyTradeHistory(currencyPair, start, end, limit [, callback])
 
 ### returnOrderTrades(orderNumber [, callback])
 
