@@ -209,7 +209,7 @@ poloniex.returnBalances().then((balances) => {
 
 ### returnOpenOrders(currencyPair [, callback])
 
-### returnMyTradeHistory(currencyPair, start, end [, callback])
+### returnMyTradeHistory(currencyPair, start, end, limit [, callback])
 
 ### returnOrderTrades(orderNumber [, callback])
 
