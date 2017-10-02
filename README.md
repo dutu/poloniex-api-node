@@ -7,6 +7,13 @@ poloniex-api-node
 
 Both Callback and Promise are supported. 
 
+### Contents
+* [Install](#install)
+* [Usage](#usage)
+* [Changelog](#changelog)
+* [Contributors](#contributors)
+* [License](#license)
+
 # Install
 
     npm install --save poloniex-api-node
@@ -144,14 +151,17 @@ poloniex.returnTicker().then((ticker) => {
 }).catch((err) => {
   console.log(err.message);
 });
-
 ```
 
 ### return24Volume([callback])
 
 ### returnOrderBook(currencyPair, depth [, callback])
 
+> Note: Parameter `depth` is not documented in the official Poloniex API documentation. The parameter can be set to `null` or an integer value.
+
 ### returnTradeHistory(currencyPair, start, end, limit [, callback])
+
+> Note: Parameter `limit` is not documented in the official Poloniex API documentation. The parameter can be set to `null` or an integer value.
 
 ### returnChartData(currencyPair, period, start, end [, callback])
 
@@ -195,9 +205,7 @@ poloniex.returnBalances().then((balances) => {
 }).catch((err) => {
   console.log(err.message);
 });
-
 ```
-
 
 ### returnCompleteBalances(account [, callback])
 
@@ -256,7 +264,15 @@ poloniex.returnBalances().then((balances) => {
 
 # ChangeLog
 
-See detailed [ChangeLog](CHANGELOG.md)
+See detailed [Changelog](CHANGELOG.md)
+
+# Contributors
+
+* [dutu](https://github.com/dutu) <dutu@protonmail.com>
+* [julesGoullee](https://github.com/julesGoullee) <julesgoullee@gmail.com>
+* [Wallison Santos](https://github.com/wallybh) <wallison@outlook.com>xx`
+* [epdev](https://github.com/epdev)
+* [BarnumD](https://github.com/BarnumD)
 
 # License
 

@@ -155,6 +155,13 @@ describe("Integration Test", function () {
           done();
         });
       });
+      it('should return data when limit is not passed', function (done) {
+        let poloniex = new Poloniex();
+        poloniex.returnTradeHistory('BTC_XMR', null, null, (error, response) => {
+          expect(error).not.to.be.an.instanceOf(Error);
+          done();
+        });
+      });
 		});
 		describe('returnChartData', function () {
 			it('should return data', function (done) {
@@ -198,6 +205,34 @@ describe("Integration Test", function () {
 
         let poloniex = new Poloniex(process.env.APIKEY, process.env.APISECRET);
         poloniex.returnCompleteBalances('all', (error, response) => {
+          expect(error).not.to.be.an.instanceOf(Error);
+          expect(response).to.be.an('object');
+          done();
+        });
+      });
+    });
+    describe('returnMyTradeHistory', function () {
+      it('should return data with limit', function (done) {
+        if (!process.env.APIKEY || !process.env.APISECRET) {
+          done();
+          return;
+        }
+
+        let poloniex = new Poloniex(process.env.APIKEY, process.env.APISECRET);
+        poloniex.returnMyTradeHistory('all', 1423526400, 1506956149, 10, (error, response) => {
+          expect(error).not.to.be.an.instanceOf(Error);
+          expect(response).to.be.an('object');
+          done();
+        });
+      });
+      it('should return data when limit is not passed', function (done) {
+        if (!process.env.APIKEY || !process.env.APISECRET) {
+          done();
+          return;
+        }
+
+        let poloniex = new Poloniex(process.env.APIKEY, process.env.APISECRET);
+        poloniex.returnMyTradeHistory('all', 1423526400, 1506956149, (error, response) => {
           expect(error).not.to.be.an.instanceOf(Error);
           expect(response).to.be.an('object');
           done();

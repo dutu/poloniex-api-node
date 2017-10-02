@@ -1,6 +1,6 @@
 {
   "name": "poloniex-api-node",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "Simple node.js wrapper for Poloniex REST API. Supports Callback and Promise",
   "main": "./lib/poloniex.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "btc",
     "eth"
   ],
-  "author": "Adrian Clinciu <adrian.clinciu@outlook.com>",
+  "author": "dutu <dutu@protonmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dutu/poloniex-api-node/issues"
