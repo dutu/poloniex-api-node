@@ -268,9 +268,9 @@ See detailed [Changelog](CHANGELOG.md)
 
 # Contributors
 
-* [dutu](https://github.com/dutu) <dutu@protonmail.com>
-* [julesGoullee](https://github.com/julesGoullee) <julesgoullee@gmail.com>
-* [Wallison Santos](https://github.com/wallybh) <wallison@outlook.com>xx`
+* [dutu](https://github.com/dutu) (<dutu@protonmail.com>)
+* [julesGoullee](https://github.com/julesGoullee) (<julesgoullee@gmail.com>)
+* [Wallison Santos](https://github.com/wallybh) (<wallison@outlook.com>)
 * [epdev](https://github.com/epdev)
 * [BarnumD](https://github.com/BarnumD)
 
