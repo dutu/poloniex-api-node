@@ -3,13 +3,17 @@ poloniex-api-node
 [![Build Status](https://travis-ci.org/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.org/dutu/poloniex-api-node) [![Dependency Status](https://dependencyci.com/github/dutu/poloniex-api-node/badge)](https://dependencyci.com/github/dutu/poloniex-api-node)
 
 
-**poloniex-api-node** is a simple node.js wrapper for Poloniex REST API.
+**poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket (push) API.
 
-Both Callback and Promise are supported. 
+REST API supports both Callback and Promise. 
 
 ### Contents
 * [Install](#install)
+* [Quick examples](#quick-examples)
 * [Usage](#usage)
+	* Constructor
+	* REST API
+	* WebSocket API
 * [Changelog](#changelog)
 * [Contributors](#contributors)
 * [License](#license)
@@ -18,12 +22,15 @@ Both Callback and Promise are supported.
 
     npm install --save poloniex-api-node
 
-# Usage
+# Quick examples
 
-> When calling the methods, Callback is always the last parameter. When callback parameter is not present the method will return a Promise.
+> See additional examples in [examples folder](https://github.com/dutu/poloniex-api-node/tree/master/examples)
 
+### REST API examples
 
-Example 1 (using Callback):
+> When calling the REST API methods, Callback is always the last parameter. When callback parameter is not present, the method will return a Promise.
+
+Example 1 (REST API using Callback):
 
 ```js
 const Poloniex = require('poloniex-api-node');
@@ -38,7 +45,7 @@ poloniex.returnTicker((err, ticker) => {
 });
 ```
 
-Example 2 (using Callback):
+Example 2 (REST API using Callback):
 
 ```js
 const Poloniex = require('poloniex-api-node');
@@ -53,7 +60,7 @@ poloniex.returnTicker(function (err, ticker) {
 });
 ```
 
-Example 3 (using Promise):
+Example 3 (REST API using Promise):
 
 ```js
 const Poloniex = require('poloniex-api-node');
@@ -66,20 +73,57 @@ poloniex.returnTicker().then((ticker) => {
 });
 ```
 
-Example 4 (set socketTimeout to 15 seconds):
+Example 4 (set `socketTimeout` to 15 seconds):
 
 ```js
 const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex('your_key', 'your_secret', { socketTimeout: 15000 });
 	
 poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
-    if (!err) console.log(ticker);
+  if (!err) console.log(ticker);
 });
 ```
 
-See additional examples in [examples folder](https://github.com/dutu/poloniex-api-node/tree/master/examples)
+### WebSocket API examples
 
-# Constructor
+Example (WebSocket API):
+
+```js
+const Poloniex = require('poloniex-api-node');
+let poloniex = new Poloniex();
+
+poloniex.subscribe('ticker');
+poloniex.subscribe('BTC_ETH');
+
+poloniex.on('message', (channelName, data, seq) => {
+  if (channelName === 'ticker') {
+    console.log(`Ticker: ${data}`);
+  }
+
+  if (channelName === 'BTC_ETC') {
+    console.log(`order book and trade updates received for currency pair ${channelName}`);
+    console.log(`data sequence number is ${seq}`);
+  }
+});
+
+poloniex.on('open', () => {
+  console.log(`Poloniex WebSocket connection open`);
+});
+
+poloniex.on('close', (reason, details) => {
+  console.log(`Poloniex WebSocket connection disconnected`);
+});
+
+poloniex.on('error', (error) => {
+  console.log(`An error has occured`);
+});
+
+poloniex.webSocketOpen();
+```
+
+# Usage
+
+## Constructor
 
 ### new Poloniex([key, secret,][options])
 
@@ -109,30 +153,30 @@ poloniex = new Poloniex('myKey', 'mySecret', { socketTimeout: 130000 });
 * `keepAlive` - keep open and reuse the underlying TCP connection
  
 
-# Methods
+## REST API
 
 For details about the API endpoints see full documentation at [https://poloniex.com/support/api/](https://poloniex.com/support/api/)
 
-**Note:** For calling a method with optional parameters, the parameters, when not wanted, need to be passed as `null`  
+**Important:** When calling an API method with optional parameters, the parameters, when not wanted, need to be passed as `null`.  
 
-## Callback and Promise support
+#### Callback and Promise support
 
 Both Callback and Promise are supported.
 
 Callback is always the last parameter. When callback parameter is not present the method will return a Promise.
 
 
-### Callbacks
+#### Callbacks
 
 The arguments passed to the callback function for each method are:
 1. An error or `null` if no error occurred.
 2. An object containing the data returned by the Poloniex API.
 
 
-## Public API Methods
+### Public API Methods
 
 
-### returnTicker([callback])
+#### returnTicker([callback])
 
 Examples:
 
@@ -153,21 +197,21 @@ poloniex.returnTicker().then((ticker) => {
 });
 ```
 
-### return24Volume([callback])
+#### return24Volume([callback])
 
-### returnOrderBook(currencyPair, depth [, callback])
+#### returnOrderBook(currencyPair, depth [, callback])
 
-> Note: Parameter `depth` is not documented in the official Poloniex API documentation. The parameter can be set to `null` or an integer value.
+> Parameter `depth` is not documented in the official Poloniex API documentation. The parameter can be set to `null` or an integer value.
 
-### returnTradeHistory(currencyPair, start, end, limit [, callback])
+#### returnTradeHistory(currencyPair, start, end, limit [, callback])
 
-> Note: Parameter `limit` is not documented in the official Poloniex API documentation. The parameter can be set to `null` or an integer value.
+> Parameter `limit` is not documented in the official Poloniex API documentation. The parameter can be set to `null` or an integer value.
 
-### returnChartData(currencyPair, period, start, end [, callback])
+#### returnChartData(currencyPair, period, start, end [, callback])
 
-### returnCurrencies([callback])
+#### returnCurrencies([callback])
 
-### returnLoanOrders(currency, limit [, callback])
+#### returnLoanOrders(currency, limit [, callback])
 
 Examples:
 
@@ -187,9 +231,9 @@ poloniex.returnLoanOrders('BTC', null).then((loanOrders) => {
 });
 ```
 
-## Trading API Methods
+### Trading API Methods
 
-### returnBalances([callback])
+#### returnBalances([callback])
 
 ```js
 poloniex.returnBalances(function (err, balances) {
@@ -207,62 +251,254 @@ poloniex.returnBalances().then((balances) => {
 });
 ```
 
-### returnCompleteBalances(account [, callback])
+#### returnCompleteBalances(account [, callback])
 
-### returnDepositAddresses([callback])
+#### returnDepositAddresses([callback])
 
-### generateNewAddress(currency [, callback])
+#### generateNewAddress(currency [, callback])
 
-### returnDepositsWithdrawals(start, end [, callback])
+#### returnDepositsWithdrawals(start, end [, callback])
 
-### returnOpenOrders(currencyPair [, callback])
+#### returnOpenOrders(currencyPair [, callback])
 
-### returnMyTradeHistory(currencyPair, start, end, limit [, callback])
+#### returnMyTradeHistory(currencyPair, start, end, limit [, callback])
 
-### returnOrderTrades(orderNumber [, callback])
+#### returnOrderTrades(orderNumber [, callback])
 
-### buy(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
+#### buy(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
 
-### sell(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
+#### sell(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
 
-### cancelOrder(orderNumber [, callback])
+#### cancelOrder(orderNumber [, callback])
 
-### moveOrder(orderNumber, rate, amount, immediateOrCancel, postOnly [, callback])
+#### moveOrder(orderNumber, rate, amount, immediateOrCancel, postOnly [, callback])
 
-### withdraw(currency, amount, address [, callback])
+#### withdraw(currency, amount, address [, callback])
 
-### returnFeeInfo([callback])
+#### returnFeeInfo([callback])
 
-### returnAvailableAccountBalances(account [, callback])
+#### returnAvailableAccountBalances(account [, callback])
 
-### returnTradableBalances([callback])
+#### returnTradableBalances([callback])
 
-### transferBalance(currency, amount, fromAccount, toAccount [, callback])
+#### transferBalance(currency, amount, fromAccount, toAccount [, callback])
 
-### returnMarginAccountSummary([callback])
+#### returnMarginAccountSummary([callback])
 
-### marginBuy(currencyPair, rate, amount, lendingRate [, callback])
+#### marginBuy(currencyPair, rate, amount, lendingRate [, callback])
 
-### marginSell(currencyPair, rate, amount, lendingRate [, callback])
+#### marginSell(currencyPair, rate, amount, lendingRate [, callback])
 
-### getMarginPosition(currencyPair [, callback])
+#### getMarginPosition(currencyPair [, callback])
 
-### closeMarginPosition(currencyPair [, callback])
+#### closeMarginPosition(currencyPair [, callback])
 
-### createLoanOffer(currency, amount, duration, autoRenew, lendingRate [, callback])
+#### createLoanOffer(currency, amount, duration, autoRenew, lendingRate [, callback])
 
-### cancelLoanOffer(orderNumber [, callback])
+#### cancelLoanOffer(orderNumber [, callback])
 
-### returnOpenLoanOffers([callback])
+#### returnOpenLoanOffers([callback])
 
-### returnActiveLoans([callback])
+#### returnActiveLoans([callback])
 
-### returnLendingHistory(start, end, limit [, callback])
+#### returnLendingHistory(start, end, limit [, callback])
 
-### toggleAutoRenew(orderNumber [, callback])
+#### toggleAutoRenew(orderNumber [, callback])
 
 
-# ChangeLog
+## Websocket API
+
+### Methods
+
+#### openWebSocket([options])
+
+Opens WebSocket connection to Poloniex server.
+If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (this is equivalent to a full reset of the WebSocket connection. 
+
+Event `'open'` is emitted when connection is open.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.on('open', () => {
+  console.log(`WebSocket connection has be opened.`);
+});
+poloniex.openWebSocket();
+```
+
+> Parameter `options` is optional and not yet used.
+
+#### subscribe(channelName)
+
+In order to receive updates over WebSocket, subscribe to following channels:
+* `'ticker'`
+* currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`) 
+* `'footer'`
+
+When an update on the channel is received `Poloniex` object emits the event `'message'`.
+ 
+ > You can subscribe to a channel either before or after the WebSocket connection is opened with `openWebSocket`. If WebSocket connection is already open, the subscription is activated immediately. If WebSocket connection is not open yet, the `subscribe` is registering the subscription; all registered connections will be activated when `openWebSocket` is issued.
+ 
+##### Channel: `'ticker'`
+
+Provides ticker updates.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.subscribe('ticker');
+poloniex.on('message', (channelName, data) => {
+  if (channelName === 'ticker') {
+    console.log(`Ticker: ${data}`);
+  }
+});
+poloniex.openWebSocket();
+```
+Ticker updates will be in following format:
+
+```js
+{
+  "currencyPair": "BTC_PPC",
+  "last": "0.00030724",
+  "lowestAsk": "0.00030892",
+  "highestBid": "0.00030563",
+  "percentChange": "0.10533889",
+  "baseVolume": "17.98936247",
+  "quoteVolume": "59961.74951336",
+  "isFrozen": 0,
+  "24hrHigh": "0.00031999",
+  "24hrLow": "0.00027796"
+}
+```
+
+
+##### Channel: currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`)
+
+Provides order book and trade updates.
+Subscribe to the desired currencyPair, e.g. `'BTC_ETC'`, to receive order book and trade updates.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.openWebSocket();
+poloniex.subscribe('BTC_ETH');
+poloniex.on('message', (channelName, data, seq) => {
+  if (channelName === 'BTC_ETH') {
+    console.log(`order book and trade updates received for currency pair ${channelName}`);
+  }
+});
+```
+
+Please refer to [official Poloniex API documentation](https://poloniex.com/support/api/) for "Push API, Order Book and Trades" for detailed information on the data provided and its format.
+
+Check https://poloniex.com/public?command=returnTicker for available currency pairs
+
+##### Channel: `'footer'`
+
+Provides other info updates.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.subscribe('footer');
+poloniex.on('message', (channelName, data) => {
+  if (channelName === 'footer') {
+    console.log(data);
+  }
+});
+poloniex.openWebSocket();
+```
+
+The updates will be in following format:
+
+```js
+[
+  {
+    "serverTime": "2017-10-04 12:55",
+    "usersOnline": 18438,
+    "accountsRegistered": 1,
+    "volume": {
+      "BTC": "13014.809",
+      "ETH": "3725.101",
+      "XMR": "354.380",
+      "USDT": "24511953.302"
+    }
+  }
+]
+```
+
+> Channel `'footer'` is not documented in the official Poloniex API documentation.
+
+
+#### unsubscribe(channelName)
+
+Unsubscribes a previously established channel subscription. Once unsubscribed there will be no more channel updates received.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.openWebSocket();
+poloniex.subscribe('BTC_ETH');
+poloniex.on('message', (channelName, data, seq) => {
+  if (channelName === 'BTC_ETH') {
+    console.log(`order book and trade updates received for currency pair ${channelName}`);
+  }
+});
+poloniex.unsubscribe('BTC_ETH');
+```
+
+
+#### closeWebSocket()
+
+Closes WebSocket connection previously opened.
+Event `'close'` is emitted when connection is closed.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.on('open', () => {
+  poloniex.closeWebSocket();
+});
+poloniex.on('close', (reason, details) => {
+  console.log(`WebSocket connection has been closed`);
+});
+poloniex.openWebSocket();
+```
+
+### Events
+
+The following events can be emitted:
+* `'open'`
+* `'message'`
+* `'close'`
+* `'error'`
+
+#### Event: `'open'`
+
+Emitted when WebSocket connection is open.
+
+#### Event: `'message'`
+
+Emitted when an update on a subscribed channel is received.
+See method `subscribe` for details on data received and its format.
+
+#### Event: `'close'`
+
+Emitted when WebSocket connection is closed.
+See method `closeWebSocket` for details on data received and its format.
+
+#### Event: `'error'`
+
+Emitted when and error has occurred
+
+Example:
+```js
+poloniex.on('error', (error) => {
+  console.log(error);
+});
+```
+
+# Changelog
 
 See detailed [Changelog](CHANGELOG.md)
 

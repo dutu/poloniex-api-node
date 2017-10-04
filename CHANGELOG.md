@@ -4,6 +4,9 @@ All notable changes to this module are documented in this file.
 
 poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.0] - 2017-09-04
+- Added: WebSocket (push) API
+
 ## [1.4.0] - 2017-09-02
 - Added: `limit` parameter for `returnTradeHistory` and `returnMyTradeHistory` methods
 - Added: contributors to [README.md](README.md#contributors) (give credit where credit is due)  
