@@ -4,6 +4,9 @@ All notable changes to this module are documented in this file.
 
 poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.0] - unreleased
+- Added: new WebSocket API (v2)
+
 ## [1.5.1] - 2017-09-04
 - Added: WebSocket (push) API
 

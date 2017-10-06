@@ -5,7 +5,11 @@ poloniex-api-node
 
 **poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket (push) API.
 
-REST API supports both Callback and Promise. 
+REST API supports both Callback and Promise.
+
+WebSocket API supports both the WAMP protocol (v1), and also Poloniex new WebSocket API (v2).
+
+> While the legacy WAMP API (v1) is still the one officially documented by Poloniex, the new WebSocket API (v2) is faster, more reliable (and internally used by Poloniex).    
 
 ### Contents
 * [Install](#install)
@@ -306,16 +310,16 @@ poloniex.returnBalances().then((balances) => {
 #### toggleAutoRenew(orderNumber [, callback])
 
 
-## Websocket API
+## Websocket API v1
 
 ### Methods
 
 #### openWebSocket([options])
 
 Opens WebSocket connection to Poloniex server.
-If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (this is equivalent to a full reset of the WebSocket connection. 
+If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (equivalent to a full reset of the WebSocket connection). 
 
-Event `'open'` is emitted when connection is open.
+Event `'open'` is emitted when connection opens.
 
 Example:
 ```js
@@ -335,7 +339,7 @@ In order to receive updates over WebSocket, subscribe to following channels:
 * currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`) 
 * `'footer'`
 
-When an update on the channel is received `Poloniex` object emits the event `'message'`.
+When an update on the subscribed channel is received `Poloniex` object emits the event `'message'`.
  
  > You can subscribe to a channel either before or after the WebSocket connection is opened with `openWebSocket`. If WebSocket connection is already open, the subscription is activated immediately. If WebSocket connection is not open yet, the `subscribe` is registering the subscription; all registered connections will be activated when `openWebSocket` is issued.
  
@@ -385,13 +389,14 @@ poloniex.subscribe('BTC_ETH');
 poloniex.on('message', (channelName, data, seq) => {
   if (channelName === 'BTC_ETH') {
     console.log(`order book and trade updates received for currency pair ${channelName}`);
+    console.log(`data sequence number is ${seq}`);
   }
 });
 ```
 
 Please refer to [official Poloniex API documentation](https://poloniex.com/support/api/) for "Push API, Order Book and Trades" for detailed information on the data provided and its format.
 
-Check https://poloniex.com/public?command=returnTicker for available currency pairs
+Check https://poloniex.com/public?command=returnTicker for available currency pairs.
 
 ##### Channel: `'footer'`
 
@@ -442,6 +447,7 @@ poloniex.subscribe('BTC_ETH');
 poloniex.on('message', (channelName, data, seq) => {
   if (channelName === 'BTC_ETH') {
     console.log(`order book and trade updates received for currency pair ${channelName}`);
+    console.log(`data sequence number is ${seq}`);
   }
 });
 poloniex.unsubscribe('BTC_ETH');
@@ -451,7 +457,7 @@ poloniex.unsubscribe('BTC_ETH');
 #### closeWebSocket()
 
 Closes WebSocket connection previously opened.
-Event `'close'` is emitted when connection is closed.
+Event `'close'` is emitted when connection closes.
 
 Example:
 ```js
@@ -473,9 +479,13 @@ The following events can be emitted:
 * `'close'`
 * `'error'`
 
+When a listener is registered using the `Poloniex.on()` method, that listener will be invoked every time the named event is emitted.
+
+> **Important:** You have to set `error` handler otherwise your app will throw an `Error` and exit if `error` event will occur (see: [Node.js Error events](https://nodejs.org/api/events.html#events_error_events))
+
 #### Event: `'open'`
 
-Emitted when WebSocket connection is open.
+Emitted when WebSocket connection is esablished.
 
 #### Event: `'message'`
 
@@ -489,7 +499,202 @@ See method `closeWebSocket` for details on data received and its format.
 
 #### Event: `'error'`
 
-Emitted when and error has occurred
+Emitted when an error occurs.
+
+Example:
+```js
+poloniex.on('error', (error) => {
+  console.log(error);
+});
+```
+
+## Websocket API v2
+
+### Methods
+
+#### openWebSocket([options])
+
+Opens WebSocket connection to Poloniex server.
+If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (equivalent to a full reset of the WebSocket connection). 
+
+Event `'open'` is emitted when connection opens.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.on('open', () => {
+  console.log(`WebSocket connection has be opened.`);
+});
+poloniex.openWebSocket();
+```
+
+> Parameter `options` is optional and not yet used.
+
+#### subscribe(channelName)
+
+In order to receive updates over WebSocket, subscribe to following channels:
+* `'ticker'`
+* currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`) 
+* `'footer'`
+
+When an update on the subscribed channel is received `Poloniex` object emits the event `'message'`.
+ 
+ > You can subscribe to a channel either before or after the WebSocket connection is opened with `openWebSocket`. If WebSocket connection is already open, the subscription is activated immediately. If WebSocket connection is not open yet, the `subscribe` is registering the subscription; all registered connections will be activated when `openWebSocket` is issued.
+ 
+##### Channel: `'ticker'`
+
+Provides ticker updates.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.subscribe('ticker');
+poloniex.on('message', (channelName, data) => {
+  if (channelName === 'ticker') {
+    console.log(`Ticker: ${data}`);
+  }
+});
+poloniex.openWebSocket();
+```
+Ticker updates will be in following format:
+
+```js
+{
+  "currencyPair": "BTC_PPC",
+  "last": "0.00030724",
+  "lowestAsk": "0.00030892",
+  "highestBid": "0.00030563",
+  "percentChange": "0.10533889",
+  "baseVolume": "17.98936247",
+  "quoteVolume": "59961.74951336",
+  "isFrozen": 0,
+  "24hrHigh": "0.00031999",
+  "24hrLow": "0.00027796"
+}
+```
+
+
+##### Channel: currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`)
+
+Provides order book and trade updates.
+Subscribe to the desired currencyPair, e.g. `'BTC_ETC'`, to receive order book and trade updates.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.openWebSocket();
+poloniex.subscribe('BTC_ETH');
+poloniex.on('message', (channelName, data, seq) => {
+  if (channelName === 'BTC_ETH') {
+    console.log(`order book and trade updates received for currency pair ${channelName}`);
+    console.log(`data sequence number is ${seq}`);
+  }
+});
+```
+
+Please refer to [official Poloniex API documentation](https://poloniex.com/support/api/) for "Push API, Order Book and Trades" for detailed information on the data provided and its format.
+
+Check https://poloniex.com/public?command=returnTicker for available currency pairs.
+
+##### Channel: `'footer'`
+
+Provides other info updates.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.subscribe('footer');
+poloniex.on('message', (channelName, data) => {
+  if (channelName === 'footer') {
+    console.log(data);
+  }
+});
+poloniex.openWebSocket();
+```
+
+The updates will be in following format:
+
+```js
+[
+  {
+    "serverTime": "2017-10-04 12:55",
+    "usersOnline": 18438,
+    "volume": {
+      "BTC": "13014.809",
+      "ETH": "3725.101",
+      "XMR": "354.380",
+      "USDT": "24511953.302"
+    }
+  }
+]
+```
+
+> Channel `'footer'` is not documented in the official Poloniex API documentation.
+
+
+#### unsubscribe(channelName)
+
+Unsubscribes a previously established channel subscription. Once unsubscribed there will be no more channel updates received.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.openWebSocket();
+poloniex.subscribe('BTC_ETH');
+poloniex.on('message', (channelName, data, seq) => {
+  if (channelName === 'BTC_ETH') {
+    console.log(`order book and trade updates received for currency pair ${channelName}`);
+    console.log(`data sequence number is ${seq}`);
+  }
+});
+poloniex.unsubscribe('BTC_ETH');
+```
+
+
+#### closeWebSocket()
+
+Closes WebSocket connection previously opened.
+Event `'close'` is emitted when connection closes.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.on('open', () => {
+  poloniex.closeWebSocket();
+});
+poloniex.on('close', (reason, details) => {
+  console.log(`WebSocket connection has been closed`);
+});
+poloniex.openWebSocket();
+```
+
+### Events
+
+The following events can be emitted:
+* `'open'`
+* `'message'`
+* `'close'`
+* `'error'`
+
+> **Important:** You have to set `error` handler otherwise your app will throw an `Error` and exit if error event will occur (see: [Node.js Error events](https://nodejs.org/api/events.html#events_error_events))
+
+#### Event: `'open'`
+
+Emitted when WebSocket connection is esablished.
+
+#### Event: `'message'`
+
+Emitted when an update on a subscribed channel is received.
+See method `subscribe` for details on data received and its format.
+
+#### Event: `'close'`
+
+Emitted when WebSocket connection is closed.
+See method `closeWebSocket` for details on data received and its format.
+
+#### Event: `'error'`
+
+Emitted when an error occurs.
 
 Example:
 ```js

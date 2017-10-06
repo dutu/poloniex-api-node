@@ -1,6 +1,6 @@
 {
   "name": "poloniex-api-node",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Simple node.js wrapper for Poloniex REST and WebSocket (push) API. Supports Callback and Promise",
   "main": "./lib/poloniex.js",
   "scripts": {
@@ -28,10 +28,12 @@
   "homepage": "https://github.com/dutu/poloniex-api-node",
   "dependencies": {
     "autobahn": "^17.5.2",
+    "big.js": "^4.0.2",
     "debug": "^3.1.0",
     "events": "^1.1.1",
     "nonce": "^1.0.4",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "ws": "^3.2.0"
   },
   "devDependencies": {
     "chai": "^4.0.2",
