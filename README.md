@@ -3,13 +3,16 @@ poloniex-api-node
 [![Build Status](https://travis-ci.org/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.org/dutu/poloniex-api-node) [![Dependency Status](https://dependencyci.com/github/dutu/poloniex-api-node/badge)](https://dependencyci.com/github/dutu/poloniex-api-node)
 
 
-**poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket (push) API.
+**poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket API.
 
 REST API supports both Callback and Promise.
 
-WebSocket API supports both the WAMP protocol (v1), and also Poloniex new WebSocket API (v2).
+WebSocket API supports both the WAMP protocol (v1) and the new WebSocket API (v2).
 
-> While the legacy WAMP API (v1) is still the one officially documented by Poloniex, the new WebSocket API (v2) is faster, more reliable (and internally used by Poloniex).    
+> The legacy WAMP push API (v1) is currently the WebSocket API officially documented. Lately, it is not stable and Poloniex servers are not handling the API properly due high load.
+> 
+> The new WebSocket API (v2) is not yet officially documented, however its functionality is much faster and reliable. WebSocket API (v2) is also internally used by Poloniex.
+
 
 ### Contents
 * [Install](#install)
@@ -17,7 +20,7 @@ WebSocket API supports both the WAMP protocol (v1), and also Poloniex new WebSoc
 * [Usage](#usage)
 	* Constructor
 	* REST API
-	* WebSocket API
+	* WebSocket API (version 1 and version 2)
 * [Changelog](#changelog)
 * [Contributors](#contributors)
 * [License](#license)
@@ -310,182 +313,38 @@ poloniex.returnBalances().then((balances) => {
 #### toggleAutoRenew(orderNumber [, callback])
 
 
-## Websocket API v1
+## Websocket API (version 1 and version 2)
 
-### Methods
+This module implements both the legacy WAMP push API (v1) and the new WebSocket API (v2).
 
-#### openWebSocket([options])
+Although the module facilitates the usage of v1 and v2 in a similar way, Poloniex implementation is completely different.
 
-Opens WebSocket connection to Poloniex server.
-If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (equivalent to a full reset of the WebSocket connection). 
+The legacy WAMP push API (v1) is currently the WebSocket API officially documented. Lately, it is not stable and Poloniex servers are not handling the API properly due high load.
 
-Event `'open'` is emitted when connection opens.
-
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.on('open', () => {
-  console.log(`WebSocket connection has be opened.`);
-});
-poloniex.openWebSocket();
-```
-
-> Parameter `options` is optional and not yet used.
-
-#### subscribe(channelName)
-
-In order to receive updates over WebSocket, subscribe to following channels:
-* `'ticker'`
-* currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`) 
-* `'footer'`
-
-When an update on the subscribed channel is received `Poloniex` object emits the event `'message'`.
- 
- > You can subscribe to a channel either before or after the WebSocket connection is opened with `openWebSocket`. If WebSocket connection is already open, the subscription is activated immediately. If WebSocket connection is not open yet, the `subscribe` is registering the subscription; all registered connections will be activated when `openWebSocket` is issued.
- 
-##### Channel: `'ticker'`
-
-Provides ticker updates.
-
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.subscribe('ticker');
-poloniex.on('message', (channelName, data) => {
-  if (channelName === 'ticker') {
-    console.log(`Ticker: ${data}`);
-  }
-});
-poloniex.openWebSocket();
-```
-Ticker updates will be in following format:
-
-```js
-{
-  "currencyPair": "BTC_PPC",
-  "last": "0.00030724",
-  "lowestAsk": "0.00030892",
-  "highestBid": "0.00030563",
-  "percentChange": "0.10533889",
-  "baseVolume": "17.98936247",
-  "quoteVolume": "59961.74951336",
-  "isFrozen": 0,
-  "24hrHigh": "0.00031999",
-  "24hrLow": "0.00027796"
-}
-```
-
-
-##### Channel: currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`)
-
-Provides order book and trade updates.
-Subscribe to the desired currencyPair, e.g. `'BTC_ETC'`, to receive order book and trade updates.
-
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.openWebSocket();
-poloniex.subscribe('BTC_ETH');
-poloniex.on('message', (channelName, data, seq) => {
-  if (channelName === 'BTC_ETH') {
-    console.log(`order book and trade updates received for currency pair ${channelName}`);
-    console.log(`data sequence number is ${seq}`);
-  }
-});
-```
-
-Please refer to [official Poloniex API documentation](https://poloniex.com/support/api/) for "Push API, Order Book and Trades" for detailed information on the data provided and its format.
-
-Check https://poloniex.com/public?command=returnTicker for available currency pairs.
-
-##### Channel: `'footer'`
-
-Provides other info updates.
-
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.subscribe('footer');
-poloniex.on('message', (channelName, data) => {
-  if (channelName === 'footer') {
-    console.log(data);
-  }
-});
-poloniex.openWebSocket();
-```
-
-The updates will be in following format:
-
-```js
-[
-  {
-    "serverTime": "2017-10-04 12:55",
-    "usersOnline": 18438,
-    "accountsRegistered": 1,
-    "volume": {
-      "BTC": "13014.809",
-      "ETH": "3725.101",
-      "XMR": "354.380",
-      "USDT": "24511953.302"
-    }
-  }
-]
-```
-
-> Channel `'footer'` is not documented in the official Poloniex API documentation.
-
-
-#### unsubscribe(channelName)
-
-Unsubscribes a previously established channel subscription. Once unsubscribed there will be no more channel updates received.
-
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.openWebSocket();
-poloniex.subscribe('BTC_ETH');
-poloniex.on('message', (channelName, data, seq) => {
-  if (channelName === 'BTC_ETH') {
-    console.log(`order book and trade updates received for currency pair ${channelName}`);
-    console.log(`data sequence number is ${seq}`);
-  }
-});
-poloniex.unsubscribe('BTC_ETH');
-```
-
-
-#### closeWebSocket()
-
-Closes WebSocket connection previously opened.
-Event `'close'` is emitted when connection closes.
-
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.on('open', () => {
-  poloniex.closeWebSocket();
-});
-poloniex.on('close', (reason, details) => {
-  console.log(`WebSocket connection has been closed`);
-});
-poloniex.openWebSocket();
-```
+The new WebSocket API (v2) is not yet officially documented, however its functionality is much faster and reliable. WebSocket API (v2) is also internally used by Poloniex.
 
 ### Events
+
+A listener is registered using the `Poloniex.on()` method (since `Poloniex` class inherits the `EventEmitter`) and the listener will be invoked every time the named event is emitted.
+
+Example:
+```js
+let poloniex = new Poloniex();
+poloniex.on('open', () => {
+  console.log(`WebSocket connection is open.`);
+});
+```
 
 The following events can be emitted:
 * `'open'`
 * `'message'`
 * `'close'`
 * `'error'`
-
-When a listener is registered using the `Poloniex.on()` method, that listener will be invoked every time the named event is emitted.
-
-> **Important:** You have to set `error` handler otherwise your app will throw an `Error` and exit if `error` event will occur (see: [Node.js Error events](https://nodejs.org/api/events.html#events_error_events))
+* `'heartbeat'`
 
 #### Event: `'open'`
 
-Emitted when WebSocket connection is esablished.
+Emitted when WebSocket connection is established.
 
 #### Event: `'message'`
 
@@ -501,6 +360,8 @@ See method `closeWebSocket` for details on data received and its format.
 
 Emitted when an error occurs.
 
+> **Important:** You have to set `error` listener otherwise your app will throw an `Error` and exit if `error` event will occur (see: [Node.js Error events](https://nodejs.org/api/events.html#events_error_events))
+
 Example:
 ```js
 poloniex.on('error', (error) => {
@@ -508,7 +369,10 @@ poloniex.on('error', (error) => {
 });
 ```
 
-## Websocket API v2
+#### Event: `'heartbeat'` (v2 only)
+
+ Emitted if there is no update for more than 60 seconds
+
 
 ### Methods
 
@@ -519,16 +383,23 @@ If WebSocket connection is already open and `openWebSocket` is called again, the
 
 Event `'open'` is emitted when connection opens.
 
+Default options:
+```js
+{
+  version: 1
+}
+```
+
+To use the new WebSocket API (v2), pass parameter option as `{ version: 2 }`
+
 Example:
 ```js
 let poloniex = new Poloniex();
 poloniex.on('open', () => {
   console.log(`WebSocket connection has be opened.`);
 });
-poloniex.openWebSocket();
+poloniex.openWebSocket({ version: 2 });
 ```
-
-> Parameter `options` is optional and not yet used.
 
 #### subscribe(channelName)
 
@@ -560,16 +431,16 @@ Ticker updates will be in following format:
 
 ```js
 {
-  "currencyPair": "BTC_PPC",
-  "last": "0.00030724",
-  "lowestAsk": "0.00030892",
-  "highestBid": "0.00030563",
-  "percentChange": "0.10533889",
-  "baseVolume": "17.98936247",
-  "quoteVolume": "59961.74951336",
+  "currencyPair": "BTC_XRP",
+  "last": "0.00005432",
+  "lowestAsk": "0.00005440",
+  "highestBid": "0.00005432",
+  "percentChange": "-0.02878598",
+  "baseVolume": "2862.99229490",
+  "quoteVolume": "52479031.35647538",
   "isFrozen": 0,
-  "24hrHigh": "0.00031999",
-  "24hrLow": "0.00027796"
+  "24hrHigh": "0.00005598",
+  "24hrLow": "0.00005264"
 }
 ```
 
@@ -592,9 +463,101 @@ poloniex.on('message', (channelName, data, seq) => {
 });
 ```
 
-Please refer to [official Poloniex API documentation](https://poloniex.com/support/api/) for "Push API, Order Book and Trades" for detailed information on the data provided and its format.
+There are four types of messages (described below)
+* `orderBook` (v2 only)
+* `orderBookModify`
+* `orderBookRemove`
+* `newTrade`
 
-Check https://poloniex.com/public?command=returnTicker for available currency pairs.
+######  orderBook (v2 only)
+
+Provides a snapshot of the order book for the subscribed currency pair. The message is emited imediatelly after subscription to the currency pair is activated.
+
+The data for `orderBook` snapshot is provided in the following format:
+
+```js
+[
+  {
+    "type": "orderBook",
+    "data": {
+      "asks": {
+        "0.06964408": "0.16219637",
+        "0.06964599": "10.40000000",
+        "0.06964600": "33.11470000",
+        "0.06965590": "0.00427159",
+      },
+      "bids": {
+        "0.06963545": "14.03591058",
+        "0.06960000": "16.53833125",
+        "0.06957303": "3.46440626",
+        "0.06957300": "33.11720000",
+     }
+    }
+  }
+]
+```
+
+> This message type is only valid for the new WebSocket API (v2). When WAMP API (v1) is used, the orderBook snapshot has to be retrieved using REST API method `returnOrderBook`. 
+
+
+###### orderBookModify and orderBookRemove
+
+There are two types of order book updates `orderBookModify` and `orderBookRemove`, provided in the following formats:
+
+```js
+[
+  {
+    "type": "orderBookModify",
+    "data": {
+      "type": "bid",
+      "rate": "0.06961000",
+      "amount": "33.11630000"
+    }
+  }
+]
+```
+
+```js
+[
+  {
+    "type": "orderBookRemove",
+    "data": {
+      "type": "bid",
+      "rate": "0.06957300",
+      "amount": "0.00000000"
+    }
+  }
+]
+```
+
+Updates of type `orderBookModify` can be either additions to the order book or changes to existing entries. The value of `amount` indicates the new total amount on the books at the given rate — in other words, it replaces any previous value, rather than indicates an adjustment to a previous value.
+
+Each `message` event will pass the parameter `seq`, indicating the a sequence number. In order to keep your order book consistent, you will need to ensure that messages are applied in the order of their sequence numbers, even if they arrive out of order.
+
+Several order book and trade history updates will often arrive in a single message. Be sure to loop through the entire array, otherwise you will miss some updates.
+
+######  newTrade
+
+Trade history updates are provided in the following format:
+```js
+
+[
+  {
+    "type": "newTrade",
+    "data": {
+      "tradeID": "34816326",
+      "type": "sell",
+      "rate": "0.07006406",
+      "amount": "0.14341700",
+      "total": "0.01004838",
+      "date": "2017-10-06T22:37:52.000Z"
+    }
+  }
+]
+```
+
+> **Important:** Several order book and trade history updates will often arrive in a single message. Be sure to loop through the entire array, otherwise you will miss some updates.
+
 
 ##### Channel: `'footer'`
 
@@ -656,7 +619,7 @@ poloniex.unsubscribe('BTC_ETH');
 Closes WebSocket connection previously opened.
 Event `'close'` is emitted when connection closes.
 
-Example:
+Example (v1):
 ```js
 let poloniex = new Poloniex();
 poloniex.on('open', () => {
@@ -668,39 +631,16 @@ poloniex.on('close', (reason, details) => {
 poloniex.openWebSocket();
 ```
 
-### Events
-
-The following events can be emitted:
-* `'open'`
-* `'message'`
-* `'close'`
-* `'error'`
-
-> **Important:** You have to set `error` handler otherwise your app will throw an `Error` and exit if error event will occur (see: [Node.js Error events](https://nodejs.org/api/events.html#events_error_events))
-
-#### Event: `'open'`
-
-Emitted when WebSocket connection is esablished.
-
-#### Event: `'message'`
-
-Emitted when an update on a subscribed channel is received.
-See method `subscribe` for details on data received and its format.
-
-#### Event: `'close'`
-
-Emitted when WebSocket connection is closed.
-See method `closeWebSocket` for details on data received and its format.
-
-#### Event: `'error'`
-
-Emitted when an error occurs.
-
-Example:
+Example (v2):
 ```js
-poloniex.on('error', (error) => {
-  console.log(error);
+let poloniex = new Poloniex();
+poloniex.on('open', () => {
+  poloniex.closeWebSocket();
 });
+poloniex.on('close', (reason, code) => {
+  console.log(`WebSocket connection has been closed`);
+});
+poloniex.openWebSocket();
 ```
 
 # Changelog

@@ -43,7 +43,7 @@ describe("Integration Test - WebSocket1", function () {
         done();
       }, TIMEOUT * 2);
     });
-    it('should reset/reopen an open connection', function (done) {
+    it('should reset/reopen and open connection', function (done) {
       let poloniex = new Poloniex();
       let timeoutId;
       let eventHandler = function eventHandler(details, reason) {
