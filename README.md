@@ -1,6 +1,7 @@
 poloniex-api-node
 =======
-[![Build Status](https://travis-ci.org/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.org/dutu/poloniex-api-node) [![Dependency Status](https://dependencyci.com/github/dutu/poloniex-api-node/badge)](https://dependencyci.com/github/dutu/poloniex-api-node)
+[![Build Status](https://travis-ci.org/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.org/dutu/poloniex-api-node) [![Dependency Status](https://dependencyci.com/github/dutu/poloniex-api-node/badge)](https://dependencyci.com/github/dutu/poloniex-api-node) [![npm](https://img.shields.io/npm/dm/poloniex-api-node.svg)](https://www.npmjs.com/package/poloniex-api-node)
+
 
 
 **poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket API.
