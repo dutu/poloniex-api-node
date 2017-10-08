@@ -381,7 +381,7 @@ poloniex.on('error', (error) => {
 Opens WebSocket connection to Poloniex server.
 If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (equivalent to a full reset of the WebSocket connection). 
 
-Event `'open'` is emitted when connection opens.
+Event `'open'` is emitted when connection is established.
 
 Default options:
 ```js
