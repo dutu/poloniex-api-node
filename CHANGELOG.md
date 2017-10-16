@@ -4,11 +4,11 @@ All notable changes to this module are documented in this file.
 
 poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.6.2] - 2017-10-16
+## [1.6.3] - 2017-10-16
 - Fixed: minor documentation error
 - Fixed: cannot subscribe to WebSocket (v2) before connection opens (#29)  
 
-## [1.6.1] - 2017-09-08
+## [1.6.2] - 2017-09-08
 - Fixed: custom string for 'User-Agent' in headers
 
 ## [1.6.0] - 2017-09-07
