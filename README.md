@@ -655,6 +655,7 @@ See detailed [Changelog](CHANGELOG.md)
 * [Wallison Santos](https://github.com/wallybh) (<wallison@outlook.com>)
 * [epdev](https://github.com/epdev)
 * [BarnumD](https://github.com/BarnumD)
+* [Robert Valmassoi](https://github.com/valmassoi) (<rvalmassoi@protonmail.com>)
 
 # License
 
