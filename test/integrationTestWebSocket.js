@@ -4,7 +4,7 @@ const expect = chai.expect;
 const Poloniex = require('../lib/poloniex.js');
 const TIMEOUT = 60000;
 
-describe("Integration Test - WebSocket1", function () {
+describe.skip("Integration Test - WebSocket1", function () {
   describe('openWebSocket', function () {
     it('should emit "open" event when no subscriptions', function (done) {
       let timeoutId;
