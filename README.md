@@ -126,7 +126,7 @@ poloniex.on('error', (error) => {
   console.log(`An error has occured`);
 });
 
-poloniex.webSocketOpen();
+poloniex.openWebSocket();
 ```
 
 # Usage
