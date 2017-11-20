@@ -6,7 +6,8 @@ poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.4] - 2017-11-20
 - Fixed: STORJ currency added (#32)
-- Added: Include tests for node.js 9.x
+- Added: allow passing `proxy` option to underlying request calls
+- Added: Tests for node.js 9.x
 - Added: Test to verify `orderBook` is first message type when subscribing to orderBook (WebSocket v2)
 
 ## [1.6.3] - 2017-10-16
