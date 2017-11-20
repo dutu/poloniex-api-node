@@ -656,6 +656,8 @@ See detailed [Changelog](CHANGELOG.md)
 * [epdev](https://github.com/epdev)
 * [BarnumD](https://github.com/BarnumD)
 * [Robert Valmassoi](https://github.com/valmassoi) (<rvalmassoi@protonmail.com>)
+* [zymnytskiy](https://github.com/zymnytskiy)
+* 
 
 # License
 

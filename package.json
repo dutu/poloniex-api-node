@@ -1,6 +1,6 @@
 {
   "name": "poloniex-api-node",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "Simple node.js wrapper for Poloniex REST and WebSocket (push) API. Supports Callback and Promise",
   "main": "./lib/poloniex.js",
   "scripts": {

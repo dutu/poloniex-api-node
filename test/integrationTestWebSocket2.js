@@ -4,8 +4,8 @@ const expect = chai.expect;
 const Poloniex = require('../lib/poloniex.js');
 const TIMEOUT = 10000;
 
-describe.skip("Integration Test - WebSocket2", function () {
-  describe('openWebSocket', function () {
+describe("Integration Test - WebSocket2", function () {
+  describe.skip('openWebSocket', function () {
     it('should emit "open" event when no subscriptions', function (done) {
       let timeoutId;
       let poloniex = new Poloniex();
@@ -70,14 +70,14 @@ describe.skip("Integration Test - WebSocket2", function () {
     });
   });
   describe('subscribe', function () {
-    it('should add subscription with connection closed', function (done) {
+    it.skip('should add subscription with connection closed', function (done) {
       let poloniex = new Poloniex();
       expect(poloniex.subscriptions).to.eql([]);
       poloniex.subscribe('ticker');
       expect(poloniex.subscriptions).to.deep.include({channelName: 'ticker', channelSubscription: null});
       done();
     });
-    it('should add subscription with connection open', function (done) {
+    it.skip('should add subscription with connection open', function (done) {
       let poloniex = new Poloniex();
       poloniex.openWebSocket({ version: 2 });
       poloniex.on('open', () => {
@@ -115,7 +115,7 @@ describe.skip("Integration Test - WebSocket2", function () {
         done();
       }, TIMEOUT * 2);
     });
-    it('should subscribe and emit currencyPair message', function (done) {
+    it('should subscribe and emit "orderbook" for currencyPair', function (done) {
       let poloniex = new Poloniex();
       let timeoutId;
       let isDoneCalled = false;
@@ -124,6 +124,7 @@ describe.skip("Integration Test - WebSocket2", function () {
         expect(channelName).to.be.eql('BTC_ETH');
         expect(data).to.be.an('array');
         if (!isDoneCalled) {
+          expect(data[0].type).to.be.eql('orderBook')
           poloniex.closeWebSocket();
           isDoneCalled = true;
           done();
@@ -171,7 +172,7 @@ describe.skip("Integration Test - WebSocket2", function () {
       }, TIMEOUT * 2);
     });
   });
-  describe('unsubscribe', function () {
+  describe.skip('unsubscribe', function () {
     it('should remove subscription with connection closed', function (done) {
       let poloniex = new Poloniex();
       expect(poloniex.subscriptions).to.eql([]);
@@ -209,7 +210,7 @@ describe.skip("Integration Test - WebSocket2", function () {
       }, TIMEOUT * 2);
     });
   });
-  describe('closeWebSocket', function () {
+  describe.skip('closeWebSocket', function () {
     it('should emit "close" event', function (done) {
       let timeoutId;
       let poloniex = new Poloniex();
