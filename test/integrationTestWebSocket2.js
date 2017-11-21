@@ -88,6 +88,7 @@ describe("Integration Test - WebSocket2", function () {
       });
     });
     it('should subscribe and emit "ticker" message', function (done) {
+      let count = 400;
       let poloniex = new Poloniex();
       let timeoutId;
       let isDoneCalled = false;
@@ -97,7 +98,8 @@ describe("Integration Test - WebSocket2", function () {
         expect(data).to.have.all.keys('currencyPair', 'last', 'lowestAsk', 'highestBid', 'percentChange', 'baseVolume', 'quoteVolume', 'isFrozen', '24hrHigh', '24hrLow');
         expect(data.isFrozen).to.be.an('number');
         ['currencyPair', 'last', 'lowestAsk', 'highestBid', 'percentChange', 'baseVolume', 'quoteVolume', '24hrHigh', '24hrLow'].forEach(key => expect(key).to.be.a('string'));
-        if (!isDoneCalled) {
+        count -= 1
+        if (!isDoneCalled && count === 0) {
           poloniex.closeWebSocket();
           isDoneCalled = true;
           done();
