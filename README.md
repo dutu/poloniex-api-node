@@ -653,6 +653,8 @@ See detailed [Changelog](CHANGELOG.md)
 
 * [dutu](https://github.com/dutu) (<dutu@protonmail.com>)
 * [julesGoullee](https://github.com/julesGoullee) (<julesgoullee@gmail.com>)
+* [kevflynn](https://github.com/kevflynn) ([Kevin](http://www.kevflynn.com))
+* [Denis Bezrukov](https://github.com/anthrax63)
 * [Wallison Santos](https://github.com/wallybh) (<wallison@outlook.com>)
 * [epdev](https://github.com/epdev)
 * [BarnumD](https://github.com/BarnumD)
