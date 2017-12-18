@@ -8,10 +8,10 @@ poloniex.subscribe('BTC_ETH');
 
 poloniex.on('message', (channelName, data, seq) => {
   if (channelName === 'ticker') {
-    console.log(`Ticker: ${data}`);
+    console.log(`Ticker: ${JSON.stringify(data)}`);
   }
 
-  if (channelName === 'BTC_ETC') {
+  if (channelName === 'BTC_ETH') {
     console.log(`order book and trade updates received for currency pair ${channelName}`);
     console.log(`data sequence number is ${seq}`);
   }
@@ -29,4 +29,4 @@ poloniex.on('error', (error) => {
   console.log(`An error has occured`);
 });
 
-poloniex.openWebSocket();
+poloniex.openWebSocket({ version: 2 });

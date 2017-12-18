@@ -4,9 +4,12 @@ All notable changes to this module are documented in this file.
 
 poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.6] - unreleased
+- Changed: Examples updated
+
 ## [1.6.5] - 2017-11-21
 - Fixed: Ignore unknown markets for ticker (WebSocket v2)
-- Changed: Use dynamic market id's (WebSocket v2) (#34)
+- Changed: Use dynamic market Ids (WebSocket v2) (#34)
 - Added: Test for receiving 400 ticker messages
 
 ## [1.6.4] - 2017-11-20

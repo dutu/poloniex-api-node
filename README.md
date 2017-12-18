@@ -101,7 +101,7 @@ const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex();
 
 poloniex.subscribe('ticker');
-poloniex.subscribe('BTC_ETH');
+poloniex.subscribe('BTC_ETC');
 
 poloniex.on('message', (channelName, data, seq) => {
   if (channelName === 'ticker') {
@@ -126,7 +126,7 @@ poloniex.on('error', (error) => {
   console.log(`An error has occured`);
 });
 
-poloniex.openWebSocket();
+poloniex.openWebSocket({ version: 2 });
 ```
 
 # Usage
