@@ -96,7 +96,7 @@ Example 4 (set `nonce` to custom function):
 
 ```js
 const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex('your_key', 'your_secret', { nonce: (nonceLength) => new Date().time() });
+let poloniex = new Poloniex('your_key', 'your_secret', { nonce: () => new Date().time() });
 
 poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
   if (!err) console.log(ticker);
@@ -152,7 +152,8 @@ Default options:
 ```js
 {
   socketTimeout: 60000,
-  keepAlive: true
+  keepAlive: true,
+  nonce: nonce(16)
 }
 ```
 
@@ -171,6 +172,7 @@ poloniex = new Poloniex('myKey', 'mySecret', { socketTimeout: 130000 });
 * `socketTimeout` - the number of milliseconds to wait for the server to send the response before aborting the request (REST API)
 * `keepAlive` - keep open and reuse the underlying TCP connection (REST API)
 * `proxy` - proxy to be used for requests (REST API)
+* `nonce` - custom function that returns an unique and ever increasing number
 
 
 ## REST API
@@ -672,6 +674,7 @@ See detailed [Changelog](CHANGELOG.md)
 * [Robert Valmassoi](https://github.com/valmassoi) (<rvalmassoi@protonmail.com>)
 * [zymnytskiy](https://github.com/zymnytskiy)
 * [zunderbolt](https://github.com/zunderbolt)
+* [SeanRobb](https://github.com/SeanRobb)
 
 # License
 
