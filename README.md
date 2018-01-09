@@ -11,7 +11,7 @@ REST API supports both Callback and Promise.
 WebSocket API supports both the WAMP protocol (v1) and the new WebSocket API (v2).
 
 > The legacy WAMP push API (v1) is currently the WebSocket API officially documented. Lately, it is not stable and Poloniex servers are not handling the API properly due high load.
-> 
+>
 > The new WebSocket API (v2) is not yet officially documented, however its functionality is much faster and reliable. WebSocket API (v2) is also internally used by Poloniex.
 
 
@@ -43,7 +43,7 @@ Example 1 (REST API using Callback):
 ```js
 const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex();
-	
+
 poloniex.returnTicker((err, ticker) => {
   if (err) {
     console.log(err.message);
@@ -58,7 +58,7 @@ Example 2 (REST API using Callback):
 ```js
 const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex();
-	
+
 poloniex.returnTicker(function (err, ticker) {
   if (err) {
     console.log(err.message);
@@ -73,7 +73,7 @@ Example 3 (REST API using Promise):
 ```js
 const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex();
-	
+
 poloniex.returnTicker().then((ticker) => {
   console.log(ticker);
 }).catch((err) => {
@@ -86,7 +86,18 @@ Example 4 (set `socketTimeout` to 15 seconds):
 ```js
 const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex('your_key', 'your_secret', { socketTimeout: 15000 });
-	
+
+poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
+  if (!err) console.log(ticker);
+});
+```
+
+Example 4 (set `nonce` to custom function):
+
+```js
+const Poloniex = require('poloniex-api-node');
+let poloniex = new Poloniex('your_key', 'your_secret', { nonce: (nonceLength) => new Date().time() });
+
 poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
   if (!err) console.log(ticker);
 });
@@ -160,7 +171,7 @@ poloniex = new Poloniex('myKey', 'mySecret', { socketTimeout: 130000 });
 * `socketTimeout` - the number of milliseconds to wait for the server to send the response before aborting the request (REST API)
 * `keepAlive` - keep open and reuse the underlying TCP connection (REST API)
 * `proxy` - proxy to be used for requests (REST API)
- 
+
 
 ## REST API
 
@@ -381,7 +392,7 @@ poloniex.on('error', (error) => {
 #### openWebSocket([options])
 
 Opens WebSocket connection to Poloniex server.
-If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (equivalent to a full reset of the WebSocket connection). 
+If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (equivalent to a full reset of the WebSocket connection).
 
 Event `'open'` is emitted when connection is established.
 
@@ -407,13 +418,13 @@ poloniex.openWebSocket({ version: 2 });
 
 In order to receive updates over WebSocket, subscribe to following channels:
 * `'ticker'`
-* currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`) 
+* currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`)
 * `'footer'`
 
 When an update on the subscribed channel is received `Poloniex` object emits the event `'message'`.
- 
+
  > You can subscribe to a channel either before or after the WebSocket connection is opened with `openWebSocket`. If WebSocket connection is already open, the subscription is activated immediately. If WebSocket connection is not open yet, the `subscribe` is registering the subscription; all registered connections will be activated when `openWebSocket` is issued.
- 
+
 ##### Channel: `'ticker'`
 
 Provides ticker updates.
@@ -499,7 +510,7 @@ The data for `orderBook` snapshot is provided in the following format:
 ]
 ```
 
-> This message type is only valid for the new WebSocket API (v2). When WAMP API (v1) is used, the orderBook snapshot has to be retrieved using REST API method `returnOrderBook`. 
+> This message type is only valid for the new WebSocket API (v2). When WAMP API (v1) is used, the orderBook snapshot has to be retrieved using REST API method `returnOrderBook`.
 
 
 ###### orderBookModify and orderBookRemove

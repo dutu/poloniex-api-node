@@ -6,6 +6,7 @@ poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.6] - unreleased
 - Changed: Examples updated
+- Added: ability to pass in a nonce generating function. (#47)
 
 ## [1.6.5] - 2017-11-21
 - Fixed: Ignore unknown markets for ticker (WebSocket v2)
@@ -39,11 +40,11 @@ poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 - Fixed: throw error when invalid parameters (#2)  
 
 ## [1.3.0] - 2017-07-02
-- Added: Optional `keepAlive` parameter to constructor 
+- Added: Optional `keepAlive` parameter to constructor
 
 ## [1.2.0] - 2017-06-18
 - Added: Promise support
-- Changed: default socketTimeout changed from 10 seconds to 60 seconds 
+- Changed: default socketTimeout changed from 10 seconds to 60 seconds
 
 ## [1.1.1] - 2017-05-08
 - Fixed: Error handling for certain Poloniex error responses

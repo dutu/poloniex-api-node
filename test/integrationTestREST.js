@@ -158,6 +158,22 @@ describe("Integration Test", function () {
 					done();
 				});
 			});
+			it('should return use nonce generating function when passed one', function (done) {
+        			if (!process.env.APIKEY || !process.env.APISECRET) {
+          				done();
+          				return;
+        			}
+
+        			let nonceFunctionUsed = false;
+        			let poloniex = new Poloniex({ nonce: function(length) {
+          				nonceFunctionUsed = true;
+          				return 0;
+        			}});
+				poloniex.returnMyTradeHistory('all', 1423526400, 1506956149, (error, response) => {
+          				expect(nonceFunctionUsed).to.be.true;
+					done();
+				});
+			});
 		});
     describe('Missing parameter tests', function () {
       it('should throw error when missing parameter for public API method', function (done) {
