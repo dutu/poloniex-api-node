@@ -173,6 +173,7 @@ poloniex = new Poloniex('myKey', 'mySecret', { socketTimeout: 130000 });
 * `keepAlive` - keep open and reuse the underlying TCP connection (REST API)
 * `proxy` - proxy to be used for requests (REST API)
 * `nonce` - custom function that returns an unique and ever increasing number
+* `agent` - sets specific http.Agent for REST API calls and WebSocket connection. (It is useful for using socks proxy to avoid the 403 error with CAPTCHA. See [#20](https://github.com/dutu/poloniex-api-node/issues/20#issuecomment-359789499))
 
 
 ## REST API
