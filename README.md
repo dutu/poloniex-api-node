@@ -296,7 +296,9 @@ poloniex.returnBalances().then((balances) => {
 
 #### moveOrder(orderNumber, rate, amount, immediateOrCancel, postOnly [, callback])
 
-#### withdraw(currency, amount, address [, callback])
+#### withdraw(currency, amount, address, paymentId [, callback])
+
+> Parameter `paymentId` is used for certain withdrawals (e.g. XMR) and when not wanted/needed should be passed as `null`.
 
 #### returnFeeInfo([callback])
 
