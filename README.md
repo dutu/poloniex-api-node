@@ -153,7 +153,8 @@ Default options:
 {
   socketTimeout: 60000,
   keepAlive: true,
-  nonce: nonce(16)
+  nonce: nonce(16),
+  headers: { 'User-Agent': 'poloniex-api-node *version*' }
 }
 ```
 
@@ -174,6 +175,7 @@ poloniex = new Poloniex('myKey', 'mySecret', { socketTimeout: 130000 });
 * `proxy` - proxy to be used for requests (REST API)
 * `nonce` - custom function that returns an unique and ever increasing number
 * `agent` - sets specific http.Agent for REST API calls and WebSocket connection. (It is useful for using socks proxy to avoid the 403 error with CAPTCHA. See [#20](https://github.com/dutu/poloniex-api-node/issues/20#issuecomment-359789499))
+* `headers` - HTTP Headers, such as User-Agent, can be set in the object. See [https://github.com/request/request#custom-http-headers](https://github.com/request/request#custom-http-headers "the Request module")
 
 
 ## REST API
@@ -668,6 +670,7 @@ See detailed [Changelog](CHANGELOG.md)
 # Contributors
 
 * [dutu](https://github.com/dutu) (<dutu@protonmail.com>)
+* [aloysius-pgast](https://github.com/aloysius-pgast)
 * [julesGoullee](https://github.com/julesGoullee) (<julesgoullee@gmail.com>)
 * [kevflynn](https://github.com/kevflynn) ([Kevin](http://www.kevflynn.com))
 * [Denis Bezrukov](https://github.com/anthrax63)

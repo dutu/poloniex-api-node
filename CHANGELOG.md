@@ -4,6 +4,9 @@ All notable changes to this module are documented in this file.
 
 poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.9.0] - 2018-05-05
+- Added: support for custom HTTP headers 
+
 ## [1.8.2] - 2018-02-02
 - Fixed: WebSocket keepAlive occasionally throws error 
 
