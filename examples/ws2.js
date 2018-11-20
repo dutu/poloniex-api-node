@@ -3,8 +3,10 @@ const Poloniex = require ('../lib/poloniex.js');
 
 let poloniex = new Poloniex();
 
+/*
 poloniex.subscribe('ticker');
 poloniex.subscribe('BTC_ETH');
+*/
 
 poloniex.on('message', (channelName, data, seq) => {
   if (channelName === 'ticker') {
@@ -29,4 +31,5 @@ poloniex.on('error', (error) => {
   console.log(`An error has occured`);
 });
 
-poloniex.openWebSocket({ version: 2 });
+poloniex.openWebSocket();
+poloniex.subscribe('ticker');

@@ -4,8 +4,8 @@ const expect = chai.expect;
 const Poloniex = require('../lib/poloniex.js');
 const TIMEOUT = 10000;
 
-describe("Integration Test - WebSocket2", function () {
-  describe.skip('openWebSocket', function () {
+describe("Integration Test - WebSocket", function () {
+  describe('openWebSocket', function () {
     it('should emit "open" event when no subscriptions', function (done) {
       let timeoutId;
       let poloniex = new Poloniex();
@@ -15,7 +15,7 @@ describe("Integration Test - WebSocket2", function () {
         done();
       };
       poloniex.on('open', eventHandler);
-      poloniex.openWebSocket({ version: 2 });
+      poloniex.openWebSocket();
       timeoutId = setTimeout(function() {
         expect(false, 'expected eventHandler to have been called').to.be.ok;
         poloniex.closeWebSocket();
@@ -42,7 +42,7 @@ describe("Integration Test - WebSocket2", function () {
         expect(poloniex.subscriptions).to.deep.include({channelName: 'ticker', channelSubscription: null});
       });
       poloniex.on('message', eventHandler);
-      poloniex.openWebSocket({ version: 2 });
+      poloniex.openWebSocket();
       timeoutId = setTimeout(function() {
         expect(false, 'expected eventHandler to have been called').to.be.ok;
         poloniex.closeWebSocket();
@@ -61,7 +61,7 @@ describe("Integration Test - WebSocket2", function () {
         poloniex.closeWebSocket();
       });
       poloniex.on('close', eventHandler);
-      poloniex.openWebSocket({ version: 2 });
+      poloniex.openWebSocket();
       timeoutId = setTimeout(function() {
         expect(false, 'expected eventHandler to have been called').to.be.ok;
         poloniex.closeWebSocket();
@@ -70,16 +70,16 @@ describe("Integration Test - WebSocket2", function () {
     });
   });
   describe('subscribe', function () {
-    it.skip('should add subscription with connection closed', function (done) {
+    it('should add subscription with connection closed', function (done) {
       let poloniex = new Poloniex();
       expect(poloniex.subscriptions).to.eql([]);
       poloniex.subscribe('ticker');
       expect(poloniex.subscriptions).to.deep.include({channelName: 'ticker', channelSubscription: null});
       done();
     });
-    it.skip('should add subscription with connection open', function (done) {
+    it('should add subscription with connection open', function (done) {
       let poloniex = new Poloniex();
-      poloniex.openWebSocket({ version: 2 });
+      poloniex.openWebSocket();
       poloniex.on('open', () => {
         poloniex.subscribe('ticker');
         expect(poloniex.subscriptions).to.deep.include({channelName: 'ticker', channelSubscription: null});
@@ -105,7 +105,7 @@ describe("Integration Test - WebSocket2", function () {
           done();
         }
       };
-      poloniex.openWebSocket({ version: 2 });
+      poloniex.openWebSocket();
       poloniex.on('open', () => {
         poloniex.subscribe('ticker');
         expect(poloniex.subscriptions).to.deep.include({channelName: 'ticker', channelSubscription: null});
@@ -115,7 +115,7 @@ describe("Integration Test - WebSocket2", function () {
         expect(false, 'expected eventHandler to have been called').to.be.ok;
         poloniex.closeWebSocket();
         done();
-      }, TIMEOUT * 2);
+      }, TIMEOUT * 3);
     });
     it('should subscribe and emit "orderbook" for currencyPair', function (done) {
       let poloniex = new Poloniex();
@@ -132,7 +132,7 @@ describe("Integration Test - WebSocket2", function () {
           done();
         }
       };
-      poloniex.openWebSocket({ version: 2 });
+      poloniex.openWebSocket();
       poloniex.on('open', () => {
         poloniex.subscribe('BTC_ETH');
         expect(poloniex.subscriptions).to.deep.include({channelName: 'BTC_ETH', channelSubscription: null});
@@ -144,13 +144,13 @@ describe("Integration Test - WebSocket2", function () {
         done();
       }, TIMEOUT * 2);
     });
-    it('should subscribe and emit "footer" message', function (done) {
+    it('should subscribe and emit "volume" message', function (done) {
       let poloniex = new Poloniex();
       let timeoutId;
       let isDoneCalled = false;
       let eventHandler = function eventHandler(channelName, data) {
         clearTimeout(timeoutId);
-        expect(channelName).to.be.eql('footer');
+        expect(channelName).to.be.eql('volume');
         expect(data).to.be.an('object');
         expect(data.serverTime).to.be.a('string');
         expect(data.usersOnline).to.be.a('number');
@@ -161,10 +161,36 @@ describe("Integration Test - WebSocket2", function () {
           done();
         }
       };
-      poloniex.openWebSocket({ version: 2 });
+      poloniex.openWebSocket();
       poloniex.on('open', () => {
-        poloniex.subscribe('footer');
-        expect(poloniex.subscriptions).to.deep.include({channelName: 'footer', channelSubscription: null});
+        poloniex.subscribe('volume');
+        expect(poloniex.subscriptions).to.deep.include({channelName: 'volume', channelSubscription: null});
+      });
+      poloniex.on('message', eventHandler);
+      timeoutId = setTimeout(function() {
+        expect(false, 'expected eventHandler to have been called').to.be.ok;
+        poloniex.closeWebSocket();
+        done();
+      }, TIMEOUT * 2.5);
+    });
+    it('should subscribe and emit "accountNotifications" message', function (done) {
+      let poloniex = new Poloniex(process.env.APIKEY, process.env.APISECRET);
+      let timeoutId;
+      let isDoneCalled = false;
+      let eventHandler = function eventHandler(channelName, data) {
+        clearTimeout(timeoutId);
+        expect(channelName).to.be.eql('accountNotifications');
+        if (!isDoneCalled) {
+          expect(data).to.be.eql('subscriptionSucceeded');
+          poloniex.closeWebSocket();
+          isDoneCalled = true;
+          done();
+        }
+      };
+      poloniex.openWebSocket();
+      poloniex.on('open', () => {
+        poloniex.subscribe('accountNotifications');
+        expect(poloniex.subscriptions).to.deep.include({channelName: 'accountNotifications', channelSubscription: null});
       });
       poloniex.on('message', eventHandler);
       timeoutId = setTimeout(function() {
@@ -174,7 +200,7 @@ describe("Integration Test - WebSocket2", function () {
       }, TIMEOUT * 2);
     });
   });
-  describe.skip('unsubscribe', function () {
+  describe('unsubscribe', function () {
     it('should remove subscription with connection closed', function (done) {
       let poloniex = new Poloniex();
       expect(poloniex.subscriptions).to.eql([]);
@@ -199,7 +225,7 @@ describe("Integration Test - WebSocket2", function () {
         poloniex.closeWebSocket();
         done();
       };
-      poloniex.openWebSocket({ version: 2 });
+      poloniex.openWebSocket();
       poloniex.on('open', () => {
         poloniex.subscribe('ticker');
         expect(poloniex.subscriptions).to.deep.include({channelName: 'ticker', channelSubscription: null});
@@ -212,7 +238,7 @@ describe("Integration Test - WebSocket2", function () {
       }, TIMEOUT * 2);
     });
   });
-  describe.skip('closeWebSocket', function () {
+  describe('closeWebSocket', function () {
     it('should emit "close" event', function (done) {
       let timeoutId;
       let poloniex = new Poloniex();
@@ -225,7 +251,7 @@ describe("Integration Test - WebSocket2", function () {
         poloniex.closeWebSocket();
       });
       poloniex.on('close', eventHandler);
-      poloniex.openWebSocket({ version: 2 });
+      poloniex.openWebSocket();
       timeoutId = setTimeout(function() {
         expect(false, 'expected eventHandler to have been called').to.be.ok;
         poloniex.closeWebSocket();

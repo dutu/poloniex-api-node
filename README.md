@@ -3,28 +3,44 @@ poloniex-api-node
 [![Build Status](https://travis-ci.org/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.org/dutu/poloniex-api-node) [![Dependency Status](https://dependencyci.com/github/dutu/poloniex-api-node/badge)](https://dependencyci.com/github/dutu/poloniex-api-node) [![npm](https://img.shields.io/npm/dm/poloniex-api-node.svg)](https://www.npmjs.com/package/poloniex-api-node)
 
 
-
 **poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket API.
 
 REST API supports both Callback and Promise.
 
-WebSocket API supports both the WAMP protocol (v1) and the new WebSocket API (v2).
-
-> The legacy WAMP push API (v1) is currently the WebSocket API officially documented. Lately, it is not stable and Poloniex servers are not handling the API properly due high load.
->
-> The new WebSocket API (v2) is not yet officially documented, however its functionality is much faster and reliable. WebSocket API (v2) is also internally used by Poloniex.
+WebSocket API is supported for the public order book and your private account as well.
 
 
 ### Contents
+* [Changelog](#changelog)
 * [Install](#install)
 * [Quick examples](#quick-examples)
 * [Usage](#usage)
 	* Constructor
 	* REST API
-	* WebSocket API (version 1 and version 2)
-* [Changelog](#changelog)
+	* WebSocket API
 * [Contributors](#contributors)
 * [License](#license)
+
+# Changelog
+
+See detailed [Changelog](CHANGELOG.md)
+
+## Breaking changes introduced in version 2.0.0
+
+### Push API using WAMP is removed
+
+Push API using WAMP is deprecated and removed. Only WebSocket API is supported.
+Parameter `version` for `openWebSocket` method has been removed and `version = 2` (WebSocket) is now the default and the only option.
+
+### WebSocket channel `footer` is renamed
+
+WebSocket channel `footer` has been renamed to `volume`. The change is in line with Poloniex API documentation.
+
+## Important changes introduced in version 2.0.0:
+
+* Added WebSocket API for account notifications channel (private account) 
+* Added new order `statusTrading` API method (REST API)
+
 
 # Install
 
@@ -137,7 +153,7 @@ poloniex.on('error', (error) => {
   console.log(`An error has occured`);
 });
 
-poloniex.openWebSocket({ version: 2 });
+poloniex.openWebSocket();
 ```
 
 # Usage
@@ -290,6 +306,8 @@ poloniex.returnBalances().then((balances) => {
 
 #### returnOrderTrades(orderNumber [, callback])
 
+#### returnOrderStatus(orderNumber [, callback])
+
 #### buy(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
 
 #### sell(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
@@ -333,15 +351,12 @@ poloniex.returnBalances().then((balances) => {
 #### toggleAutoRenew(orderNumber [, callback])
 
 
-## Websocket API (version 1 and version 2)
+## Websocket API
 
-This module implements both the legacy WAMP push API (v1) and the new WebSocket API (v2).
+This module implements the WebSocket API for receiving push notifications about the public order book, and your private account.
 
-Although the module facilitates the usage of v1 and v2 in a similar way, Poloniex implementation is completely different.
+> The push API using WAMP is deprecated and no longer supported by this module.
 
-The legacy WAMP push API (v1) is currently the WebSocket API officially documented. Lately, it is not stable and Poloniex servers are not handling the API properly due high load.
-
-The new WebSocket API (v2) is not yet officially documented, however its functionality is much faster and reliable. WebSocket API (v2) is also internally used by Poloniex.
 
 ### Events
 
@@ -389,28 +404,19 @@ poloniex.on('error', (error) => {
 });
 ```
 
-#### Event: `'heartbeat'` (v2 only)
+#### Event: `'heartbeat'`
 
- Emitted if there is no update for more than 60 seconds
+Emitted if there is no update for more than 60 seconds.
 
 
 ### Methods
 
-#### openWebSocket([options])
+#### openWebSocket()
 
 Opens WebSocket connection to Poloniex server.
 If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (equivalent to a full reset of the WebSocket connection).
 
 Event `'open'` is emitted when connection is established.
-
-Default options:
-```js
-{
-  version: 1
-}
-```
-
-To use the new WebSocket API (v2), pass parameter option as `{ version: 2 }`
 
 Example:
 ```js
@@ -418,7 +424,7 @@ let poloniex = new Poloniex();
 poloniex.on('open', () => {
   console.log(`WebSocket connection has be opened.`);
 });
-poloniex.openWebSocket({ version: 2 });
+poloniex.openWebSocket();
 ```
 
 #### subscribe(channelName)
@@ -426,7 +432,7 @@ poloniex.openWebSocket({ version: 2 });
 In order to receive updates over WebSocket, subscribe to following channels:
 * `'ticker'`
 * currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`)
-* `'footer'`
+* `'volume'`
 
 When an update on the subscribed channel is received `Poloniex` object emits the event `'message'`.
 
@@ -483,17 +489,17 @@ poloniex.on('message', (channelName, data, seq) => {
 });
 ```
 
-There are four types of messages (described below)
-* `orderBook` (v2 only)
-* `orderBookModify`
-* `orderBookRemove`
-* `newTrade`
+There are four types of messages:
+* "orderBook`
+* "orderBookModify`
+* "orderBookRemove`
+* "newTrade`
 
-######  orderBook (v2 only)
+######  Message type 'orderBook'
 
-Provides a snapshot of the order book for the subscribed currency pair. The message is emited imediatelly after subscription to the currency pair is activated.
+Provides a snapshot of the order book for the subscribed currency pair. The message is emitted immediately after subscription to the currency pair is activated.
 
-The data for `orderBook` snapshot is provided in the following format:
+The data for `'orderBook'` snapshot is provided in the following format:
 
 ```js
 [
@@ -517,12 +523,10 @@ The data for `orderBook` snapshot is provided in the following format:
 ]
 ```
 
-> This message type is only valid for the new WebSocket API (v2). When WAMP API (v1) is used, the orderBook snapshot has to be retrieved using REST API method `returnOrderBook`.
 
+###### Message types 'orderBookModify' and 'orderBookRemove'
 
-###### orderBookModify and orderBookRemove
-
-There are two types of order book updates `orderBookModify` and `orderBookRemove`, provided in the following formats:
+There are two types of order book updates `'orderBookModify'` and `'orderBookRemove'`, provided in the following formats:
 
 ```js
 [
@@ -550,13 +554,13 @@ There are two types of order book updates `orderBookModify` and `orderBookRemove
 ]
 ```
 
-Updates of type `orderBookModify` can be either additions to the order book or changes to existing entries. The value of `amount` indicates the new total amount on the books at the given rate — in other words, it replaces any previous value, rather than indicates an adjustment to a previous value.
+Updates of type `'orderBookModify'` can be either additions to the order book or changes to existing entries. The value of `amount` indicates the new total amount on the books at the given rate — in other words, it replaces any previous value, rather than indicates an adjustment to a previous value.
 
-Each `message` event will pass the parameter `seq`, indicating the a sequence number. In order to keep your order book consistent, you will need to ensure that messages are applied in the order of their sequence numbers, even if they arrive out of order.
+Each `'message'` event will pass the parameter `seq`, indicating the a sequence number. In order to keep your order book consistent, you will need to ensure that messages are applied in the order of their sequence numbers, even if they arrive out of order.
 
-Several order book and trade history updates will often arrive in a single message. Be sure to loop through the entire array, otherwise you will miss some updates.
+> **Important:** Several order book and trade history updates will often arrive in a single message. Be sure to loop through the entire array, otherwise you will miss some updates.
 
-######  newTrade
+######  Message type `'newTrade'`
 
 Trade history updates are provided in the following format:
 ```js
@@ -579,7 +583,8 @@ Trade history updates are provided in the following format:
 > **Important:** Several order book and trade history updates will often arrive in a single message. Be sure to loop through the entire array, otherwise you will miss some updates.
 
 
-##### Channel: `'footer'`
+
+##### Channel: `'volume'`
 
 Provides other info updates.
 
@@ -612,7 +617,125 @@ The updates will be in following format:
 ]
 ```
 
-> Channel `'footer'` is not documented in the official Poloniex API documentation.
+##### Channel: `'accountNotifications'`
+
+Provides real-time updates of trade and balance changes on your account. 
+It is an authenticated WebSocket channel, so it requires the API key and secret to be provided in the constructor.
+
+Example:
+```js
+let poloniex = new Poloniex('your_key', 'your_secret');
+poloniex.openWebSocket();
+poloniex.subscribe('accountNotifications');
+poloniex.on('message', (channelName, data) => {
+  if (channelName === 'accountNotifications') {
+    console.log(`account notifications update: ${JSON.stringify(data}`);
+  }
+});
+```
+
+There are five types of messages:
+* `subscriptionSucceeded`
+* `balanceUpdate`
+* `newLimitOrder`
+* `orderUpdate`
+* `newTrade`
+
+`'subscriptionSucceeded'` is an acknowledgement of the subscription, the first message received after a successful subscription.
+
+Subsequent messages represent updates to your account. In general, a message consists of a combination of updates of different types.
+
+> **Important:** Several updates will often arrive in a single message. Be sure to loop through the entire array, otherwise you will miss some updates.
+
+
+######  Message type `'subscriptionSucceeded'`
+
+This is an acknowledgement of the subscription, the first message received after a successful subscription.
+
+The data for `'subscriptionSucceeded'` is provided in the following format:
+
+```js
+"subscriptionSucceeded"
+```
+
+###### Message type `'balanceUpdate'`
+
+`'balanceUpdate'` message represents an available balance update, provided in the following format:
+
+```js
+[
+  {
+    "type": "balanceUpdate",
+    "data": {
+      "currency": "BTC",
+      "wallet": "exchange",
+      "amount": "0.00130128"
+    }
+  }
+]
+```
+
+`wallet` can be `'exchange'`, `'margin'`, or `'lending'`. 
+
+###### Message type `'newLimitOrder'`
+
+`'newLimitOrder'` message represents an available balance update, provided in the following format:
+
+```js
+[
+  {
+    "type": "newLimitOrder",
+    "data": {
+      "currencyPair": "BTC_ETH",
+      "orderNumber": 519591595441,
+      "type": "buy",
+      "rate": "0.01017136",
+      "amount": "0.12793656",
+      "date": "2018-11-19 14:50:16"
+    }
+  }
+]
+```
+
+`type` can either be `'sell'` or `'buy'`.
+
+###### Message type `'orderUpdate'`
+
+`'orderUpdate'` message represents an order update, provided in the following format:
+
+
+```js
+[
+  {
+    "type": "orderUpdate",
+    "data": {
+      "orderNumber": 519591595441,
+      "amount": "0.00000000"
+    }
+  },
+]
+```
+
+
+######  Message type `'newTrade'`
+
+ `'newTrade'` message represents a trade notification, provided in the following format:
+
+```js
+[
+  {
+    "type": "newTrade",
+    "data": {
+      "tradeID": 45376136,
+      "rate": "0.03029793",
+      "amount": "0.03100000",
+      "feeMultiplier": "0.00200000",
+      "fundingType": 0,
+      "orderNumber": 519616686325
+  }
+]
+```
+
 
 
 #### unsubscribe(channelName)
@@ -639,19 +762,7 @@ poloniex.unsubscribe('BTC_ETH');
 Closes WebSocket connection previously opened.
 Event `'close'` is emitted when connection closes.
 
-Example (v1):
-```js
-let poloniex = new Poloniex();
-poloniex.on('open', () => {
-  poloniex.closeWebSocket();
-});
-poloniex.on('close', (reason, details) => {
-  console.log(`WebSocket connection has been closed`);
-});
-poloniex.openWebSocket();
-```
-
-Example (v2):
+Example:
 ```js
 let poloniex = new Poloniex();
 poloniex.on('open', () => {
@@ -663,13 +774,13 @@ poloniex.on('close', (reason, code) => {
 poloniex.openWebSocket();
 ```
 
-# Changelog
-
-See detailed [Changelog](CHANGELOG.md)
 
 # Contributors
 
+This project exists thanks to all the people who contribute.
+
 * [dutu](https://github.com/dutu) (<dutu@protonmail.com>)
+* [standup75](https://github.com/standup75) (<me@standupweb.net>)
 * [aloysius-pgast](https://github.com/aloysius-pgast)
 * [julesGoullee](https://github.com/julesGoullee) (<julesgoullee@gmail.com>)
 * [kevflynn](https://github.com/kevflynn) ([Kevin](http://www.kevflynn.com))
