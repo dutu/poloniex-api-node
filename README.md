@@ -39,7 +39,7 @@ WebSocket channel `footer` has been renamed to `volume`. The change is in line w
 ## Important changes introduced in version 2.0.0:
 
 * Added WebSocket API for account notifications channel (private account) 
-* Added new order `statusTrading` API method (REST API)
+* Added new `returnOrderStatus` API method (REST API)
 
 
 # Install

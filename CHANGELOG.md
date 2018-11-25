@@ -8,7 +8,7 @@ poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 - Changed: removed `version` parameter for `openWebSocket` method. `version = 2` (WebSocket) is now the default 
 - Changed: removed the push API using WAMP which is deprecated
 - Changed: WebSocket channel `footer`renamed to `volume` 
-- Added: new order `statusTrading` API method (REST API)
+- Added: new `returnOrderStatus` API method (REST API)
 - Added: WebSocket API for account notifications channel (private account) 
 - Fixed: error when subscribing between openWebSocket and `open` event
 
