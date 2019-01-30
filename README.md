@@ -430,9 +430,11 @@ poloniex.openWebSocket();
 #### subscribe(channelName)
 
 In order to receive updates over WebSocket, subscribe to following channels:
-* `'ticker'`
-* currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`)
-* `'volume'`
+* `'ticker'` - ticker data
+* currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`) - price aggregated book 
+* `'volume'` - 24 Hour Exchange Volume
+* `heartbeat` - heartbeat
+* `accountNotifications` - account notifications
 
 When an update on the subscribed channel is received `Poloniex` object emits the event `'message'`.
 
@@ -586,14 +588,14 @@ Trade history updates are provided in the following format:
 
 ##### Channel: `'volume'`
 
-Provides other info updates.
+Provides 24 hour exchange volume updates.
 
 Example:
 ```js
 let poloniex = new Poloniex();
-poloniex.subscribe('footer');
+poloniex.subscribe('volume');
 poloniex.on('message', (channelName, data) => {
-  if (channelName === 'footer') {
+  if (channelName === 'volume') {
     console.log(data);
   }
 });
@@ -616,6 +618,11 @@ The updates will be in following format:
   }
 ]
 ```
+
+##### Channel: `'heartbeat'`
+
+When no messages have been sent out for one second, the server will send a heartbeat message as follows. Absence of heartbeats indicates a protocol or networking issue and the client application is expected to close the socket and try again.
+
 
 ##### Channel: `'accountNotifications'`
 

@@ -4,6 +4,10 @@ All notable changes to this module are documented in this file.
 
 poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.1] - 2019-01-30
+- Changed: dependencies updated 
+- Fixed: documentation updated (WebSocket channel `heartbeat` added)
+
 ## [2.0.0] - 2018-11-20
 - Changed: removed `version` parameter for `openWebSocket` method. `version = 2` (WebSocket) is now the default 
 - Changed: removed the push API using WAMP which is deprecated
