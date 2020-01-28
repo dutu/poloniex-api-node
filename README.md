@@ -636,7 +636,7 @@ poloniex.openWebSocket();
 poloniex.subscribe('accountNotifications');
 poloniex.on('message', (channelName, data) => {
   if (channelName === 'accountNotifications') {
-    console.log(`account notifications update: ${JSON.stringify(data}`);
+    console.log(`account notifications update: ${JSON.stringify(data)}`);
   }
 });
 ```
@@ -799,6 +799,7 @@ This project exists thanks to all the people who contribute.
 * [zymnytskiy](https://github.com/zymnytskiy)
 * [zunderbolt](https://github.com/zunderbolt)
 * [SeanRobb](https://github.com/SeanRobb)
+* [Alexey Marunin](https://github.com/alexeymarunin)
 
 # License
 

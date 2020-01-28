@@ -4,6 +4,10 @@ All notable changes to this module are documented in this file.
 
 poloniex-api-node module adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.2] - 2019-12-20
+- Changed: dependencies updated 
+- Fixed: emit error as object (not string message) in ws.onerror
+
 ## [2.0.1] - 2019-01-30
 - Changed: dependencies updated 
 - Fixed: documentation updated (WebSocket channel `heartbeat` added)
