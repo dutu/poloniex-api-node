@@ -1,6 +1,6 @@
 poloniex-api-node
 =======
-[![Build Status](https://travis-ci.com/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.com/dutu/poloniex-api-node) [![dependencies Status](https://david-dm.org/dutu/poloniex-api-node/status.svg)](https://david-dm.org/dutu/poloniex-api-node)
+[![Build Status](https://travis-ci.com/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.com/dutu/poloniex-api-node) 
 
 
 **poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket API.
@@ -23,24 +23,13 @@ WebSocket API is supported for the public order book and your private account as
 
 # Changelog
 
-See detailed [Changelog](CHANGELOG.md)
+See detailed [GitHub Releases](https://github.com/dutu/poloniex-api-node/releases)
 
-## Breaking changes introduced in version 2.0.0
+## Breaking changes introduced in version 3.0.0
 
-### Push API using WAMP is removed
-
-Push API using WAMP is deprecated and removed. Only WebSocket API is supported.
-Parameter `version` for `openWebSocket` method has been removed and `version = 2` (WebSocket) is now the default and the only option.
-
-### WebSocket channel `footer` is renamed
-
-WebSocket channel `footer` has been renamed to `volume`. The change is in line with Poloniex API documentation.
-
-## Important changes introduced in version 2.0.0:
-
-* Added WebSocket API for account notifications channel (private account) 
-* Added new `returnOrderStatus` API method (REST API)
-
+Legacy Poloniex API is no longer supported.
+Poloniex has announced that **the legacy API is slated to be decommissioned on Jan 31st, 2023**.
+Module supporting the legacy API has been moved to [branch legacy_API](https://github.com/dutu/poloniex-api-node/tree/legacy_API), and it is not longer maintained. 
 
 # Install
 

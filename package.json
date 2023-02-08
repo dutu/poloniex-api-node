@@ -1,14 +1,18 @@
 {
   "name": "poloniex-api-node",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "Simple node.js wrapper for Poloniex REST and WebSocket API. Supports Callback and Promise",
-  "main": "./lib/poloniex.js",
+  "main": "./src/poloniex.mjs",
+  "type": "module",
+  "engines": {
+    "node": "19.x"
+  },
   "scripts": {
     "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dutu/poloniex-api-node.git"
+    "url": "https://github.com/dutu/poloniex-api-node"
   },
   "keywords": [
     "api",
@@ -17,8 +21,7 @@
     "btc",
     "eth",
     "REST",
-    "WebSocket",
-    "push"
+    "WebSocket"
   ],
   "author": "dutu <dutu@protonmail.com>",
   "license": "MIT",
@@ -26,17 +29,14 @@
     "url": "https://github.com/dutu/poloniex-api-node/issues"
   },
   "homepage": "https://github.com/dutu/poloniex-api-node",
+  "packageManager": "yarn@3.4.1",
   "dependencies": {
-    "big.js": "^5.2.2",
-    "debug": "^4.1.1",
-    "events": "^3.0.0",
-    "nonce": "^1.0.4",
-    "request": "^2.88.0",
-    "socks-proxy-agent": "^4.0.2",
-    "ws": "^7.2.1"
+    "axios": "^1.3.2",
+    "crypto-js": "^4.1.1",
+    "debug": "^4.3.4"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^7.0.1"
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0"
   }
 }

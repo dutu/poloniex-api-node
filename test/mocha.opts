@@ -1,4 +1,0 @@
---ui bdd
---reporter spec
---timeout 120000
---exit
