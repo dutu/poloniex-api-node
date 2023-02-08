@@ -1,6 +1,6 @@
 poloniex-api-node
 =======
-[![Build Status](https://travis-ci.com/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.com/dutu/poloniex-api-node) [![dependencies Status](https://david-dm.org/dutu/poloniex-api-node/status.svg)](https://david-dm.org/dutu/poloniex-api-node)
+[![Build Status](https://travis-ci.com/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.com/dutu/poloniex-api-node)
 
 
 **poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket API.
@@ -9,6 +9,16 @@ REST API supports both Callback and Promise.
 
 WebSocket API is supported for the public order book and your private account as well.
 
+
+# Important note
+
+Version 2.x.x of the module, and the documentation below, refers to the Poloniex legacy HTTP and Websockets API.
+
+**The Legacy API is slated to be decommissioned on Jan 31st, 2023.**
+
+Poloniex documentation for the legacy HTTP and Websockets API can be found [here](https://docs.legacy.poloniex.com/). 
+
+For the new version of Poloniex API check module version 3.x.x.  
 
 ### Contents
 * [Changelog](#changelog)
