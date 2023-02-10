@@ -1,8 +1,8 @@
 {
   "name": "poloniex-api-node",
   "version": "3.0.0",
-  "description": "Simple node.js wrapper for Poloniex REST and WebSocket API. Supports Callback and Promise",
-  "main": "./src/poloniex.mjs",
+  "description": "Simple node.js wrapper for Poloniex REST and WebSocket API.",
+  "main": "lib/poloniex.mjs",
   "type": "module",
   "engines": {
     "node": "19.x"

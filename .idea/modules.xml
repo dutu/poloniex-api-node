@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../luno-api-node/.idea/luno-api-node.iml" filepath="$PROJECT_DIR$/../luno-api-node/.idea/luno-api-node.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/poloniex-api-node.iml" filepath="$PROJECT_DIR$/.idea/poloniex-api-node.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../valr-api-node/.idea/valr-api-node.iml" filepath="$PROJECT_DIR$/../valr-api-node/.idea/valr-api-node.iml" />
     </modules>
   </component>
 </project>

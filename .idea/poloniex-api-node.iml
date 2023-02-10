@@ -8,5 +8,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="luno-api-node" />
+    <orderEntry type="module" module-name="valr-api-node" />
   </component>
 </module>
