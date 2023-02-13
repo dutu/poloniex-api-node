@@ -24,6 +24,11 @@ describe('REST tests', function () {
         expect(result).to.be.an('array').with.lengthOf(1)
         expect(result[0]).to.have.own.property('symbol', 'BTC_USDT')
       })
+
+      it('should return api calls remaining', async function () {
+        const result = polo.getSymbols(Symbol())
+        expect(result).to.be.an('number')
+      })
     })
 
     describe('getCurrencies()', function () {
