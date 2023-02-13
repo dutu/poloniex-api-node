@@ -32,9 +32,9 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getSymbols( { getApiCallRateInfo : true })
+        let result = polo.getSymbols( { getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
-        result = await polo.getSymbols({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
+        result = polo.getSymbols({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -54,9 +54,9 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getCurrencies({ getApiCallRateInfo : true })
+        let result = polo.getCurrencies({ getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
-        result = await polo.getCurrencies({ currency: 'BTC', getApiCallRateInfo : true })
+        result = polo.getCurrencies({ currency: 'BTC', getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -68,7 +68,7 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getTimestamp({ getApiCallRateInfo : true })
+        let result = polo.getTimestamp({ getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -89,9 +89,9 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getPrices({ getApiCallRateInfo : true })
+        let result = polo.getPrices({ getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
-        result = await polo.getPrices({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
+        result = polo.getPrices({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -112,9 +112,9 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getMarkPrice({ getApiCallRateInfo : true })
+        let result = polo.getMarkPrice({ getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
-        result = await polo.getMarkPrice({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
+        result = polo.getMarkPrice({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -127,7 +127,7 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getMarkPriceComponents({ symbol: 'BTC_USDT',  getApiCallRateInfo : true })
+        let result = polo.getMarkPriceComponents({ symbol: 'BTC_USDT',  getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -145,7 +145,7 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getOrderBook({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
+        let result = polo.getOrderBook({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -165,7 +165,7 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getCandles({ symbol: 'BTC_USDT', interval: 'HOUR_1', getApiCallRateInfo : true })
+        let result = polo.getCandles({ symbol: 'BTC_USDT', interval: 'HOUR_1', getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -185,7 +185,7 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getTrades({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
+        let result = polo.getTrades({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -208,7 +208,7 @@ describe('REST tests', function () {
       it('should return api calls info', async function () {
         let result = await polo.getTicker({ getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
-        result = await polo.getTicker({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
+        result = polo.getTicker({ symbol: 'BTC_USDT', getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -231,7 +231,7 @@ describe('REST tests', function () {
       it('should return api calls info', async function () {
         let result = await polo.getCollateralInfo({ getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
-        result = await polo.getCollateralInfo({ currency: 'BTC', getApiCallRateInfo : true })
+        result = polo.getCollateralInfo({ currency: 'BTC', getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
     })
@@ -246,7 +246,7 @@ describe('REST tests', function () {
       })
 
       it('should return api calls info', async function () {
-        let result = await polo.getBorrowRatesInfo({ getApiCallRateInfo : true })
+        let result = polo.getBorrowRatesInfo({ getApiCallRateInfo : true })
         expectGetCallRateInfoResult(result)
       })
 
@@ -304,7 +304,7 @@ describe('API call rate info', function() {
 
   describe('Parameter getApiCallRateInfo', function() {
     it('Should be accepted by all methods and integer returned', async function () {
-      const result  = await polo.getSymbols({ getApiCallRateInfo: true })
+      const result  = polo.getSymbols({ getApiCallRateInfo: true })
       expect(result).to.be.equal(0)
     })
   })
