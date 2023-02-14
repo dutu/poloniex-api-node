@@ -1,6 +1,6 @@
 poloniex-api-node
 =======
-[![Build Status](https://travis-ci.com/dutu/poloniex-api-node.svg?branch=master)](https://travis-ci.com/dutu/poloniex-api-node) 
+[![Tests](https://github.com/dutu/poloniex-api-node/actions/workflows/nodejs-ci.yml/badge.svg)](https://github.com/dutu/poloniex-api-node/actions/workflows/nodejs-ci.yml) 
 
 
 **poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket API.
