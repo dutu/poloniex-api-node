@@ -26,9 +26,9 @@ describe('REST tests', function () {
       })
 
       it('should return one symbol', async function () {
-        const result = await polo.getSymbols({ symbol: 'BTC_USDT' })
+        const result = await polo.getSymbols({ symbol: 'XMR_BTC' })
         expect(result).to.be.an('array').with.lengthOf(1)
-        expect(result[0]).to.have.own.property('symbol', 'BTC_USDT')
+        expect(result[0]).to.have.own.property('symbol', 'XMR_BTC')
       })
 
       it('should return api calls info', async function () {
@@ -255,57 +255,306 @@ describe('REST tests', function () {
 
   describe('Authenticated methods', function () {
     const polo = new Poloniex({ apiKey: process.env.apiKey, apiSecret: process.env.apiSecret })
+    let accountId
 
-    describe('getAccountInfo()', function () {
+    describe('getAccountsInfo()', function () {
       it('should return result', async function () {
-        const result = await polo.getAccountInfo()
+        const result = await polo.getAccountsInfo()
         expect(result).to.be.an('array')
-        expect(result).to.satisfy(function (arr) {
-          return arr.some((obj) => obj.symbol === 'BTC_USDT')
+        result.forEach((item) => {
+          expect(item).to.be.an('object').that.has.property('accountId')
+          accountId = item.accountId
         })
       })
+
+      it('should return api calls info', function () {
+        const result = polo.getAccountsInfo( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
     })
+
+    describe('getAccountsBalances()', function () {
+      it('should return result', async function () {
+        const result = await polo.getAccountsBalances()
+        expect(result).to.be.an('array')
+        result.forEach((item) => {
+          expect(item).to.be.an('object').that.has.property('accountId')
+          expect(item).to.have.property('balances').that.is.an('array')
+        })
+      })
+
+      it('should return result for one account', async function () {
+        const result = await polo.getAccountsBalances({ id: accountId })
+        expect(result).to.be.an('array')
+        result.forEach((item) => {
+          expect(item).to.be.an('object').that.has.property('accountId')
+          expect(item).to.have.property('balances').that.is.an('array')
+        })
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.getAccountsBalances( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+        result = polo.getAccountsBalances( { id: accountId, getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('accountsTransfer()', function () {
+      it('should return api calls info', function () {
+        let result = polo.accountsTransfer( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getAccountsActivity()', function () {
+      it('should return result', async function () {
+        const result = await polo.getAccountsActivity()
+        expect(result).to.be.an('array')
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.getAccountsActivity( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getAccountsTransferRecords()', function () {
+      it('should return result', async function () {
+        const result = await polo.getAccountsTransferRecords()
+        expect(result).to.be.an('array')
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.getAccountsTransferRecords( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getFeeInfo()', function () {
+      it('should return result', async function () {
+        const result = await polo.getFeeInfo()
+        expect(result).to.be.an('object').with.property('makerRate')
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.getFeeInfo( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getSubaccountsInfo()', function () {
+      it('should return api calls info', function () {
+        let result = polo.getSubaccountsInfo( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getSubaccountsBalances()', function () {
+      it('should return api calls info', function () {
+        let result = polo.getSubaccountsBalances( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('subaccountsTransfer()', function () {
+      it('should return api calls info', function () {
+        let result = polo.subaccountsTransfer( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getSubaccountsTransferRecords()', function () {
+      it('should return api calls info', function () {
+        let result = polo.getSubaccountsTransferRecords( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getDepositAddresses()', function () {
+      it('should return result', async function () {
+        const result = await polo.getDepositAddresses()
+        expect(result).to.be.an('object').with.property('BTC')
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.getDepositAddresses( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('createNewCurrencyAddress()', function () {
+      it('should return result', async function () {
+        const result = await polo.createNewCurrencyAddress({ currency: 'ETH' })
+        expect(result).to.be.an('object').with.property('address')
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.createNewCurrencyAddress( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('withdrawCurrency()', function () {
+      it('should return result', function (done) {
+        polo.withdrawCurrency({ currency: 'ETH' })
+          .catch((err) => {
+            expect(err).to.be.an('Error')
+            expect(err.message).to.include('amount')
+            done()
+          })
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.withdrawCurrency( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getMarginAccountInfo()', function () {
+      it('should return result', async function () {
+        const result = await polo.getMarginAccountInfo()
+        expect(result).to.be.an('object').with.property('totalMargin')
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.getMarginAccountInfo( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getMarginBorrowStatus()', function () {
+      it('should return result', async function () {
+        const result = await polo.getMarginBorrowStatus()
+        expect(result).to.be.an('array')
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.getMarginBorrowStatus( { getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('getMarginMaxSize()', function () {
+      it('should return result', async function () {
+        const result = await polo.getMarginMaxSize({ symbol: 'BTC_USDT' })
+        expect(result).to.be.an('object').with.property('symbol')
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.getMarginMaxSize( {  symbol: 'BTC_USDT', getApiCallRateInfo : true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('createOrder()', function () {
+      const order = {
+        symbol: 'BTC_USDT',
+        side: 'SELL',
+        type: 'LIMIT',
+        price: '60000',
+        quantity: '100',
+      }
+
+      it('should return result', function (done) {
+        polo.createOrder(order)
+          .catch((err) => {
+            expect(err).to.be.an('Error')
+            expect(err.message).to.include('balance')
+            done()
+          })
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.createOrder({ ...order, getApiCallRateInfo: true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('createBatchOrders()', function () {
+      const orders = [
+        {
+        symbol: 'BTC_USDT',
+        side: 'SELL',
+        type: 'LIMIT',
+        price: '60000',
+        quantity: '100',
+        },
+        {
+          symbol: 'BTC_USDT',
+          side: 'BUY',
+          type: 'LIMIT',
+          price: '1000',
+          quantity: '100000',
+        }
+      ]
+
+        it('should return result', function (done) {
+        polo.createBatchOrders({ orders })
+          .catch((err) => {
+            expect(err).to.be.an('Error')
+            expect(err.message).to.include('Parameter')
+            done()
+          })
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.createBatchOrders({ orders, getApiCallRateInfo: true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+    describe('replaceOrder()', function () {
+      it('should return result', function (done) {
+        polo.replaceOrder({ id: '00000' })
+          .catch((err) => {
+            expect(err).to.be.an('Error')
+            done()
+          })
+      })
+
+      it('should return api calls info', function () {
+        let result = polo.createBatchOrders({ id: '00000', getApiCallRateInfo: true })
+        expectGetCallRateInfoResult(result)
+      })
+    })
+
+
+
+
   })
 
-})
+  describe('API call rate info', function() {
+    const polo = new Poloniex()
+    describe('Property apiCallRate', function () {
+      it('Should have correct structure and initial values zero', function() {
+        for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
+          expect(polo.apiCallRate).to.have.property(key).that.is.equal(0)
+        }
+      })
 
-describe('API call rate info', function() {
-  const polo = new Poloniex()
-  describe('Property apiCallRate', function () {
-    it('Should have correct structure and initial values zero', function() {
-      for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-        expect(polo.apiCallRate).to.have.property(key).that.is.equal(0)
-      }
-    })
+      it('Can be set and it clears when time expires', async function() {
+        for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
+          expect(polo.apiCallRate).to.have.property(key).that.is.equal(0)
+          polo.apiCallRate[key] = 10
+        }
 
-    it('Can be set and it clears when time expires', async function() {
-      for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-        expect(polo.apiCallRate).to.have.property(key).that.is.equal(0)
-        polo.apiCallRate[key] = 10
-      }
+        await delay(500)
+        for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
+          expect(polo.apiCallRate).to.have.property(key).that.is.equal(10)
+          polo.apiCallRate[key] = 20
+        }
 
-      await delay(500)
-      for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-        expect(polo.apiCallRate).to.have.property(key).that.is.equal(10)
-        polo.apiCallRate[key] = 20
-      }
+        await delay(600)
+        for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
+          expect(polo.apiCallRate[key]).to.be.equal(10)
+        }
 
-      await delay(600)
-      for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-        expect(polo.apiCallRate[key]).to.be.equal(10)
-      }
-
-      await delay(500)
-      for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-        expect(polo.apiCallRate[key]).to.be.equal(0)
-      }
-    })
-  })
-
-  describe('Parameter getApiCallRateInfo', function() {
-    it('Should be accepted by all methods and integer returned', async function () {
-      const result  = polo.getSymbols({ getApiCallRateInfo: true })
-      expect(result).to.be.equal(0)
+        await delay(500)
+        for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
+          expect(polo.apiCallRate[key]).to.be.equal(0)
+        }
+      })
     })
   })
 })
