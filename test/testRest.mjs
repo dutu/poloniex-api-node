@@ -526,33 +526,33 @@ describe('REST tests', function () {
 
   describe('API call rate info', function() {
     const polo = new Poloniex()
-    describe('Property apiCallRate', function () {
+    describe('Property apiCallRates', function () {
       it('Should have correct structure and initial values zero', function() {
         for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-          expect(polo.apiCallRate).to.have.property(key).that.is.equal(0)
+          expect(polo.apiCallRates).to.have.property(key).that.is.equal(0)
         }
       })
 
       it('Can be set and it clears when time expires', async function() {
         for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-          expect(polo.apiCallRate).to.have.property(key).that.is.equal(0)
-          polo.apiCallRate[key] = 10
+          expect(polo.apiCallRates).to.have.property(key).that.is.equal(0)
+          polo.apiCallRates[key] = 10
         }
 
         await delay(500)
         for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-          expect(polo.apiCallRate).to.have.property(key).that.is.equal(10)
-          polo.apiCallRate[key] = 20
+          expect(polo.apiCallRates).to.have.property(key).that.is.equal(10)
+          polo.apiCallRates[key] = 20
         }
 
         await delay(600)
         for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-          expect(polo.apiCallRate[key]).to.be.equal(10)
+          expect(polo.apiCallRates[key]).to.be.equal(10)
         }
 
         await delay(500)
         for (const key of ['nriPriv', 'riPriv', 'nriPub', 'riPub']) {
-          expect(polo.apiCallRate[key]).to.be.equal(0)
+          expect(polo.apiCallRates[key]).to.be.equal(0)
         }
       })
     })

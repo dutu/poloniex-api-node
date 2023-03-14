@@ -110,7 +110,7 @@ const poloniex = new Poloniex({ apiKey: 'myKey', apiSecret: 'mySecret' })
   }
   ```
 
-* `apiCallRate` - Current call rate for resource-intensive and non-resource-intensive private and public API calls
+* `apiCallRates` - Current call rate for resource-intensive and non-resource-intensive private and public API calls
 
 	Example output:
 	```javascript
@@ -144,7 +144,6 @@ const tradesHistory = await poloniex.getTradesHistory({ limit: 1000, symbols: 'B
 ```
 
 An optional property `getApiCallRateInfo` can be specified. When set to `true` the corresponding API call is not sent to the exchange, instead the current API call rate is returned. See [rate limits](https://docs.poloniex.com/#rate-limits).
-When 
 
 Example:
 
