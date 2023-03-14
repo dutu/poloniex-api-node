@@ -5,11 +5,6 @@ poloniex-api-node
 
 **poloniex-api-node** is a simple node.js wrapper for Poloniex REST and WebSocket API.
 
-REST API supports both Callback and Promise.
-
-WebSocket API is supported for the public order book and your private account as well.
-
-
 ### Contents
 * [Changelog](#changelog)
 * [Install](#install)
@@ -37,75 +32,15 @@ Module supporting the legacy API has been moved to [branch legacy_API](https://g
 
 # Quick examples
 
-> See additional examples in [examples folder](https://github.com/dutu/poloniex-api-node/tree/master/examples)
-
-### REST API examples
-
-> When calling the REST API methods, Callback is always the last parameter. When callback parameter is not present, the method will return a Promise.
-
-Example 1 (REST API using Callback):
+### REST API example
 
 ```js
-const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex();
+import Poloniex from 'poloniex-api-node'
+let poloniex = new Poloniex('your_api_key', 'your_api_secret')
 
-poloniex.returnTicker((err, ticker) => {
-  if (err) {
-    console.log(err.message);
-  } else {
-    console.log(ticker);
-  }
-});
-```
-
-Example 2 (REST API using Callback):
-
-```js
-const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex();
-
-poloniex.returnTicker(function (err, ticker) {
-  if (err) {
-    console.log(err.message);
-  } else {
-    console.log(ticker);
-  }
-});
-```
-
-Example 3 (REST API using Promise):
-
-```js
-const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex();
-
-poloniex.returnTicker().then((ticker) => {
-  console.log(ticker);
-}).catch((err) => {
-  console.log(err.message);
-});
-```
-
-Example 4 (set `socketTimeout` to 15 seconds):
-
-```js
-const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex('your_key', 'your_secret', { socketTimeout: 15000 });
-
-poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
-  if (!err) console.log(ticker);
-});
-```
-
-Example 4 (set `nonce` to custom function):
-
-```js
-const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex('your_key', 'your_secret', { nonce: () => new Date().time() });
-
-poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
-  if (!err) console.log(ticker);
-});
+const tradesHistory = poloniex.getTradesHistory({ limit: 1000, symbols: 'BTC_USDT' })
+		.then((result) => console.log(result))
+		.catch((err) => console.log(err))
 ```
 
 ### WebSocket API examples
@@ -113,8 +48,9 @@ poloniex.returnLoanOrders('BTC', null, function (err, ticker) {
 Example (WebSocket API):
 
 ```js
-const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex();
+import Poloniex from 'poloniex-api-node'
+let poloniex = new Poloniex('your_api_key', 'your_api_secret')
+
 
 poloniex.subscribe('ticker');
 poloniex.subscribe('BTC_ETC');
@@ -149,645 +85,181 @@ poloniex.openWebSocket();
 
 ## Constructor
 
-### new Poloniex([key, secret,][options])
+* `new Poloniex({ apiKey, apiSecret })`
 
-To access the private Poloniex API methods you must supply your API key id and key secret as the first two arguments. If you are only accessing the public API endpoints you can leave these two arguments out.
-
-Default options:
-```js
-{
-  socketTimeout: 60000,
-  keepAlive: true,
-  nonce: nonce(16),
-  headers: { 'User-Agent': 'poloniex-api-node *version*' }
-}
-```
+To access the private Poloniex API methods you must supply your API key id and key secret. If you are only accessing the public API endpoints, you can leave the parameter out.
 
 Examples:
 
 ```js
-let poloniex;
-poloniex = new Poloniex();
-poloniex = new Poloniex({ socketTimeout: 10000 });
-poloniex = new Poloniex('myKey', 'mySecret');
-poloniex = new Poloniex('myKey', 'mySecret', { socketTimeout: 130000 });
+const poloniex = new Poloniex({ apiKey: 'myKey', apiSecret: 'mySecret' })
 ```
-
-#### Available options
-
-* `socketTimeout` - the number of milliseconds to wait for the server to send the response before aborting the request (REST API)
-* `keepAlive` - keep open and reuse the underlying TCP connection (REST API)
-* `proxy` - proxy to be used for requests (REST API)
-* `nonce` - custom function that returns an unique and ever increasing number
-* `agent` - sets specific http.Agent for REST API calls and WebSocket connection. (It is useful for using socks proxy to avoid the 403 error with CAPTCHA. See [#20](https://github.com/dutu/poloniex-api-node/issues/20#issuecomment-359789499))
-* `headers` - HTTP Headers, such as User-Agent, can be set in the object. See [https://github.com/request/request#custom-http-headers](https://github.com/request/request#custom-http-headers "the Request module")
-
 
 ## REST API
 
-For details about the API endpoints see full documentation at [https://poloniex.com/support/api/](https://poloniex.com/support/api/)
+### Properties
+* `apiCallRateLimits` - API call rate limits for endpoints sets (resource-intensive and non-resource-intensive private and public endpoints)
 
-**Important:** When calling an API method with optional parameters, the parameters, when not wanted, need to be passed as `null`.  
-
-#### Callback and Promise support
-
-Both Callback and Promise are supported.
-
-Callback is always the last parameter. When callback parameter is not present the method will return a Promise.
-
-
-#### Callbacks
-
-The arguments passed to the callback function for each method are:
-1. An error or `null` if no error occurred.
-2. An object containing the data returned by the Poloniex API.
-
-
-### Public API Methods
-
-
-#### returnTicker([callback])
-
-Examples:
-
-```js
-poloniex.returnTicker((err, ticker) => {
-  if (err) {
-    console.log(err.message);
-  } else {
-    console.log(ticker);
+	Example output:
+	```javascript
+  {
+    riPub: 10,
+    nriPub: 200,
+    nriPriv: 50,
+    riPriv: 10
   }
-});
+  ```
 
+* `apiCallRate` - Current call rate for resource-intensive and non-resource-intensive private and public API calls
 
-poloniex.returnTicker().then((ticker) => {
-  console.log(ticker);
-}).catch((err) => {
-  console.log(err.message);
-});
-```
-
-#### return24Volume([callback])
-
-#### returnOrderBook(currencyPair, depth [, callback])
-
-> Parameter `depth` is not documented in the official Poloniex API documentation. The parameter can be set to `null` or an integer value.
-
-#### returnTradeHistory(currencyPair, start, end, limit [, callback])
-
-> Parameter `limit` is not documented in the official Poloniex API documentation. The parameter can be set to `null` or an integer value.
-
-#### returnChartData(currencyPair, period, start, end [, callback])
-
-#### returnCurrencies([callback])
-
-#### returnLoanOrders(currency, limit [, callback])
-
-Examples:
-
-```js
-poloniex.returnLoanOrders('BTC', null, (err, loanOrders) => {
-  if (err) {
-    console.log(err.message);
-  } else {
-    console.log(loanOrders);
+	Example output:
+	```javascript
+  {
+    riPub: 8,
+    nriPub: 100,
+    nriPriv: 5,
+    riPriv: 7
   }
-});
+  ```
 
-poloniex.returnLoanOrders('BTC', null).then((loanOrders) => {
-  console.log(loanOrders);
-}).catch((err) => {
-  console.log(err.message);
-});
-```
+See https://docs.poloniex.com/#rate-limits.
 
-### Trading API Methods
-
-#### returnBalances([callback])
-
-```js
-poloniex.returnBalances(function (err, balances) {
-  if (err) {
-    console.log(err.message);
-  } else {
-    console.log(balances);
-  }
-});
-
-poloniex.returnBalances().then((balances) => {
-  console.log(balances);
-}).catch((err) => {
-  console.log(err.message);
-});
-```
-
-#### returnCompleteBalances(account [, callback])
-
-#### returnDepositAddresses([callback])
-
-#### generateNewAddress(currency [, callback])
-
-#### returnDepositsWithdrawals(start, end [, callback])
-
-#### returnOpenOrders(currencyPair [, callback])
-
-#### returnMyTradeHistory(currencyPair, start, end, limit [, callback])
-
-#### returnOrderTrades(orderNumber [, callback])
-
-#### returnOrderStatus(orderNumber [, callback])
-
-#### buy(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
-
-#### sell(currencyPair, rate, amount, fillOrKill, immediateOrCancel, postOnly [, callback])
-
-#### cancelOrder(orderNumber [, callback])
-
-#### moveOrder(orderNumber, rate, amount, immediateOrCancel, postOnly [, callback])
-
-#### withdraw(currency, amount, address, paymentId [, callback])
-
-> Parameter `paymentId` is used for certain withdrawals (e.g. XMR) and when not wanted/needed should be passed as `null`.
-
-#### returnFeeInfo([callback])
-
-#### returnAvailableAccountBalances(account [, callback])
-
-#### returnTradableBalances([callback])
-
-#### transferBalance(currency, amount, fromAccount, toAccount [, callback])
-
-#### returnMarginAccountSummary([callback])
-
-#### marginBuy(currencyPair, rate, amount, lendingRate [, callback])
-
-#### marginSell(currencyPair, rate, amount, lendingRate [, callback])
-
-#### getMarginPosition(currencyPair [, callback])
-
-#### closeMarginPosition(currencyPair [, callback])
-
-#### createLoanOffer(currency, amount, duration, autoRenew, lendingRate [, callback])
-
-#### cancelLoanOffer(orderNumber [, callback])
-
-#### returnOpenLoanOffers([callback])
-
-#### returnActiveLoans([callback])
-
-#### returnLendingHistory(start, end, limit [, callback])
-
-#### toggleAutoRenew(orderNumber [, callback])
-
-
-## Websocket API
-
-This module implements the WebSocket API for receiving push notifications about the public order book, and your private account.
-
-> The push API using WAMP is deprecated and no longer supported by this module.
-
-
-### Events
-
-A listener is registered using the `Poloniex.on()` method (since `Poloniex` class inherits the `EventEmitter`) and the listener will be invoked every time the named event is emitted.
-
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.on('open', () => {
-  console.log(`WebSocket connection is open.`);
-});
-```
-
-The following events can be emitted:
-* `'open'`
-* `'message'`
-* `'close'`
-* `'error'`
-* `'heartbeat'`
-
-#### Event: `'open'`
-
-Emitted when WebSocket connection is established.
-
-#### Event: `'message'`
-
-Emitted when an update on a subscribed channel is received.
-See method `subscribe` for details on data received and its format.
-
-#### Event: `'close'`
-
-Emitted when WebSocket connection is closed.
-See method `closeWebSocket` for details on data received and its format.
-
-#### Event: `'error'`
-
-Emitted when an error occurs.
-
-> **Important:** You have to set `error` listener otherwise your app will throw an `Error` and exit if `error` event will occur (see: [Node.js Error events](https://nodejs.org/api/events.html#events_error_events))
-
-Example:
-```js
-poloniex.on('error', (error) => {
-  console.log(error);
-});
-```
-
-#### Event: `'heartbeat'`
-
-Emitted if there is no update for more than 60 seconds.
 
 
 ### Methods
 
-#### openWebSocket()
+All methods accept one object parameter, which is used to pass all request parameters for the API call.
 
-Opens WebSocket connection to Poloniex server.
-If WebSocket connection is already open and `openWebSocket` is called again, the existing connection is closed and a new one is opened (equivalent to a full reset of the WebSocket connection).
 
-Event `'open'` is emitted when connection is established.
+[Official Poloniex API documentation](https://docs.poloniex.com/) lists all valid `Request Parameters` for API calls. 
+When a `Request Parameter` needs to be included, a property with the exact same name needs to be added to the object parameter.
 
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.on('open', () => {
-  console.log(`WebSocket connection has be opened.`);
-});
-poloniex.openWebSocket();
-```
 
-#### subscribe(channelName)
-
-In order to receive updates over WebSocket, subscribe to following channels:
-* `'ticker'` - ticker data
-* currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`) - price aggregated book 
-* `'volume'` - 24 Hour Exchange Volume
-* `heartbeat` - heartbeat
-* `accountNotifications` - account notifications
-
-When an update on the subscribed channel is received `Poloniex` object emits the event `'message'`.
-
- > You can subscribe to a channel either before or after the WebSocket connection is opened with `openWebSocket`. If WebSocket connection is already open, the subscription is activated immediately. If WebSocket connection is not open yet, the `subscribe` is registering the subscription; all registered connections will be activated when `openWebSocket` is issued.
-
-##### Channel: `'ticker'`
-
-Provides ticker updates.
+All methods return a promise.
 
 Example:
-```js
-let poloniex = new Poloniex();
-poloniex.subscribe('ticker');
-poloniex.on('message', (channelName, data) => {
-  if (channelName === 'ticker') {
-    console.log(`Ticker: ${data}`);
-  }
-});
-poloniex.openWebSocket();
-```
-Ticker updates will be in following format:
 
 ```js
-{
-  "currencyPair": "BTC_XRP",
-  "last": "0.00005432",
-  "lowestAsk": "0.00005440",
-  "highestBid": "0.00005432",
-  "percentChange": "-0.02878598",
-  "baseVolume": "2862.99229490",
-  "quoteVolume": "52479031.35647538",
-  "isFrozen": 0,
-  "24hrHigh": "0.00005598",
-  "24hrLow": "0.00005264"
-}
+const tradesHistory = await poloniex.getTradesHistory({ limit: 1000, symbols: 'BTC_USDT' })
 ```
 
-
-##### Channel: currencyPair (examples: `'BTC_ETH'`, `'BTC_XMR'`)
-
-Provides order book and trade updates.
-Subscribe to the desired currencyPair, e.g. `'BTC_ETC'`, to receive order book and trade updates.
+An optional property `getApiCallRateInfo` can be specified. When set to `true` the corresponding API call is not sent to the exchange, instead the current API call rate is returned. See [rate limits](https://docs.poloniex.com/#rate-limits).
+When 
 
 Example:
+
 ```js
-let poloniex = new Poloniex();
-poloniex.openWebSocket();
-poloniex.subscribe('BTC_ETH');
-poloniex.on('message', (channelName, data, seq) => {
-  if (channelName === 'BTC_ETH') {
-    console.log(`order book and trade updates received for currency pair ${channelName}`);
-    console.log(`data sequence number is ${seq}`);
-  }
-});
+const callRateInfo = await poloniex.getTradesHistory({ limit: 1000, symbols: 'BTC_USDT', getApiCallRateInfo: true })
 ```
-
-There are four types of messages:
-* "orderBook`
-* "orderBookModify`
-* "orderBookRemove`
-* "newTrade`
-
-######  Message type 'orderBook'
-
-Provides a snapshot of the order book for the subscribed currency pair. The message is emitted immediately after subscription to the currency pair is activated.
-
-The data for `'orderBook'` snapshot is provided in the following format:
-
-```js
+Example output: 
+```javascript
 [
-  {
-    "type": "orderBook",
-    "data": {
-      "asks": {
-        "0.06964408": "0.16219637",
-        "0.06964599": "10.40000000",
-        "0.06964600": "33.11470000",
-        "0.06965590": "0.00427159",
-      },
-      "bids": {
-        "0.06963545": "14.03591058",
-        "0.06960000": "16.53833125",
-        "0.06957303": "3.46440626",
-        "0.06957300": "33.11720000",
-     }
-    }
-  }
+ 'riPriv', // id of the API endpoind set (can be 'riPub', 'nriPub', 'riPriv' or 'nriPriv')  
+ 2,        // current API call rate
+ 10        // API call rate limit
 ]
 ```
 
+### Public API Methods
 
-###### Message types 'orderBookModify' and 'orderBookRemove'
+#### Reference Data
+* [`getSymbols`](https://docs.poloniex.com/#public-endpoints-reference-data-symbol-information) - get symbols and their trade info
+* [`getCurrencies`](https://docs.poloniex.com/#public-endpoints-reference-data-currency-information) - get supported currencies
+* [`getTimestamp`](https://docs.poloniex.com/#public-endpoints-reference-data-system-timestamp) - get current server time
 
-There are two types of order book updates `'orderBookModify'` and `'orderBookRemove'`, provided in the following formats:
+#### Market Data
+ * [`getPrices`](https://docs.poloniex.com/#public-endpoints-market-data-prices) - get the latest trade price for symbols
+ * [`getMarkPrice`](https://docs.poloniex.com/#public-endpoints-market-data-mark-price) - get the latest mark price for cross margin symbols
+ * [`getMarkPriceComponents`](https://docs.poloniex.com/#public-endpoints-market-data-mark-price-components) - get components of the mark price for a given symbol
+ * [`getOrderBook`](https://docs.poloniex.com/#public-endpoints-market-data-order-book) - get the order book for a given symbol
+ * [`getCandles`](https://docs.poloniex.com/#public-endpoints-market-data-candles) - returns OHLC for a symbol at given timeframe (interval)
+ * [`getTrades`](https://docs.poloniex.com/#public-endpoints-market-data-trades) - returns a list of recent trades
+ * [`getTicker`](https://docs.poloniex.com/#public-endpoints-market-data-ticker) - returns ticker in last 24 hours for all symbols
 
-```js
-[
-  {
-    "type": "orderBookModify",
-    "data": {
-      "type": "bid",
-      "rate": "0.06961000",
-      "amount": "33.11630000"
-    }
-  }
-]
-```
-
-```js
-[
-  {
-    "type": "orderBookRemove",
-    "data": {
-      "type": "bid",
-      "rate": "0.06957300",
-      "amount": "0.00000000"
-    }
-  }
-]
-```
-
-Updates of type `'orderBookModify'` can be either additions to the order book or changes to existing entries. The value of `amount` indicates the new total amount on the books at the given rate — in other words, it replaces any previous value, rather than indicates an adjustment to a previous value.
-
-Each `'message'` event will pass the parameter `seq`, indicating the a sequence number. In order to keep your order book consistent, you will need to ensure that messages are applied in the order of their sequence numbers, even if they arrive out of order.
-
-> **Important:** Several order book and trade history updates will often arrive in a single message. Be sure to loop through the entire array, otherwise you will miss some updates.
-
-######  Message type `'newTrade'`
-
-Trade history updates are provided in the following format:
-```js
-
-[
-  {
-    "type": "newTrade",
-    "data": {
-      "tradeID": "34816326",
-      "type": "sell",
-      "rate": "0.07006406",
-      "amount": "0.14341700",
-      "total": "0.01004838",
-      "date": "2017-10-06T22:37:52.000Z"
-    }
-  }
-]
-```
-
-> **Important:** Several order book and trade history updates will often arrive in a single message. Be sure to loop through the entire array, otherwise you will miss some updates.
+#### Margin
+ * [`getCollateralInfo`](https://docs.poloniex.com/#public-endpoints-margin-collateral-info) - get collateral information for currencies
+ * [`getBorrowRatesInfo`](https://docs.poloniex.com/#public-endpoints-margin-borrow-rates-info) - get borrow rates information for all tiers and currencies
 
 
+### Private API Methods
+#### Accounts
+ * [`getAccountsInfo`](https://docs.poloniex.com/#authenticated-endpoints-accounts-account-information) - get a list of all accounts of a use
+ * [`getAccountsBalances`](https://docs.poloniex.com/#authenticated-endpoints-accounts-all-account-balances) - get a list of accounts of a user with each account’s id, type and balances
+ * [`getAccountsActivity`](https://docs.poloniex.com/#authenticated-endpoints-accounts-account-activity) - get a list of activities such as airdrop, rebates, staking, credit/debit adjustments, and other (historical adjustments)
+ * [`accountsTransfer`](https://docs.poloniex.com/#authenticated-endpoints-accounts-accounts-transfer) - transfer amount of currency from an account to another account for a user
+ * [`getAccountsTransferRecords`](https://docs.poloniex.com/#authenticated-endpoints-accounts-accounts-transfer-records) - get a list of transfer records of a user
+ * [`getFeeInfo`](https://docs.poloniex.com/#authenticated-endpoints-accounts-fee-info) - get fee rate
 
-##### Channel: `'volume'`
+#### Subaccounts
+ * [`getSubaccountsInfo`](https://docs.poloniex.com/#authenticated-endpoints-subaccounts-subaccount-information) - get a list of all the accounts within an Account Group for a user
+ * [`getSubaccountsBalances`](https://docs.poloniex.com/#authenticated-endpoints-subaccounts-subaccount-balances) - get balances information by currency and account type
+ * [`subaccountsTransfer`](https://docs.poloniex.com/#authenticated-endpoints-subaccounts-subaccount-transfer) - transfer amount of currency from an account and account type to another account and account type among the accounts in the account group
+ * [`getSubaccountsTransferRecords`](https://docs.poloniex.com/#authenticated-endpoints-subaccounts-subaccount-transfer-records) - get a list of transfer records of a user
 
-Provides 24 hour exchange volume updates.
+#### Wallets
+ * [`getDepositAddresses`](https://docs.poloniex.com/#authenticated-endpoints-wallets-deposit-addresses) - get deposit addresses for a user
+ * [`getWalletsActivityRecords`](https://docs.poloniex.com/#authenticated-endpoints-wallets-wallets-activity-records) - get deposit and withdrawal activity history
+ * [`createNewCurrencyAddress`](https://docs.poloniex.com/#authenticated-endpoints-wallets-new-currency-address) - Create a new address for a currency
+ * [`withdrawCurrency`](https://docs.poloniex.com/#authenticated-endpoints-wallets-withdraw-currency) - immediately places a withdrawal for a given currency
 
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.subscribe('volume');
-poloniex.on('message', (channelName, data) => {
-  if (channelName === 'volume') {
-    console.log(data);
-  }
-});
-poloniex.openWebSocket();
-```
+#### Margin
+ * [`getMarginAccountInfo`](https://docs.poloniex.com/#authenticated-endpoints-margin-account-margin) - get account margin information
+ * [`getMarginBorrowStatus`](https://docs.poloniex.com/#authenticated-endpoints-margin-borrow-status) - get borrow status of currencies
+ * [`getMarginMaxSize`](https://docs.poloniex.com/#authenticated-endpoints-margin-maximum-buy-sell-amount) - get maximum and available buy/sell amount for a given symbol
 
-The updates will be in following format:
+#### Orders
+ * [`createOrder`](https://docs.poloniex.com/#authenticated-endpoints-orders-create-order) - create an order for an account
+ * [`createBatchOrders`](https://docs.poloniex.com/#authenticated-endpoints-orders-create-multiple-orders) - create multiple orders via a single request
+ * [`replaceOrder`](https://docs.poloniex.com/#authenticated-endpoints-orders-cancel-replace-order) - cancel an existing active order, new or partially filled, and place a new order
+ * [`getOpenOrders`](https://docs.poloniex.com/#authenticated-endpoints-orders-open-orders) - get a list of active orders for an account
+ * [`getOrderDetails`](https://docs.poloniex.com/#authenticated-endpoints-orders-order-details) - get an order’s status
+ * [`cancelOrder`](https://docs.poloniex.com/#authenticated-endpoints-orders-cancel-order-by-id) - cancel an active order
+ * [`cancelBatchOrders`](https://docs.poloniex.com/#authenticated-endpoints-orders-cancel-multiple-orders-by-ids) - batch cancel one or many active orders in an account by IDs
+ * [`cancelAllOrders`](https://docs.poloniex.com/#authenticated-endpoints-orders-cancel-all-orders) - cancel all orders in an account
+ * [`setKillSwitch`](https://docs.poloniex.com/#authenticated-endpoints-orders-kill-switch) - set a timer that cancels all regular and smartorders after the timeout has expired
+ * [`getKillSwitchStatus`](https://docs.poloniex.com/#authenticated-endpoints-orders-kill-switch-status) - get status of kill switch
 
-```js
-[
-  {
-    "serverTime": "2017-10-04 12:55",
-    "usersOnline": 18438,
-    "volume": {
-      "BTC": "13014.809",
-      "ETH": "3725.101",
-      "XMR": "354.380",
-      "USDT": "24511953.302"
-    }
-  }
-]
-```
+#### Smart Orders
+ * [`createSmartOrder`](https://docs.poloniex.com/#authenticated-endpoints-smart-orders-create-order) - create a smart order for an account
+ * [`replaceSmartOrder`](https://docs.poloniex.com/#authenticated-endpoints-smart-orders-cancel-replace-order) - cancel an existing untriggered smart order and place a new smart order
+ * [`getSmartOpenOrders`](https://docs.poloniex.com/#authenticated-endpoints-smart-orders-open-orders) - get a list of (pending) smart orders for an account
+ * [`getSmartOrderDetails`](https://docs.poloniex.com/#authenticated-endpoints-smart-orders-order-details) - get a smart order’s status
+ * [`cancelSmartOrder`](https://docs.poloniex.com/#authenticated-endpoints-smart-orders-cancel-order-by-id) - cancel a smart order
+ * [`cancelBatchSmartOrders`](https://docs.poloniex.com/#authenticated-endpoints-smart-orders-cancel-multiple-orders-by-id) - batch cancel one or many smart orders in an account by IDs
+ * [`cancelAllSmartOrders`](https://docs.poloniex.com/#authenticated-endpoints-smart-orders-cancel-all-orders) - batch cancel all smart orders in an account
 
-##### Channel: `'heartbeat'`
+#### Order History
+ * [`getOrdersHistory`](https://docs.poloniex.com/#authenticated-endpoints-order-history-orders-history) - get a list of historical orders in an account
+ * [`getSmartOrdersHistory`](https://docs.poloniex.com/#authenticated-endpoints-order-history-smart-orders-history) - get a list of historical smart orders in an account
 
-When no messages have been sent out for one second, the server will send a heartbeat message as follows. Absence of heartbeats indicates a protocol or networking issue and the client application is expected to close the socket and try again.
-
-
-##### Channel: `'accountNotifications'`
-
-Provides real-time updates of trade and balance changes on your account. 
-It is an authenticated WebSocket channel, so it requires the API key and secret to be provided in the constructor.
-
-Example:
-```js
-let poloniex = new Poloniex('your_key', 'your_secret');
-poloniex.openWebSocket();
-poloniex.subscribe('accountNotifications');
-poloniex.on('message', (channelName, data) => {
-  if (channelName === 'accountNotifications') {
-    console.log(`account notifications update: ${JSON.stringify(data)}`);
-  }
-});
-```
-
-There are five types of messages:
-* `subscriptionSucceeded`
-* `balanceUpdate`
-* `newLimitOrder`
-* `orderUpdate`
-* `newTrade`
-
-`'subscriptionSucceeded'` is an acknowledgement of the subscription, the first message received after a successful subscription.
-
-Subsequent messages represent updates to your account. In general, a message consists of a combination of updates of different types.
-
-> **Important:** Several updates will often arrive in a single message. Be sure to loop through the entire array, otherwise you will miss some updates.
+#### Trades
+ * [`getTradesHistory`](https://docs.poloniex.com/#authenticated-endpoints-trades-trade-history) - get a list of all trades for an account
+ * [`getOrderTrades`](https://docs.poloniex.com/#authenticated-endpoints-trades-trades-by-order-id) - get a list of all trades for an order specified by its orderId
 
 
-######  Message type `'subscriptionSucceeded'`
+## Websocket API
 
-This is an acknowledgement of the subscription, the first message received after a successful subscription.
+### Methods
 
-The data for `'subscriptionSucceeded'` is provided in the following format:
-
-```js
-"subscriptionSucceeded"
-```
-
-###### Message type `'balanceUpdate'`
-
-`'balanceUpdate'` message represents an available balance update, provided in the following format:
-
-```js
-[
-  {
-    "type": "balanceUpdate",
-    "data": {
-      "currency": "BTC",
-      "wallet": "exchange",
-      "amount": "0.00130128"
-    }
-  }
-]
-```
-
-`wallet` can be `'exchange'`, `'margin'`, or `'lending'`. 
-
-###### Message type `'newLimitOrder'`
-
-`'newLimitOrder'` message represents an available balance update, provided in the following format:
-
-```js
-[
-  {
-    "type": "newLimitOrder",
-    "data": {
-      "currencyPair": "BTC_ETH",
-      "orderNumber": 519591595441,
-      "type": "buy",
-      "rate": "0.01017136",
-      "amount": "0.12793656",
-      "date": "2018-11-19 14:50:16"
-    }
-  }
-]
-```
-
-`type` can either be `'sell'` or `'buy'`.
-
-###### Message type `'orderUpdate'`
-
-`'orderUpdate'` message represents an order update, provided in the following format:
-
-
-```js
-[
-  {
-    "type": "orderUpdate",
-    "data": {
-      "orderNumber": 519591595441,
-      "amount": "0.00000000"
-    }
-  },
-]
-```
-
-
-######  Message type `'newTrade'`
-
- `'newTrade'` message represents a trade notification, provided in the following format:
-
-```js
-[
-  {
-    "type": "newTrade",
-    "data": {
-      "tradeID": 45376136,
-      "rate": "0.03029793",
-      "amount": "0.03100000",
-      "feeMultiplier": "0.00200000",
-      "fundingType": 0,
-      "orderNumber": 519616686325
-  }
-]
-```
-
-
-
-#### unsubscribe(channelName)
-
-Unsubscribes a previously established channel subscription. Once unsubscribed there will be no more channel updates received.
-
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.openWebSocket();
-poloniex.subscribe('BTC_ETH');
-poloniex.on('message', (channelName, data, seq) => {
-  if (channelName === 'BTC_ETH') {
-    console.log(`order book and trade updates received for currency pair ${channelName}`);
-    console.log(`data sequence number is ${seq}`);
-  }
-});
-poloniex.unsubscribe('BTC_ETH');
-```
-
-
-#### closeWebSocket()
-
-Closes WebSocket connection previously opened.
-Event `'close'` is emitted when connection closes.
-
-Example:
-```js
-let poloniex = new Poloniex();
-poloniex.on('open', () => {
-  poloniex.closeWebSocket();
-});
-poloniex.on('close', (reason, code) => {
-  console.log(`WebSocket connection has been closed`);
-});
-poloniex.openWebSocket();
-```
-
+### Events
 
 # Contributors
 
 This project exists thanks to all the people who contribute.
 
 * [dutu](https://github.com/dutu) (<dutu@protonmail.com>)
-* [standup75](https://github.com/standup75) (<me@standupweb.net>)
-* [aloysius-pgast](https://github.com/aloysius-pgast)
 * [julesGoullee](https://github.com/julesGoullee) (<julesgoullee@gmail.com>)
-* [kevflynn](https://github.com/kevflynn) ([Kevin](http://www.kevflynn.com))
-* [Denis Bezrukov](https://github.com/anthrax63)
-* [Wallison Santos](https://github.com/wallybh) (<wallison@outlook.com>)
-* [epdev](https://github.com/epdev)
-* [BarnumD](https://github.com/BarnumD)
-* [Robert Valmassoi](https://github.com/valmassoi) (<rvalmassoi@protonmail.com>)
 * [zymnytskiy](https://github.com/zymnytskiy)
+* [Wallison Santos](https://github.com/wallybh) (<wallison@outlook.com>)
+* [Denis Bezrukov](https://github.com/anthrax63)
+* [BarnumD](https://github.com/BarnumD)
 * [zunderbolt](https://github.com/zunderbolt)
+* [aloysius-pgast](https://github.com/aloysius-pgast)
 * [SeanRobb](https://github.com/SeanRobb)
+* [Robert Valmassoi](https://github.com/valmassoi) (<rvalmassoi@protonmail.com>)
+* [epdev](https://github.com/epdev)
+* [standup75](https://github.com/standup75) (<me@standupweb.net>)
+* [kevflynn](https://github.com/kevflynn) ([Kevin](http://www.kevflynn.com))
 * [Alexey Marunin](https://github.com/alexeymarunin)
 
 # License

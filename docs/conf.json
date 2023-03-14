@@ -1,0 +1,14 @@
+{
+  "plugins": [
+  ],
+  "opts": {
+    "encoding": "utf8",
+    "destination": "./docs/",
+    "verbose": true
+  },
+  "source": {
+    "includePattern": ".+\\.m?js(doc|x)?$",
+    "include": ["lib/"]
+  },
+  "sourceType": "module"
+}

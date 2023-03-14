@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: poloniex.mjs</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: poloniex.mjs</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Poloniex module.
  * @module poloniex-api-node
  */
@@ -152,7 +180,7 @@ export default class Poloniex {
     const now = Date.now()
     const oneMinuteAgo = now - 1000
     let index = 0
-    while (index < timestampsArray.length && timestampsArray[index] <= oneMinuteAgo) {
+    while (index &lt; timestampsArray.length &amp;&amp; timestampsArray[index] &lt;= oneMinuteAgo) {
       index += 1
     }
 
@@ -163,7 +191,7 @@ export default class Poloniex {
   #classifyApiCall(method, path) {
     const endpoint = method + path
     for (const [setName, set] of Object.entries(this.#apiRateLimitsEndpointsSets)) {
-      for (let j = 0; j < set.length; j += 1)
+      for (let j = 0; j &lt; set.length; j += 1)
         if (set[j].test(endpoint)) {
           return setName
         }
@@ -208,7 +236,7 @@ export default class Poloniex {
    * @param params
    * @param body
    * @param getApiCallRateInfo
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - returns either Poloniex result or API call rate information
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - returns either Poloniex result or API call rate information
    */
   #requestPub(method, path, params, body, getApiCallRateInfo) {
     if (getApiCallRateInfo) {
@@ -233,17 +261,17 @@ export default class Poloniex {
   // Generates signed request headers
   static #getRequestHeaders(method, path, params, body, apiKey, apiSecret) {
     const timestamp = Date.now()
-    // Composes the parameters string: the timestamp parameter and the list of parameters, sorted by ASCII order and delimited by &. All parameters are URL/UTF-8 encoded (i.e. space is encoded as "%20").
+    // Composes the parameters string: the timestamp parameter and the list of parameters, sorted by ASCII order and delimited by &amp;. All parameters are URL/UTF-8 encoded (i.e. space is encoded as "%20").
     const composeParamString = function (params, timestamp) {
       const values = [`signTimestamp=${timestamp}`]
       Object.entries(params).forEach(([k, v]) => values.push(`${k}=${encodeURIComponent(v)}`))
-      return values.sort().join("&")
+      return values.sort().join("&amp;")
     }
 
     // Composes the body string. signTimestamp needs to be added, even if there is no body
     const composeBodyString = function (body, timestamp) {
       if (Object.keys(body).length > 0) {
-        return `requestBody=${JSON.stringify(body)}` + `&signTimestamp=${timestamp}`
+        return `requestBody=${JSON.stringify(body)}` + `&amp;signTimestamp=${timestamp}`
       } else {
         return `signTimestamp=${timestamp}`
       }
@@ -282,7 +310,7 @@ export default class Poloniex {
    * @param params
    * @param body
    * @param getApiCallRateInfo
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - returns either Poloniex result or API call rate information
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - returns either Poloniex result or API call rate information
    */
   #requestAuth(method, path, params, body, getApiCallRateInfo) {
     if (getApiCallRateInfo) {
@@ -316,7 +344,7 @@ export default class Poloniex {
   }
 
   /**
-   * Current call rate for resource-intensive and non-resource-intensive private and public API calls
+   * Call rate for resource-intensive and non-resource-intensive private and public API calls
    *
    * @type {{riPriv: number, riPub: number, nriPub: number, nriPriv: number}}
    */
@@ -333,7 +361,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.symbol] - a single symbol name
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getSymbols(requestParameters) {
     const path = ['/markets', requestParameters?.symbol].filter(p => p).join('/')
@@ -347,7 +375,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.currency] - a single currency
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getCurrencies(requestParameters) {
     const path = ['/currencies', requestParameters?.currency].filter(p => p).join('/')
@@ -360,7 +388,7 @@ export default class Poloniex {
    *
    * @param {Object} [requestParameters]
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getTimestamp(requestParameters) {
     const path = '/timestamp'
@@ -373,7 +401,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.symbol] - a single symbol
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getPrices(requestParameters) {
     const path = ['/markets', requestParameters?.symbol, 'price'].filter(p => p).join('/')
@@ -387,7 +415,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.symbol] - a single symbol
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getMarkPrice(requestParameters) {
     const path = ['/markets', requestParameters?.symbol, 'markPrice'].filter(p => p).join('/')
@@ -401,7 +429,7 @@ export default class Poloniex {
    * @param {Object} requestParameters
    * @param {String} requestParameters.symbol - a single symbol
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getMarkPriceComponents(requestParameters) {
     const path = ['/markets', requestParameters?.symbol, 'markPriceComponents'].filter(p => p).join('/')
@@ -417,7 +445,7 @@ export default class Poloniex {
    * @param {String} [requestParameters.scale] - controls aggregation by price
    * @param {Number} [requestParameters.limit] - controls aggregation by price
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getOrderBook(requestParameters) {
     const path = ['/markets', requestParameters?.symbol, 'orderBook'].filter(p => p).join('/')
@@ -435,7 +463,7 @@ export default class Poloniex {
    * @param {Number} [requestParameters.startTime] - filters by time
    * @param {Number} [requestParameters.endTime] - filters by time
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getCandles(requestParameters) {
     const path = ['/markets', requestParameters?.symbol, 'candles'].filter(p => p).join('/')
@@ -450,7 +478,7 @@ export default class Poloniex {
    * @param {String} requestParameters.symbol - a single symbol
    * @param {Number} [requestParameters.limit] - maximum number of records returned
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getTrades(requestParameters) {
     const path = ['/markets', requestParameters?.symbol, 'trades'].filter(p => p).join('/')
@@ -464,7 +492,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.symbol] - a single symbol
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getTicker(requestParameters) {
     const path = ['/markets', requestParameters?.symbol, 'ticker24h'].filter(p => p).join('/')
@@ -478,7 +506,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.currency] - a single currency
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getCollateralInfo(requestParameters) {
     const path = ['/markets', requestParameters?.currency, 'collateralInfo'].filter(p => p).join('/')
@@ -491,7 +519,7 @@ export default class Poloniex {
    *
    * @param {Object} [requestParameters]
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getBorrowRatesInfo(requestParameters) {
     const path = '/markets/borrowRatesInfo'
@@ -505,7 +533,7 @@ export default class Poloniex {
    *
    * @param {Object} [requestParameters]
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getAccountsInfo(requestParameters) {
     const path = '/accounts'
@@ -518,7 +546,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.id] - a single account
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getAccountsBalances(requestParameters) {
     const path = ['/accounts', requestParameters?.id, 'balances'].filter(p => p).join('/')
@@ -538,7 +566,7 @@ export default class Poloniex {
    * @param {"PRE"|"NEXT"} [requestParameters.direction] - PRE, NEXT, default is NEXT
    * @param {String} [requestParameters.currency] - transferred currency
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getAccountsActivity(requestParameters) {
     const path = '/accounts/activity'
@@ -555,7 +583,7 @@ export default class Poloniex {
    * @param {String} requestParameters.fromAccount - account from which the currency is transferred
    * @param {String} requestParameters.toAccount - account to which the currency is transferred
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   accountsTransfer(requestParameters) {
     const path = '/accounts/transfer'
@@ -575,7 +603,7 @@ export default class Poloniex {
    * @param {Number} [requestParameters.startTime] - transfers before start time will not be retrieved
    * @param {Number} [requestParameters.endTime] - transfers after end time will not be retrieved
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getAccountsTransferRecords(requestParameters) {
     const path = ['/accounts/transfer', requestParameters?.id].filter(p => p).join('/')
@@ -588,7 +616,7 @@ export default class Poloniex {
    *
    * @param {Object} [requestParameters]
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getFeeInfo(requestParameters) {
     const path = '/feeinfo'
@@ -600,7 +628,7 @@ export default class Poloniex {
    *
    * @param {Object} [requestParameters]
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getSubaccountsInfo(requestParameters) {
     const path = '/subaccounts'
@@ -613,7 +641,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.id] - a single account
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getSubaccountsBalances(requestParameters) {
     const path = ['/subaccounts', requestParameters?.id, 'balances'].filter(p => p).join('/')
@@ -632,7 +660,7 @@ export default class Poloniex {
    * @param {String} requestParameters.toAccountId - external UID of the to account
    * @param {"SPOT"|"FUTURES"} requestParameters.toAccountType - to account type
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   subaccountsTransfer(requestParameters) {
     const path = '/subaccounts/transfer'
@@ -656,7 +684,7 @@ export default class Poloniex {
    * @param {Number} [requestParameters.startTime] - transfers before start time will not be retrieved
    * @param {Number} [requestParameters.endTime] - transfers after end time will not be retrieved
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getSubaccountsTransferRecords(requestParameters) {
     const path = ['/subaccounts/transfer', requestParameters?.id].filter(p => p).join('/')
@@ -670,7 +698,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.currency] - for a single the currency
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getDepositAddresses(requestParameters) {
     const path = '/wallets/addresses'
@@ -686,7 +714,7 @@ export default class Poloniex {
    * @param {Number} requestParameters.end - records after end time will not be retrieved
    * @param {"deposits"|"withdrawals"} [requestParameters.activityType] - type of activity
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getWalletsActivityRecords(requestParameters) {
     const path = '/wallets/activity'
@@ -700,7 +728,7 @@ export default class Poloniex {
    * @param {Object} requestParameters
    * @param {String} requestParameters.currency - the currency to use for the deposit address
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   createNewCurrencyAddress(requestParameters) {
     const path = '/wallets/address'
@@ -718,7 +746,7 @@ export default class Poloniex {
    * @param {String} [requestParameters.paymentId] - paymentId for currencies that use a command deposit address
    * @param {String} [requestParameters.allowBorrow] - allow to transfer borrowed funds
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   withdrawCurrency(requestParameters) {
     const path = '/wallets/withdraw'
@@ -732,7 +760,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {"SPOT"} [requestParameters.accountType] - account type. Currently only SPOT is supported
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getMarginAccountInfo(requestParameters) {
     const path = '/margin/accountMargin'
@@ -746,7 +774,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {String} [requestParameters.currency] - currency name
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getMarginBorrowStatus(requestParameters) {
     const path = '/margin/borrowStatus'
@@ -760,7 +788,7 @@ export default class Poloniex {
    * @param {Object} requestParameters
    * @param {String} requestParameters.symbol - symbol name
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getMarginMaxSize(requestParameters) {
     const path = '/margin/maxSize'
@@ -783,7 +811,7 @@ export default class Poloniex {
    * @param {String} [requestParameters.clientOrderId] - maximum 64-character length
    * @param {Boolean} [requestParameters.allowBorrow] - allow order to be placed by borrowing funds
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   createOrder(requestParameters) {
     const path = '/orders'
@@ -795,7 +823,7 @@ export default class Poloniex {
    * Create multiple orders via a single request.
    *
    * @param {Object} requestParameters
-   * @param {Array<{
+   * @param {Array&lt;{
    *    symbol: String,
    *    side: "BUY"|"SELL",
    *    timeInForce: "GTC"|"IOC"|"FOK",
@@ -807,7 +835,7 @@ export default class Poloniex {
    *    clientOrderId: String,
    * }>} requestParameters.orders - array of json objects with order details
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call   *
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call   *
    */
   createBatchOrders(requestParameters) {
     const path = '/orders/batch'
@@ -829,7 +857,7 @@ export default class Poloniex {
    * @param {Boolean} [requestParameters.allowBorrow] - allow order to be placed by borrowing funds
    * @param {Boolean} [requestParameters.proceedOnFailure] - new order should be placed if cancellation of the existing order fails
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   replaceOrder(requestParameters) {
     const path = ['/orders', requestParameters.id].filter(p => p).join('/')
@@ -847,7 +875,7 @@ export default class Poloniex {
    * @param {"PRE"|"NEXT"} [requestParameters.direction] - PRE, NEXT
    * @param {Number} [requestParameters.limit] - max number of records to return
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getOpenOrders(requestParameters) {
     const path = '/orders'
@@ -861,7 +889,7 @@ export default class Poloniex {
    * @param {Object} requestParameters
    * @param {String} requestParameters.id - either orderId or clientOrderId (prefix with cid: )
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getOrderDetails(requestParameters) {
     const path = `/orders/${requestParameters.id}`
@@ -875,7 +903,7 @@ export default class Poloniex {
    * @param {Object} requestParameters
    * @param {String} requestParameters.id - order's id or its clientOrderId (prefix with cid: )
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   cancelOrder(requestParameters) {
     const path = `/orders/${requestParameters.id}`
@@ -886,10 +914,10 @@ export default class Poloniex {
    * Batch cancel one or many active orders in an account by IDs.
    *
    * @param {Object} requestParameters
-   * @param {Array<String>} [requestParameters.orderIds] - array of order ids. Required if clientOrderIds is null or empty
-   * @param {Array<String>} [requestParameters.clientOrderIds] - array of order clientOrderIds. Required if orderIds is null or empty
+   * @param {Array&lt;String>} [requestParameters.orderIds] - array of order ids. Required if clientOrderIds is null or empty
+   * @param {Array&lt;String>} [requestParameters.clientOrderIds] - array of order clientOrderIds. Required if orderIds is null or empty
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   cancelBatchOrders(requestParameters) {
     const path = '/orders/cancelByIds'
@@ -901,11 +929,11 @@ export default class Poloniex {
    * Cancel all orders in an account.
    *
    * @param {Object} [requestParameters]
-   * @param {Array<String>} [requestParameters.symbols] - if specified, only orders with those symbols are canceled
-   * @param {Array<"SPOT">} [requestParameters.accountTypes] - SPOT is the default and only supported one
+   * @param {Array&lt;String>} [requestParameters.symbols] - if specified, only orders with those symbols are canceled
+   * @param {Array&lt;"SPOT">} [requestParameters.accountTypes] - SPOT is the default and only supported one
    * @required
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   cancelAllOrders(requestParameters) {
     const path = '/orders'
@@ -919,7 +947,7 @@ export default class Poloniex {
    * @param {Object} requestParameters
    * @param {String} requestParameters.timeout - timer value in seconds
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   setKillSwitch(requestParameters) {
     const path = '/orders/killSwitch'
@@ -932,7 +960,7 @@ export default class Poloniex {
    *
    * @param {Object} requestParameters
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getKillSwitchStatus(requestParameters) {
     const path = '/orders/killSwitchStatus'
@@ -954,7 +982,7 @@ export default class Poloniex {
    * @param {String} [requestParameters.amount] - quote units for the order
    * @param {String} [requestParameters.clientOrderId] - maximum 64-character length
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   createSmartOrder(requestParameters) {
     const path = '/smartorders'
@@ -976,7 +1004,7 @@ export default class Poloniex {
    * @param {"GTC"|"IOC"|"FOK"} [requestParameters.timeInForce] - amended timeInForce; GTC, IOC, FOK
    * @param {Boolean} [requestParameters.proceedOnFailure] - new order should be placed if cancellation of the existing order fails
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   replaceSmartOrder(requestParameters) {
     const path = ['/smartorders', requestParameters.id].filter(p => p).join('/')
@@ -990,7 +1018,7 @@ export default class Poloniex {
    * @param {Object} [requestParameters]
    * @param {Number} [requestParameters.limit] - max number of records to return
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getSmartOpenOrders(requestParameters) {
     const path = '/smartorders'
@@ -1004,7 +1032,7 @@ export default class Poloniex {
    * @param {Object} requestParameters
    * @param {String} requestParameters.id - smart order's id or its clientOrderId (prefix with cid: )
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getSmartOrderDetails(requestParameters) {
     const path = `/orders/${requestParameters.id}`
@@ -1017,7 +1045,7 @@ export default class Poloniex {
    * @param {Object} requestParameters
    * @param {String} requestParameters.id - order's id or its clientOrderId (prefix with cid: )
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   cancelSmartOrder(requestParameters) {
     const path = `/smartorders/${requestParameters.id}`
@@ -1028,11 +1056,11 @@ export default class Poloniex {
    * Batch cancel one or many smart orders in an account by IDs.
    *
    * @param {Object} requestParameters
-   * @param {Array<String>} [requestParameters.orderIds] - array of order ids. Required if clientOrderIds is null or empty
-   * @param {Array<String>} [requestParameters.clientOrderIds] - array of order clientOrderIds. Required if orderIds is null or empty
+   * @param {Array&lt;String>} [requestParameters.orderIds] - array of order ids. Required if clientOrderIds is null or empty
+   * @param {Array&lt;String>} [requestParameters.clientOrderIds] - array of order clientOrderIds. Required if orderIds is null or empty
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
    * @required
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   cancelBatchSmartOrders(requestParameters) {
     const path = '/smartorders/cancelByIds'
@@ -1044,11 +1072,11 @@ export default class Poloniex {
    * Batch cancel all smart orders in an account.
    *
    * @param {Object} [requestParameters]
-   * @param {Array<String>} [requestParameters.symbols] - if specified, only orders with those symbols are canceled
-   * @param {Array<"SPOT">} [requestParameters.accountTypes] - SPOT is the default and only supported one
+   * @param {Array&lt;String>} [requestParameters.symbols] - if specified, only orders with those symbols are canceled
+   * @param {Array&lt;"SPOT">} [requestParameters.accountTypes] - SPOT is the default and only supported one
    * @required
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call 
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call 
    */
   cancelAllSmartOrders(requestParameters) {
     const path = '/smartorders'
@@ -1072,7 +1100,7 @@ export default class Poloniex {
    * @param {"Number"} [requestParameters.startTime] - orders updated before startTime will not be retrieved
    * @param {"Number"} [requestParameters.endTime] - orders updated after endTime will not be retrieved
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getOrdersHistory(requestParameters) {
     const path = '/orders/history'
@@ -1096,7 +1124,7 @@ export default class Poloniex {
    * @param {"Number"} [requestParameters.startTime] - orders updated before startTime will not be retrieved
    * @param {"Number"} [requestParameters.endTime] - orders updated after endTime will not be retrieved
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getSmartOrdersHistory(requestParameters) {
     const path = '/smartorders/history'
@@ -1115,7 +1143,7 @@ export default class Poloniex {
    * @param {"PRE"|"NEXT"} [requestParameters.direction] - PRE, NEXT The direction before or after ‘from'
    * @param {String} [requestParameters.symbols] - one or multiple symbols separated by comma
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getTradesHistory(requestParameters) {
     const path = '/trades'
@@ -1124,15 +1152,38 @@ export default class Poloniex {
   }
 
   /**
-   * Get a list of all trades for an order specified by its orderId.
+   * Get a list of all trades for an order specified by its orderId
    *
    * @param {Object} requestParameters
    * @param {String} requestParameters.id - the associated order's id (order's clientOrderId is not supported)
    * @param {Boolean} [requestParameters.getApiCallRateInfo=false] - if api call rate info should be returned, instead of executing the API call
-   * @returns {Promise<*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
+   * @returns {Promise&lt;*>|["riPub"|"nriPub"|"riPriv"|"nriPriv",number, number]} - Poloniex response or rate and rate limit for the API call
    */
   getOrderTrades(requestParameters) {
     const path = `/orders/${requestParameters.id}/trades`
     return this.#requestAuth('GET', path, {}, {}, requestParameters?.getApiCallRateInfo)
   }
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-poloniex-api-node.html">poloniex-api-node</a></li></ul><h3>Classes</h3><ul><li><a href="module-poloniex-api-node-Poloniex.html">Poloniex</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Mar 13 2023 16:32:26 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
