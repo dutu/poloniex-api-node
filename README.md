@@ -8,11 +8,10 @@ poloniex-api-node
 ### Contents
 * [Changelog](#changelog)
 * [Install](#install)
-* [Quick examples](#quick-examples)
 * [Usage](#usage)
-	* Constructor
-	* REST API
-	* WebSocket API
+	* [Constructor](#constructor)
+	* [REST API](#rest-api)
+	* [WebSocket API](#websocket-api)
 * [Contributors](#contributors)
 * [License](#license)
 
@@ -29,57 +28,6 @@ Module supporting the legacy API has been moved to [branch legacy_API](https://g
 # Install
 
     npm install --save poloniex-api-node
-
-# Quick examples
-
-### REST API example
-
-```js
-import Poloniex from 'poloniex-api-node'
-let poloniex = new Poloniex('your_api_key', 'your_api_secret')
-
-const tradesHistory = poloniex.getTradesHistory({ limit: 1000, symbols: 'BTC_USDT' })
-		.then((result) => console.log(result))
-		.catch((err) => console.log(err))
-```
-
-### WebSocket API examples
-
-Example (WebSocket API):
-
-```js
-import Poloniex from 'poloniex-api-node'
-let poloniex = new Poloniex('your_api_key', 'your_api_secret')
-
-
-poloniex.subscribe('ticker');
-poloniex.subscribe('BTC_ETC');
-
-poloniex.on('message', (channelName, data, seq) => {
-  if (channelName === 'ticker') {
-    console.log(`Ticker: ${data}`);
-  }
-
-  if (channelName === 'BTC_ETC') {
-    console.log(`order book and trade updates received for currency pair ${channelName}`);
-    console.log(`data sequence number is ${seq}`);
-  }
-});
-
-poloniex.on('open', () => {
-  console.log(`Poloniex WebSocket connection open`);
-});
-
-poloniex.on('close', (reason, details) => {
-  console.log(`Poloniex WebSocket connection disconnected`);
-});
-
-poloniex.on('error', (error) => {
-  console.log(`An error has occured`);
-});
-
-poloniex.openWebSocket();
-```
 
 # Usage
 
@@ -121,15 +69,11 @@ const poloniex = new Poloniex({ apiKey: 'myKey', apiSecret: 'mySecret' })
     riPriv: 7
   }
   ```
-
 See https://docs.poloniex.com/#rate-limits.
-
-
 
 ### Methods
 
 All methods accept one object parameter, which is used to pass all request parameters for the API call.
-
 
 [Official Poloniex API documentation](https://docs.poloniex.com/) lists all valid `Request Parameters` for API calls. 
 When a `Request Parameter` needs to be included, a property with the exact same name needs to be added to the object parameter.
@@ -140,7 +84,12 @@ All methods return a promise.
 Example:
 
 ```js
-const tradesHistory = await poloniex.getTradesHistory({ limit: 1000, symbols: 'BTC_USDT' })
+import Poloniex from 'poloniex-api-node'
+let poloniex = new Poloniex({ apiKey: 'myKey', apiSecret: 'mySecret' })
+
+const tradesHistory = poloniex.getTradesHistory({ limit: 1000, symbols: 'BTC_USDT' })
+  .then((result) => console.log(result))
+  .catch((err) => console.log(err))
 ```
 
 An optional property `getApiCallRateInfo` can be specified. When set to `true` the corresponding API call is not sent to the exchange, instead the current API call rate is returned. See [rate limits](https://docs.poloniex.com/#rate-limits).
@@ -148,7 +97,7 @@ An optional property `getApiCallRateInfo` can be specified. When set to `true` t
 Example:
 
 ```js
-const callRateInfo = await poloniex.getTradesHistory({ limit: 1000, symbols: 'BTC_USDT', getApiCallRateInfo: true })
+const callRateInfo = poloniex.getTradesHistory({ limit: 1000, symbols: 'BTC_USDT', getApiCallRateInfo: true })
 ```
 Example output: 
 ```javascript
@@ -238,9 +187,76 @@ Example output:
 
 ## Websocket API
 
-### Methods
+The module uses [forever-websocket](https://github.com/dutu/forever-websocket) to connect to Poloniex websocket server.  
+`ForeverWebSocket` extends [Node.js WebSocket client](https://github.com/websockets/ws), and in additions supports:
+* automatic reconnection
+* configurable reconnecting timers
+* configurable timeouts and reconnects when no message received
+* automatic pings to keep connection alive
 
-### Events
+### Connection
+
+* `newPublicWebSocket(options)` - establishes a WebSocket connection for public channels  
+* `newPrivateWebSocket(options)` - establishes a WebSocket connection for authenticated channels
+
+Options parameter properties
+
+Property name | Type            | Attributes | Default                                                                     | Description
+--------------|-----------------|------------|-----------------------------------------------------------------------------|--------------
+`reconnect` | object or `null` | optional | `{ factor: 1.5, initialDelay: 50, maxDelay: 10000, randomizeDelay: false }` | Reconnecting parameters, default exponential backoff strategy 
+`timeout` | number          | optional | no timeout	                                                                 | Timeout in milliseconds after which the websockets reconnects when no messages are received
+`ping` | object          | optional | `{ interval: 30000 }`                                                         | Ping interval value in milliseconds 
+
+`newPublicWebSocket()` and `newPrivateWebSocket()` return a `ForeverWebSocket` instance.
+
+### Public channels
+See https://docs.poloniex.com/#public-channels
+
+Example:
+Example:
+```javascript
+import Poloniex from 'poloniex-api-node'
+const poloniex = new Poloniex('your_api_key', 'your_api_secret')
+const ws = poloniex.newPublicWebSocket({ reconnect: null })
+ws.on('open', () => console.log('Websocket connection open'))
+ws.on('message', (data) => console.log('Websocket data received'))
+ws.on('error', () => console.log('Websocket error'))
+ws.on('close', () => console.log('Websocket connection closed'))
+```
+
+
+### Private channels
+See https://docs.poloniex.com/#authenticated-channels
+
+When `newPrivateWebSocket()` is used to open a WebSocket connection to access private channels, the authentication `auth` message is automatically sent to Poloniex immediately after the WebSocket connection is open.
+Subscriptions for authentication channels can then be sent once the poloniex server responds with successful authentication confirmation:
+```javascript
+{
+  "data":  {
+    "success": true,
+    "ts": 1645597033915
+  },
+  "channel": "auth"
+}
+```
+
+Example: 
+
+```js
+import Poloniex from 'poloniex-api-node'
+const poloniex = new Poloniex({ apiKey: 'myKey', apiSecret: 'mySecret' })
+const ws = poloniex.newPrivateWebSocket()
+ws.on('open', () => console.log('Websocket connection open'))
+ws.on('message', (data) => {
+  if (data.channel === 'auth' && data.data.success) {
+    ws.send({
+      event: 'subscribe',
+      channel: ['orders'],
+      symbols: ['all']
+    })
+  }  
+})
+```
 
 # Contributors
 
