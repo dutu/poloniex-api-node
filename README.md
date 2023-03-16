@@ -75,8 +75,8 @@ See https://docs.poloniex.com/#rate-limits.
 
 All methods accept one object parameter, which is used to pass all request parameters for the API call.
 
-[Official Poloniex API documentation](https://docs.poloniex.com/) lists all valid `Request Parameters` for API calls. 
-When a `Request Parameter` needs to be included, a property with the exact same name needs to be added to the object parameter.
+[Official Poloniex API documentation](https://docs.poloniex.com/) lists all valid **Request Parameters** for API calls. 
+When a **Request Parameter** needs to be included, a property with the exact same name needs to be added to the object parameter.
 
 
 All methods return a promise.
@@ -129,7 +129,7 @@ Example output:
  * [`getBorrowRatesInfo`](https://docs.poloniex.com/#public-endpoints-margin-borrow-rates-info) - get borrow rates information for all tiers and currencies
 
 
-### Private API Methods
+### Authenticated API Methods
 #### Accounts
  * [`getAccountsInfo`](https://docs.poloniex.com/#authenticated-endpoints-accounts-account-information) - get a list of all accounts of a use
  * [`getAccountsBalances`](https://docs.poloniex.com/#authenticated-endpoints-accounts-all-account-balances) - get a list of accounts of a user with each account’s id, type and balances
@@ -188,7 +188,7 @@ Example output:
 ## Websocket API
 
 The module uses [forever-websocket](https://github.com/dutu/forever-websocket) to connect to Poloniex websocket server.  
-`ForeverWebSocket` extends [Node.js WebSocket client](https://github.com/websockets/ws), and in additions supports:
+`ForeverWebSocket` extends [`WebSocket`](https://github.com/websockets/ws/blob/master/doc/ws.md#class-websocket), and in additions supports:
 * automatic reconnection
 * configurable reconnecting timers
 * configurable timeouts and reconnects when no message received
@@ -197,27 +197,37 @@ The module uses [forever-websocket](https://github.com/dutu/forever-websocket) t
 ### Connection
 
 * `newPublicWebSocket(options)` - establishes a WebSocket connection for public channels  
-* `newPrivateWebSocket(options)` - establishes a WebSocket connection for authenticated channels
+* `newAuthenticatedWebSocket(options)` - establishes a WebSocket connection for authenticated channels
 
-Options parameter properties
+`options` parameter properties (check [`ForeverWebSocket`](https://github.com/dutu/forever-websocket) for additional explanations):
 
 Property name | Type            | Attributes | Default                                                                     | Description
 --------------|-----------------|------------|-----------------------------------------------------------------------------|--------------
-`reconnect` | object or `null` | optional | `{ factor: 1.5, initialDelay: 50, maxDelay: 10000, randomizeDelay: false }` | Reconnecting parameters, default exponential backoff strategy 
+`reconnect` | object or `null` | optional | `{ factor: 1.5, initialDelay: 50, maxDelay: 10000, randomizeDelay: false }` | Reconnecting parameters. Defaults to exponential backoff strategy 
 `timeout` | number          | optional | no timeout	                                                                 | Timeout in milliseconds after which the websockets reconnects when no messages are received
-`ping` | object          | optional | `{ interval: 30000 }`                                                         | Ping interval value in milliseconds 
 
-`newPublicWebSocket()` and `newPrivateWebSocket()` return a `ForeverWebSocket` instance.
+`newPublicWebSocket()` and `newAuthenticatedWebSocket()` return a `ForeverWebSocket` instance.
+
+#### Ping
+Ping function is activated by default, ping requests are issued every 30 seconds to keep the connection alive.
+```javascript
+{
+"event": "ping"
+}
+```
 
 ### Public channels
 See https://docs.poloniex.com/#public-channels
 
 Example:
-Example:
 ```javascript
 import Poloniex from 'poloniex-api-node'
-const poloniex = new Poloniex('your_api_key', 'your_api_secret')
+const poloniex = new Poloniex()
+
+// Create a new WebSocket connected to public endpoint. The WebSocket should not reconnect if disconnected. 
 const ws = poloniex.newPublicWebSocket({ reconnect: null })
+
+// Specify event handlers
 ws.on('open', () => console.log('Websocket connection open'))
 ws.on('message', (data) => console.log('Websocket data received'))
 ws.on('error', () => console.log('Websocket error'))
@@ -225,11 +235,11 @@ ws.on('close', () => console.log('Websocket connection closed'))
 ```
 
 
-### Private channels
+### Authenticated channels
 See https://docs.poloniex.com/#authenticated-channels
 
-When `newPrivateWebSocket()` is used to open a WebSocket connection to access private channels, the authentication `auth` message is automatically sent to Poloniex immediately after the WebSocket connection is open.
-Subscriptions for authentication channels can then be sent once the poloniex server responds with successful authentication confirmation:
+When `newAuthenticatedWebSocket()` is used to open a WebSocket connection to access private channels, the authentication `auth` message is automatically sent to Poloniex immediately after the WebSocket connection is open.
+Subscriptions for authentication channels can be sent after poloniex server responds with successful authentication confirmation:
 ```javascript
 {
   "data":  {
@@ -245,9 +255,14 @@ Example:
 ```js
 import Poloniex from 'poloniex-api-node'
 const poloniex = new Poloniex({ apiKey: 'myKey', apiSecret: 'mySecret' })
-const ws = poloniex.newPrivateWebSocket()
+
+// Create a new WebSocket connected to public endpoint. The WebSocket should not reconnect if disconnected. 
+const ws = poloniex.newAuthenticatedWebSocket()
+
+// Specify event handlers
 ws.on('open', () => console.log('Websocket connection open'))
 ws.on('message', (data) => {
+  // if 'auth` message is received and authentication is sucessfull, send subscribe message 
   if (data.channel === 'auth' && data.data.success) {
     ws.send({
       event: 'subscribe',
@@ -262,19 +277,19 @@ ws.on('message', (data) => {
 
 This project exists thanks to all the people who contribute.
 
-* [dutu](https://github.com/dutu) (<dutu@protonmail.com>)
-* [julesGoullee](https://github.com/julesGoullee) (<julesgoullee@gmail.com>)
+* [dutu](https://github.com/dutu)
+* [julesGoullee](https://github.com/julesGoullee)
 * [zymnytskiy](https://github.com/zymnytskiy)
-* [Wallison Santos](https://github.com/wallybh) (<wallison@outlook.com>)
+* [Wallison Santos](https://github.com/wallybh)
 * [Denis Bezrukov](https://github.com/anthrax63)
 * [BarnumD](https://github.com/BarnumD)
 * [zunderbolt](https://github.com/zunderbolt)
 * [aloysius-pgast](https://github.com/aloysius-pgast)
 * [SeanRobb](https://github.com/SeanRobb)
-* [Robert Valmassoi](https://github.com/valmassoi) (<rvalmassoi@protonmail.com>)
+* [Robert Valmassoi](https://github.com/valmassoi)
 * [epdev](https://github.com/epdev)
-* [standup75](https://github.com/standup75) (<me@standupweb.net>)
-* [kevflynn](https://github.com/kevflynn) ([Kevin](http://www.kevflynn.com))
+* [standup75](https://github.com/standup75)
+* [kevflynn](https://github.com/kevflynn)
 * [Alexey Marunin](https://github.com/alexeymarunin)
 
 # License

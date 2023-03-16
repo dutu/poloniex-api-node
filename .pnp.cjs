@@ -28,10 +28,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["axios", "npm:1.3.2"],\
+            ["axios", "npm:1.3.4"],\
             ["chai", "npm:4.3.7"],\
             ["crypto-js", "npm:4.1.1"],\
             ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
+            ["forever-websocket", "portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A."],\
             ["mocha", "npm:10.2.0"]\
           ],\
           "linkType": "SOFT"\
@@ -206,11 +207,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["axios", [\
-        ["npm:1.3.2", {\
-          "packageLocation": "./.yarn/cache/axios-npm-1.3.2-e60543899f-9791af75a6.zip/node_modules/axios/",\
+        ["npm:1.3.4", {\
+          "packageLocation": "./.yarn/cache/axios-npm-1.3.4-01ea685178-7440edefcf.zip/node_modules/axios/",\
           "packageDependencies": [\
-            ["axios", "npm:1.3.2"],\
-            ["follow-redirects", "virtual:e60543899fd705bd5f850d61bc1194b1bf7a80a922cb114420112d5561895397647171575ef119a8decf292183f1806d99bf972caa13adcdef0a1056caa42cb3#npm:1.15.2"],\
+            ["axios", "npm:1.3.4"],\
+            ["follow-redirects", "virtual:01ea6851789e289a01b796f810de178bac6d56a5415f6812163a8c36f06eaa64bb9993c92dc00329a5b2f936da5273a082f393404924adfde56b26b8e581ef5e#npm:1.15.2"],\
             ["form-data", "npm:4.0.0"],\
             ["proxy-from-env", "npm:1.1.0"]\
           ],\
@@ -604,6 +605,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["eventemitter3", [\
+        ["npm:5.0.0", {\
+          "packageLocation": "./.yarn/cache/eventemitter3-npm-5.0.0-4c38bc0efe-b974bafbab.zip/node_modules/eventemitter3/",\
+          "packageDependencies": [\
+            ["eventemitter3", "npm:5.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["fill-range", [\
         ["npm:7.0.1", {\
           "packageLocation": "./.yarn/cache/fill-range-npm-7.0.1-b8b1817caa-cc283f4e65.zip/node_modules/fill-range/",\
@@ -642,10 +652,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:e60543899fd705bd5f850d61bc1194b1bf7a80a922cb114420112d5561895397647171575ef119a8decf292183f1806d99bf972caa13adcdef0a1056caa42cb3#npm:1.15.2", {\
-          "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-7a7a9ff787/0/cache/follow-redirects-npm-1.15.2-1ec1dd82be-faa66059b6.zip/node_modules/follow-redirects/",\
+        ["virtual:01ea6851789e289a01b796f810de178bac6d56a5415f6812163a8c36f06eaa64bb9993c92dc00329a5b2f936da5273a082f393404924adfde56b26b8e581ef5e#npm:1.15.2", {\
+          "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-a4bd585993/0/cache/follow-redirects-npm-1.15.2-1ec1dd82be-faa66059b6.zip/node_modules/follow-redirects/",\
           "packageDependencies": [\
-            ["follow-redirects", "virtual:e60543899fd705bd5f850d61bc1194b1bf7a80a922cb114420112d5561895397647171575ef119a8decf292183f1806d99bf972caa13adcdef0a1056caa42cb3#npm:1.15.2"],\
+            ["follow-redirects", "virtual:01ea6851789e289a01b796f810de178bac6d56a5415f6812163a8c36f06eaa64bb9993c92dc00329a5b2f936da5273a082f393404924adfde56b26b8e581ef5e#npm:1.15.2"],\
             ["@types/debug", null],\
             ["debug", null]\
           ],\
@@ -654,6 +664,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "debug"\
           ],\
           "linkType": "HARD"\
+        }]\
+      ]],\
+      ["forever-websocket", [\
+        ["portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A.", {\
+          "packageLocation": "../forever-websocket/",\
+          "packageDependencies": [\
+            ["forever-websocket", "portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A."],\
+            ["eventemitter3", "npm:5.0.0"],\
+            ["ws", "virtual:e395d036adba462f296833cf0ee4fe9a7de7d6785452e2e49518c58b863af83563fbe0342f97ab6ec2d15bef00bd0257dfe17351f8e22979633e3c8a5ed82165#npm:8.13.0"]\
+          ],\
+          "linkType": "SOFT"\
         }]\
       ]],\
       ["form-data", [\
@@ -1423,10 +1444,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["poloniex-api-node", "workspace:."],\
-            ["axios", "npm:1.3.2"],\
+            ["axios", "npm:1.3.4"],\
             ["chai", "npm:4.3.7"],\
             ["crypto-js", "npm:4.1.1"],\
             ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
+            ["forever-websocket", "portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A."],\
             ["mocha", "npm:10.2.0"]\
           ],\
           "linkType": "SOFT"\
@@ -1800,6 +1822,32 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/wrappy-npm-1.0.2-916de4d4b3-159da4805f.zip/node_modules/wrappy/",\
           "packageDependencies": [\
             ["wrappy", "npm:1.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["ws", [\
+        ["npm:8.13.0", {\
+          "packageLocation": "./.yarn/cache/ws-npm-8.13.0-26ffa3016a-53e991bbf9.zip/node_modules/ws/",\
+          "packageDependencies": [\
+            ["ws", "npm:8.13.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:e395d036adba462f296833cf0ee4fe9a7de7d6785452e2e49518c58b863af83563fbe0342f97ab6ec2d15bef00bd0257dfe17351f8e22979633e3c8a5ed82165#npm:8.13.0", {\
+          "packageLocation": "./.yarn/__virtual__/ws-virtual-b786971093/0/cache/ws-npm-8.13.0-26ffa3016a-53e991bbf9.zip/node_modules/ws/",\
+          "packageDependencies": [\
+            ["ws", "virtual:e395d036adba462f296833cf0ee4fe9a7de7d6785452e2e49518c58b863af83563fbe0342f97ab6ec2d15bef00bd0257dfe17351f8e22979633e3c8a5ed82165#npm:8.13.0"],\
+            ["@types/bufferutil", null],\
+            ["@types/utf-8-validate", null],\
+            ["bufferutil", null],\
+            ["utf-8-validate", null]\
+          ],\
+          "packagePeers": [\
+            "@types/bufferutil",\
+            "@types/utf-8-validate",\
+            "bufferutil",\
+            "utf-8-validate"\
           ],\
           "linkType": "HARD"\
         }]\
