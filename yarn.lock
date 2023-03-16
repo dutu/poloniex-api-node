@@ -516,13 +516,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"forever-websocket@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "forever-websocket@npm:0.2.0"
+"forever-websocket@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "forever-websocket@npm:0.3.0"
   dependencies:
     eventemitter3: ^5.0.0
     ws: ^8.13.0
-  checksum: 2918945d90b07a24664ec6f58ab532f410d3bae989b19f57ca00909fa84f6a934e8d3fc76826ab53a8948c0ec8e7d5e8951f25cddc4725b95f326b8439ff21c4
+  checksum: bacf9267612f5e4562124b22a15f3d044c5369c40f9db0253dce22e11ef2512057691444f56fbc623727dd13c4665c549910fecd096753d1e18d7fdcf3047da5
   languageName: node
   linkType: hard
 
@@ -1232,7 +1232,7 @@ __metadata:
     chai: ^4.3.7
     crypto-js: ^4.1.1
     debug: ^4.3.4
-    forever-websocket: ^0.2.0
+    forever-websocket: ^0.3.0
     mocha: ^10.2.0
   languageName: unknown
   linkType: soft

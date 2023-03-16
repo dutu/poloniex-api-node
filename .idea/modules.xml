@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../forever-websocket/.idea/forever-websocket.iml" filepath="$PROJECT_DIR$/../forever-websocket/.idea/forever-websocket.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/poloniex-api-node.iml" filepath="$PROJECT_DIR$/.idea/poloniex-api-node.iml" />
     </modules>
   </component>

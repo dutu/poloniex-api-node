@@ -32,7 +32,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chai", "npm:4.3.7"],\
             ["crypto-js", "npm:4.1.1"],\
             ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
-            ["forever-websocket", "npm:0.2.0"],\
+            ["forever-websocket", "npm:0.3.0"],\
             ["mocha", "npm:10.2.0"]\
           ],\
           "linkType": "SOFT"\
@@ -667,12 +667,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["forever-websocket", [\
-        ["npm:0.2.0", {\
-          "packageLocation": "./.yarn/cache/forever-websocket-npm-0.2.0-f956c3254a-2918945d90.zip/node_modules/forever-websocket/",\
+        ["npm:0.3.0", {\
+          "packageLocation": "./.yarn/cache/forever-websocket-npm-0.3.0-8a57372994-bacf926761.zip/node_modules/forever-websocket/",\
           "packageDependencies": [\
-            ["forever-websocket", "npm:0.2.0"],\
+            ["forever-websocket", "npm:0.3.0"],\
             ["eventemitter3", "npm:5.0.0"],\
-            ["ws", "virtual:f956c3254a98e70d477644460c369fe064cebfb07cced9afab5d2b27d1d04f7aee09c67400015c7aae088bbb2f4b6502dd2008b20a3c93da23c4683097fb6f88#npm:8.13.0"]\
+            ["ws", "virtual:8a57372994083d53e7a7a13a19d83e48499e988f06fe4f9c3bb80ca01f9474d90ca6ae27d9fc1b719272ac58fb4097cdeb4239019964c812b99e3e0d23532551#npm:8.13.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1448,7 +1448,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chai", "npm:4.3.7"],\
             ["crypto-js", "npm:4.1.1"],\
             ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
-            ["forever-websocket", "npm:0.2.0"],\
+            ["forever-websocket", "npm:0.3.0"],\
             ["mocha", "npm:10.2.0"]\
           ],\
           "linkType": "SOFT"\
@@ -1834,10 +1834,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:f956c3254a98e70d477644460c369fe064cebfb07cced9afab5d2b27d1d04f7aee09c67400015c7aae088bbb2f4b6502dd2008b20a3c93da23c4683097fb6f88#npm:8.13.0", {\
-          "packageLocation": "./.yarn/__virtual__/ws-virtual-2d33213a0f/0/cache/ws-npm-8.13.0-26ffa3016a-53e991bbf9.zip/node_modules/ws/",\
+        ["virtual:8a57372994083d53e7a7a13a19d83e48499e988f06fe4f9c3bb80ca01f9474d90ca6ae27d9fc1b719272ac58fb4097cdeb4239019964c812b99e3e0d23532551#npm:8.13.0", {\
+          "packageLocation": "./.yarn/__virtual__/ws-virtual-d0799f6516/0/cache/ws-npm-8.13.0-26ffa3016a-53e991bbf9.zip/node_modules/ws/",\
           "packageDependencies": [\
-            ["ws", "virtual:f956c3254a98e70d477644460c369fe064cebfb07cced9afab5d2b27d1d04f7aee09c67400015c7aae088bbb2f4b6502dd2008b20a3c93da23c4683097fb6f88#npm:8.13.0"],\
+            ["ws", "virtual:8a57372994083d53e7a7a13a19d83e48499e988f06fe4f9c3bb80ca01f9474d90ca6ae27d9fc1b719272ac58fb4097cdeb4239019964c812b99e3e0d23532551#npm:8.13.0"],\
             ["@types/bufferutil", null],\
             ["@types/utf-8-validate", null],\
             ["bufferutil", null],\
