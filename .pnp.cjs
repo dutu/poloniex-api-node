@@ -32,7 +32,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chai", "npm:4.3.7"],\
             ["crypto-js", "npm:4.1.1"],\
             ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
-            ["forever-websocket", "portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A."],\
+            ["forever-websocket", "npm:0.2.0"],\
             ["mocha", "npm:10.2.0"]\
           ],\
           "linkType": "SOFT"\
@@ -667,14 +667,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["forever-websocket", [\
-        ["portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A.", {\
-          "packageLocation": "../forever-websocket/",\
+        ["npm:0.2.0", {\
+          "packageLocation": "./.yarn/cache/forever-websocket-npm-0.2.0-f956c3254a-2918945d90.zip/node_modules/forever-websocket/",\
           "packageDependencies": [\
-            ["forever-websocket", "portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A."],\
+            ["forever-websocket", "npm:0.2.0"],\
             ["eventemitter3", "npm:5.0.0"],\
-            ["ws", "virtual:e395d036adba462f296833cf0ee4fe9a7de7d6785452e2e49518c58b863af83563fbe0342f97ab6ec2d15bef00bd0257dfe17351f8e22979633e3c8a5ed82165#npm:8.13.0"]\
+            ["ws", "virtual:f956c3254a98e70d477644460c369fe064cebfb07cced9afab5d2b27d1d04f7aee09c67400015c7aae088bbb2f4b6502dd2008b20a3c93da23c4683097fb6f88#npm:8.13.0"]\
           ],\
-          "linkType": "SOFT"\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["form-data", [\
@@ -1448,7 +1448,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chai", "npm:4.3.7"],\
             ["crypto-js", "npm:4.1.1"],\
             ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
-            ["forever-websocket", "portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A."],\
+            ["forever-websocket", "npm:0.2.0"],\
             ["mocha", "npm:10.2.0"]\
           ],\
           "linkType": "SOFT"\
@@ -1834,10 +1834,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:e395d036adba462f296833cf0ee4fe9a7de7d6785452e2e49518c58b863af83563fbe0342f97ab6ec2d15bef00bd0257dfe17351f8e22979633e3c8a5ed82165#npm:8.13.0", {\
-          "packageLocation": "./.yarn/__virtual__/ws-virtual-b786971093/0/cache/ws-npm-8.13.0-26ffa3016a-53e991bbf9.zip/node_modules/ws/",\
+        ["virtual:f956c3254a98e70d477644460c369fe064cebfb07cced9afab5d2b27d1d04f7aee09c67400015c7aae088bbb2f4b6502dd2008b20a3c93da23c4683097fb6f88#npm:8.13.0", {\
+          "packageLocation": "./.yarn/__virtual__/ws-virtual-2d33213a0f/0/cache/ws-npm-8.13.0-26ffa3016a-53e991bbf9.zip/node_modules/ws/",\
           "packageDependencies": [\
-            ["ws", "virtual:e395d036adba462f296833cf0ee4fe9a7de7d6785452e2e49518c58b863af83563fbe0342f97ab6ec2d15bef00bd0257dfe17351f8e22979633e3c8a5ed82165#npm:8.13.0"],\
+            ["ws", "virtual:f956c3254a98e70d477644460c369fe064cebfb07cced9afab5d2b27d1d04f7aee09c67400015c7aae088bbb2f4b6502dd2008b20a3c93da23c4683097fb6f88#npm:8.13.0"],\
             ["@types/bufferutil", null],\
             ["@types/utf-8-validate", null],\
             ["bufferutil", null],\

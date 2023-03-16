@@ -516,14 +516,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"forever-websocket@portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "forever-websocket@portal:../forever-websocket::locator=poloniex-api-node%40workspace%3A."
+"forever-websocket@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "forever-websocket@npm:0.2.0"
   dependencies:
     eventemitter3: ^5.0.0
     ws: ^8.13.0
+  checksum: 2918945d90b07a24664ec6f58ab532f410d3bae989b19f57ca00909fa84f6a934e8d3fc76826ab53a8948c0ec8e7d5e8951f25cddc4725b95f326b8439ff21c4
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "form-data@npm:^4.0.0":
   version: 4.0.0

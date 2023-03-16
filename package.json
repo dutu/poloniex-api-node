@@ -39,8 +39,5 @@
   "devDependencies": {
     "chai": "^4.3.7",
     "mocha": "^10.2.0"
-  },
-  "resolutions": {
-    "forever-websocket": "portal:../forever-websocket"
   }
 }
