@@ -256,7 +256,7 @@ Example:
 import Poloniex from 'poloniex-api-node'
 const poloniex = new Poloniex({ apiKey: 'myKey', apiSecret: 'mySecret' })
 
-// Create a new WebSocket connected to public endpoint. The WebSocket should not reconnect if disconnected. 
+// Create a new WebSocket connected to private endpoint. 
 const ws = poloniex.newAuthenticatedWebSocket()
 
 // Specify event handlers
