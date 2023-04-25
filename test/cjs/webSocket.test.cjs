@@ -4,7 +4,7 @@ const Poloniex = require('../../dist/cjs/poloniex.cjs')
 
 const delay = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
 
-describe('WebSocket tests', function () {
+describe('WebSocket tests - CJS', function () {
   describe('Public WebSocket', function () {
     let ws
 

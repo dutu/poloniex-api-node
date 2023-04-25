@@ -5,7 +5,7 @@ const expect = chai.expect
 
 const delay = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
 
-describe('REST tests', function () {
+describe('REST tests - ESM', function () {
   const expectGetCallRateInfoResult = (result) => {
     expect(result).to.be.an('array').with.lengthOf(3)
     expect(result[0]).to.be.a('string').and.to.be.oneOf(['riPub', 'nriPub', 'riPriv', 'nriPriv'])
@@ -398,11 +398,11 @@ describe('REST tests', function () {
     describe('withdrawCurrency()', function () {
       it('should return result', function (done) {
         polo.withdrawCurrency({ currency: 'ETH' })
-          .catch((err) => {
-            expect(err).to.be.an('Error')
-            expect(err.message).to.include('amount')
-            done()
-          })
+            .catch((err) => {
+              expect(err).to.be.an('Error')
+              expect(err.message).to.include('amount')
+              done()
+            })
       })
 
       it('should return api calls info', function () {
@@ -458,11 +458,11 @@ describe('REST tests', function () {
 
       it('should return result', function (done) {
         polo.createOrder(order)
-          .catch((err) => {
-            expect(err).to.be.an('Error')
-            expect(err.message).to.include('balance')
-            done()
-          })
+            .catch((err) => {
+              expect(err).to.be.an('Error')
+              expect(err.message).to.include('balance')
+              done()
+            })
       })
 
       it('should return api calls info', function () {
@@ -474,11 +474,11 @@ describe('REST tests', function () {
     describe('createBatchOrders()', function () {
       const orders = [
         {
-        symbol: 'BTC_USDT',
-        side: 'SELL',
-        type: 'LIMIT',
-        price: '60000',
-        quantity: '100',
+          symbol: 'BTC_USDT',
+          side: 'SELL',
+          type: 'LIMIT',
+          price: '60000',
+          quantity: '100',
         },
         {
           symbol: 'BTC_USDT',
@@ -489,13 +489,13 @@ describe('REST tests', function () {
         }
       ]
 
-        it('should return result', function (done) {
+      it('should return result', function (done) {
         polo.createBatchOrders({ orders })
-          .catch((err) => {
-            expect(err).to.be.an('Error')
-            expect(err.message).to.include('Parameter')
-            done()
-          })
+            .catch((err) => {
+              expect(err).to.be.an('Error')
+              expect(err.message).to.include('Parameter')
+              done()
+            })
       })
 
       it('should return api calls info', function () {
@@ -507,10 +507,10 @@ describe('REST tests', function () {
     describe('replaceOrder()', function () {
       it('should return result', function (done) {
         polo.replaceOrder({ id: '00000' })
-          .catch((err) => {
-            expect(err).to.be.an('Error')
-            done()
-          })
+            .catch((err) => {
+              expect(err).to.be.an('Error')
+              done()
+            })
       })
 
       it('should return api calls info', function () {

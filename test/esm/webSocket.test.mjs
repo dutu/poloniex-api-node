@@ -6,7 +6,7 @@ const expect = chai.expect
 
 const delay = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
 
-describe('WebSocket tests', function () {
+describe('WebSocket tests - ESM', function () {
   describe('Public WebSocket', function () {
     let ws
 
