@@ -1,8 +1,6 @@
-import chai from 'chai'
-import Debug from "debug"
-import Poloniex from '../lib/poloniex.mjs'
-
-const expect = chai.expect
+const { expect } = require('chai');
+const Debug = require('debug')
+const Poloniex = require('../../dist/cjs/poloniex.cjs')
 
 const delay = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
 
