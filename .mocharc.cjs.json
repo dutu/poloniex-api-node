@@ -1,0 +1,7 @@
+{
+  "extension": ["js"],
+  "spec": ["test/cjs/*.{test,spec}.cjs", "test/package.test.cjs"],
+  "require": ["@babel/register"],
+  "timeout": 60000,
+  "exit": true
+}

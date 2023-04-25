@@ -1,0 +1,17 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        },
+        "modules": "commonjs"
+      }
+    ]
+  ],
+  "plugins": [
+    "add-module-exports"
+  ],
+  "sourceMaps": true
+}

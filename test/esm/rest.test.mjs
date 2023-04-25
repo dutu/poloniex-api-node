@@ -1,5 +1,5 @@
 import chai from 'chai'
-import Poloniex from '../lib/poloniex.mjs'
+import Poloniex from '../../lib/poloniex.mjs'
 
 const expect = chai.expect
 
